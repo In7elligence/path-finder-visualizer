@@ -9,5 +9,5 @@ export interface INode extends ISimpleNode {
     distance: number;
     isVisited: boolean;
     isWall: boolean;
-    previousNode: INode | null; // Allow null
+    previousNode: INode | null;
   }

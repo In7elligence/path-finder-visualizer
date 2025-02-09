@@ -22,8 +22,8 @@ const Grid: React.FC = () => {
   const [gridDimensions, setGridDimensions] = useState({ rows: 0, cols: 0 });
   const [startNode, setStartNode] = useState({ row: 0, col: 0 });
   const [finishNode, setFinishNode] = useState({ row: 0, col: 0 });
-  const [visitedNodes, setVisitedNodes] = useState<INode[]>([]); // Track visited nodes
-  const [nodesInShortestPath, setNodesInShortestPath] = useState<INode[]>([]); // Track nodes in the shortest path
+  const [visitedNodes, setVisitedNodes] = useState<INode[]>([]);
+  const [nodesInShortestPath, setNodesInShortestPath] = useState<INode[]>([]);
 
   const NODE_SIZE = 25; // Size of each node in pixels
 
@@ -187,7 +187,7 @@ const Grid: React.FC = () => {
   return (
     <React.Fragment>
       <button onClick={visualizeDijkstra}>
-        Visualize Dijkstra's Algorithm
+        Visualize Dijkstra&lsquo;s Algorithm
       </button>
       <div
         className="grid"
