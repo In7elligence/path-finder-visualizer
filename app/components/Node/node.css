@@ -1,23 +1,109 @@
 .node {
-  background-color: #ccc;
-  border: 1px solid #999;
+  background-color: #ffffff;
+  border: 1px solid rgb(175, 216, 248);
   height: 25px;
   width: 25px;
   aspect-ratio: 1 / 1;
 }
 
 .node-finish {
-  background-color: red;
+  background-image: url("/images/circle.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .node-start {
-  background-color: green;
+  background-image: url("/images/arrow-right.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.node-wall {
+  background-color: rgb(12, 53, 71);
 }
 
 .node-visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;
   animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-shortest-path {
+  background-color: rgb(255, 254, 106);
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-arrow-up {
+  background-image: url("/images/arrow-up.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: rgb(255, 254, 106);
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-arrow-down {
+  background-image: url("/images/arrow-down.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: rgb(255, 254, 106);
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-arrow-left {
+  background-image: url("/images/arrow-left.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: rgb(255, 254, 106);
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-arrow-right {
+  background-image: url("/images/arrow-right.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: rgb(255, 254, 106);
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
   animation-delay: 0;
   animation-direction: alternate;
   animation-iteration-count: 1;
@@ -45,21 +131,6 @@
     transform: scale(1);
     background-color: rgba(0, 190, 218, 0.75);
   }
-}
-
-.node-wall {
-  background-color: rgb(12, 53, 71);
-}
-
-.node-shortest-path {
-  animation-name: shortestPath;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
 }
 
 @keyframes shortestPath {

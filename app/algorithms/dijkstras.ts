@@ -1,4 +1,3 @@
-
 /*!
  * Performs Dijkstra's algorithm; returns *all* nodes in the order
  * in which they were visited. Also makes nodes point back to their
@@ -76,17 +75,38 @@ const updateUnvisitedNeighbors = (node: INode, grid: INode[][]) => {
   }
 };
 
-
 /*!
  * Backtracks from the finishNode to find the shortest path.
  * Only works when called *after* the dijkstra method above.
 !*/
 export const getNodesInShortestPathOrder = (finishNode: INode | null) => {
-  const nodesInShortestPathOrder = [];
-  let currentNode = finishNode;
+  const nodesInShortestPathOrder: INode[] = [];
+  let currentNode: INode | null = finishNode;
+
+  if (!currentNode) {
+    return nodesInShortestPathOrder;
+  }
+
   while (currentNode !== null) {
     nodesInShortestPathOrder.unshift(currentNode);
     currentNode = currentNode.previousNode;
   }
+
+  // Add direction information to each node
+  for (let i = 0; i < nodesInShortestPathOrder.length - 1; i++) {
+    const current = nodesInShortestPathOrder[i];
+    const next = nodesInShortestPathOrder[i + 1];
+
+    if (next.row < current.row) {
+      current.direction = "up";
+    } else if (next.row > current.row) {
+      current.direction = "down";
+    } else if (next.col < current.col) {
+      current.direction = "left";
+    } else if (next.col > current.col) {
+      current.direction = "right";
+    }
+  }
+
   return nodesInShortestPathOrder;
 };
