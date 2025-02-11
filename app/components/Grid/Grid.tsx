@@ -2,15 +2,14 @@
 
 import React, { useReducer, useEffect, useCallback } from "react";
 import "./grid.css";
-import { INode } from "@/app/interfaces/interfaces";
 import Node from "../Node/Node";
-import {
-  dijkstra,
-  getNodesInShortestPathOrder,
-} from "@/app/algorithms/dijkstras";
-import { NODE_SIZE, ANIMATION_DURATION } from "@/app/constants/constants";
+import { NODE_SIZE } from "@/app/constants/constants";
 import { initialGridState } from "./initialState";
 import { gridReducer } from "./gridReducer";
+import Nav from "../Nav";
+import { visualizeDijkstra } from "@/app/algorithms/dijkstras/animation/visualizeDijkstra";
+import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar";
+import { getNewGridWithWallToggled } from "@/app/utils/utils";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
@@ -68,22 +67,6 @@ const Grid: React.FC = () => {
     }
 
     return grid;
-  };
-
-  const getNewGridWithWallToggled = (
-    grid: INode[][],
-    row: number,
-    col: number
-  ): INode[][] => {
-    const newGrid = grid.slice();
-    const node = newGrid[row][col];
-    const newNode = {
-      ...node,
-      isWall: !node.isWall,
-    };
-    newGrid[row][col] = newNode;
-
-    return newGrid;
   };
 
   const handleMouseDown = useCallback(
@@ -182,48 +165,13 @@ const Grid: React.FC = () => {
     [state.grid, state.startNode, state.finishNode]
   );
 
-  const visualizeDijkstra = () => {
-    const { grid, startNode, finishNode } = state;
+  const handleVisualizeDijkstra = useCallback(() => {
+    visualizeDijkstra(state, dispatch);
+  }, [state]);
 
-    dispatch({ type: "TOGGLE_ALGO", payload: true });
-
-    const start = grid[startNode.row][startNode.col];
-    const finish = grid[finishNode.row][finishNode.col];
-
-    const visitedNodesInOrder = dijkstra(grid, start, finish);
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finish);
-
-    // Calculate total animation time
-    const totalAnimationTime =
-      visitedNodesInOrder.length * ANIMATION_DURATION + // Time for visited nodes
-      nodesInShortestPathOrder.length * ANIMATION_DURATION; // Time for shortest path nodes
-
-    // Animate visited nodes
-    for (let i = 0; i < visitedNodesInOrder.length; i++) {
-      setTimeout(() => {
-        dispatch({
-          type: "SET_VISITED_NODES",
-          payload: visitedNodesInOrder.slice(0, i + 1),
-        });
-      }, ANIMATION_DURATION * i);
-    }
-
-    // Animate shortest path nodes one at a time
-    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-      setTimeout(() => {
-        // Update the shortest path nodes to include only the current node
-        dispatch({
-          type: "SET_NODES_IN_SHORTEST_PATH",
-          payload: nodesInShortestPathOrder.slice(0, i + 1),
-        });
-      }, visitedNodesInOrder.length * ANIMATION_DURATION + i * ANIMATION_DURATION);
-    }
-
-    // Set algorithm running state to false after all animations are complete
-    setTimeout(() => {
-      dispatch({ type: "TOGGLE_ALGO", payload: false });
-    }, totalAnimationTime);
-  };
+  const handleVisualizeAstar = useCallback(() => {
+    visualizeAstar(state, dispatch);
+  }, [state]);
 
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
@@ -260,13 +208,38 @@ const Grid: React.FC = () => {
     visitedNodes,
     nodesInShortestPath,
     isAlgoRunning,
+    selectedAlgorithm
   } = state;
 
   return (
     <React.Fragment>
-      <button onClick={visualizeDijkstra}>
-        Visualize Dijkstra&lsquo;s Algorithm
-      </button>
+      <Nav
+        menuItems={[
+          {
+            type: "button",
+            name: "Visualize",
+            onClick: handleVisualizeAstar,
+          },
+          {
+            type: "dropdown",
+            name: "About",
+            value: selectedAlgorithm,
+            children: [
+              {
+                type: "option",
+                name: "Dijkstra's",
+                value: "dijkstras",
+              },
+              {
+                type: "option",
+                name: "A* Search",
+                value: "astar",
+              },
+            ],
+          }
+        ]}
+        isAlgoRunning={isAlgoRunning}
+      />
       <div
         className="grid"
         style={{

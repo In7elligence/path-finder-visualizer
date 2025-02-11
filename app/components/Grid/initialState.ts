@@ -8,5 +8,7 @@ export const initialGridState: IGridState = {
   finishNode: { row: 0, col: 0 },
   visitedNodes: [],
   nodesInShortestPath: [],
-  isAlgoRunning: false
+  selectedAlgorithm: "dijkstras",
+  isAlgoRunning: false,
+  animationDuration: 10 // Animation/setTimeout duration
 };

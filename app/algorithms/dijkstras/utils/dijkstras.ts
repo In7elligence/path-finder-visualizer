@@ -4,7 +4,7 @@
  * previous node, effectively allowing us to compute the shortest path.
 !*/
 
-import { INode } from "../interfaces/interfaces";
+import { INode } from "@/app/interfaces/interfaces";
 
 const getAllNodes = (grid: INode[][]) => {
   const nodes = [];

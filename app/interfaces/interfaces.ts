@@ -1,15 +1,19 @@
-import { NodeDirection } from "../types/types";
+import { AvailableAlgorithms, NavItemType, NodeDirection } from "../types/types";
 
 export interface INode {
   row: number;
   col: number;
   isStart: boolean;
   isFinish: boolean;
-  distance: number;
+  distance: number; // Used by Dijkstra's algorithm
   isVisited: boolean;
   isWall: boolean;
   previousNode: INode | null;
   direction?: NodeDirection;
+  isActiveArrow?: boolean;
+  gCost?: number; // Cost from start node to this node (used by A*)
+  hCost?: number; // Heuristic cost from this node to finish node (used by A*)
+  fCost?: number; // Total cost (gCost + hCost) (used by A*)
 }
 
 export interface IGridState {
@@ -20,5 +24,16 @@ export interface IGridState {
   finishNode: { row: number; col: number };
   visitedNodes: INode[];
   nodesInShortestPath: INode[];
+  selectedAlgorithm: AvailableAlgorithms;
   isAlgoRunning: boolean;
+  animationDuration: number;
 }
+
+export interface IMenuItem {
+  type: NavItemType;
+  name: string;
+  href?: string;
+  value?: string;
+  children?: IMenuItem[];
+  onClick?: () => void;
+};

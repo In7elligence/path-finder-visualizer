@@ -1,6 +1,6 @@
 import { IGridState, INode } from "@/app/interfaces/interfaces";
 
-type GridAction =
+export type GridAction =
   | { type: "SET_GRID"; payload: INode[][] }
   | { type: "TOGGLE_MOUSE_PRESSED"; payload: boolean }
   | { type: "SET_GRID_DIMENSIONS"; payload: { rows: number; cols: number } }
