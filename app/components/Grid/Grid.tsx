@@ -10,6 +10,7 @@ import Nav from "../Nav";
 import { visualizeDijkstra } from "@/app/algorithms/dijkstras/animation/visualizeDijkstra";
 import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar";
 import { getNewGridWithWallToggled } from "@/app/utils/utils";
+import { AvailableAlgorithms } from "@/app/types/types";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
@@ -165,12 +166,20 @@ const Grid: React.FC = () => {
     [state.grid, state.startNode, state.finishNode]
   );
 
-  const handleVisualizeDijkstra = useCallback(() => {
-    visualizeDijkstra(state, dispatch);
-  }, [state]);
+  // Handler for algorithm selection
+  const handleAlgorithmChange = (value: AvailableAlgorithms) => {
+    dispatch({ type: "SET_SELECTED_ALGORITHM", payload: value });
+  };
 
-  const handleVisualizeAstar = useCallback(() => {
-    visualizeAstar(state, dispatch);
+  // Handler for visualizing the selected algorithm
+  const handleVisualize = useCallback(() => {
+    const { selectedAlgorithm } = state;
+
+    if (selectedAlgorithm === "dijkstras") {
+      visualizeDijkstra(state, dispatch);
+    } else if (selectedAlgorithm === "astar") {
+      visualizeAstar(state, dispatch);
+    }
   }, [state]);
 
   // Initialize grid dimensions and nodes on mount
@@ -208,7 +217,7 @@ const Grid: React.FC = () => {
     visitedNodes,
     nodesInShortestPath,
     isAlgoRunning,
-    selectedAlgorithm
+    selectedAlgorithm,
   } = state;
 
   return (
@@ -218,11 +227,11 @@ const Grid: React.FC = () => {
           {
             type: "button",
             name: "Visualize",
-            onClick: handleVisualizeAstar,
+            onClick: handleVisualize,
           },
           {
             type: "dropdown",
-            name: "About",
+            name: "Algorithm",
             value: selectedAlgorithm,
             children: [
               {
@@ -236,9 +245,11 @@ const Grid: React.FC = () => {
                 value: "astar",
               },
             ],
-          }
+            onClick: () => {},
+          },
         ]}
         isAlgoRunning={isAlgoRunning}
+        onAlgorithmChange={handleAlgorithmChange}
       />
       <div
         className="grid"

@@ -1,4 +1,5 @@
 import { IGridState, INode } from "@/app/interfaces/interfaces";
+import { AvailableAlgorithms } from "@/app/types/types";
 
 export type GridAction =
   | { type: "SET_GRID"; payload: INode[][] }
@@ -8,7 +9,8 @@ export type GridAction =
   | { type: "SET_FINISH_NODE"; payload: { row: number; col: number } }
   | { type: "SET_VISITED_NODES"; payload: INode[] }
   | { type: "SET_NODES_IN_SHORTEST_PATH"; payload: INode[] }
-  | { type: "TOGGLE_ALGO"; payload: boolean };
+  | { type: "TOGGLE_ALGO"; payload: boolean }
+  | { type: "SET_SELECTED_ALGORITHM"; payload: AvailableAlgorithms };
 
 export const gridReducer = (
   state: IGridState,
@@ -29,8 +31,10 @@ export const gridReducer = (
       return { ...state, visitedNodes: action.payload };
     case "SET_NODES_IN_SHORTEST_PATH":
       return { ...state, nodesInShortestPath: action.payload };
-      case "TOGGLE_ALGO":
-        return { ...state, isAlgoRunning: action.payload }
+    case "TOGGLE_ALGO":
+      return { ...state, isAlgoRunning: action.payload };
+    case "SET_SELECTED_ALGORITHM":
+      return { ...state, selectedAlgorithm: action.payload };
     default:
       return state;
   }

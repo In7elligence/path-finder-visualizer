@@ -1,12 +1,15 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { IMenuItem } from "../interfaces/interfaces";
+import CustomSelect from "./generic/CustomSelect/CustomSelect";
+import { AvailableAlgorithms } from "../types/types";
 
 interface INavProps {
   menuItems: IMenuItem[];
   isAlgoRunning?: boolean;
+  onAlgorithmChange?: (value: AvailableAlgorithms) => void;
 }
 
-const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
+const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning, onAlgorithmChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -29,7 +32,6 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
     },
   };
 
-  // Get the classes for the current color scheme
   const btnClasses = useMemo(() => {
     const scheme = colorSchemes[btnColorScheme];
     return `
@@ -76,39 +78,23 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
           );
         case "dropdown":
           return (
-            <select
+            <CustomSelect
               key={item.name}
+              options={item.children?.map((child) => ({
+                name: child.name,
+                value: child.value,
+              }))}
               defaultValue={item.value}
-              onChange={() => {
-                if (item.onClick) item.onClick();
+              onChange={(value) => {
+                if (onAlgorithmChange) onAlgorithmChange(value); // Call the handler
               }}
-              className={`
-                bg-gray-800
-                rounded-lg
-                focus:ring-teal-500
-                focus:border-teal-500
-                block
-                w-full
-                p-2.5
-                cursor-pointer
-                hover:text-teal-400`}
-            >
-              {item.children?.map((child) => (
-                <option
-                  key={child.name}
-                  value={child.value}
-                  className="bg-gray-800"
-                >
-                  {child.name}
-                </option>
-              ))}
-            </select>
+            />
           );
         default:
           return null;
       }
     },
-    [btnClasses, isAlgoRunning]
+    [btnClasses, isAlgoRunning, onAlgorithmChange]
   );
 
   return (
