@@ -10,5 +10,5 @@ export const initialGridState: IGridState = {
   nodesInShortestPath: [],
   selectedAlgorithm: "dijkstras",
   isAlgoRunning: false,
-  animationDuration: 10 // Animation/setTimeout duration
+  animationDuration: 10, // Animation/setTimeout duration
 };

@@ -9,7 +9,11 @@ interface INavProps {
   onAlgorithmChange?: (value: AvailableAlgorithms) => void;
 }
 
-const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning, onAlgorithmChange }) => {
+const Nav: React.FC<INavProps> = ({
+  menuItems,
+  isAlgoRunning,
+  onAlgorithmChange,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -48,7 +52,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning, onAlgorithmChange 
       py-2.5 
       text-center
     `;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnColorScheme]);
 
   const renderMenuItem = useCallback(
@@ -86,7 +90,8 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning, onAlgorithmChange 
               }))}
               defaultValue={item.value}
               onChange={(value) => {
-                if (onAlgorithmChange) onAlgorithmChange(value); // Call the handler
+                if (onAlgorithmChange)
+                  onAlgorithmChange(value as AvailableAlgorithms);
               }}
             />
           );

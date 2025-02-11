@@ -1,11 +1,15 @@
-import { AvailableAlgorithms, NavItemType, NodeDirection } from "../types/types";
+import {
+  AvailableAlgorithms,
+  NavItemType,
+  NodeDirection,
+} from "../types/types";
 
 export interface INode {
   row: number;
   col: number;
   isStart: boolean;
   isFinish: boolean;
-  distance: number; // Used by Dijkstra's algorithm
+  distance: number;
   isVisited: boolean;
   isWall: boolean;
   previousNode: INode | null;
@@ -36,4 +40,4 @@ export interface IMenuItem {
   value?: string;
   children?: IMenuItem[];
   onClick?: () => void;
-};
+}

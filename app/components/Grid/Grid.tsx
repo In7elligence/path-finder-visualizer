@@ -147,15 +147,12 @@ const Grid: React.FC = () => {
             return { ...node, isStart: false, isFinish: true };
           }
 
-          // Return the node as-is
           return node;
         })
       );
 
-      // Update the grid state
       dispatch({ type: "SET_GRID", payload: newGrid });
 
-      // Update the start or finish node position in the state
       if (isStart) {
         dispatch({ type: "SET_START_NODE", payload: { row, col } });
       } else {
@@ -166,12 +163,10 @@ const Grid: React.FC = () => {
     [state.grid, state.startNode, state.finishNode]
   );
 
-  // Handler for algorithm selection
   const handleAlgorithmChange = (value: AvailableAlgorithms) => {
     dispatch({ type: "SET_SELECTED_ALGORITHM", payload: value });
   };
 
-  // Handler for visualizing the selected algorithm
   const handleVisualize = useCallback(() => {
     const { selectedAlgorithm } = state;
 
