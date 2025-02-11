@@ -231,7 +231,7 @@ const Grid: React.FC = () => {
             children: [
               {
                 type: "option",
-                name: "Dijkstra's",
+                name: "Dijkstra's Algorithm",
                 value: "dijkstras",
               },
               {

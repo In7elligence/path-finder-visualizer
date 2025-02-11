@@ -90,6 +90,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             z-10
             mt-2
             w-full
+            md:w-[180px]
             bg-gray-800
             rounded-lg
             shadow-lg
