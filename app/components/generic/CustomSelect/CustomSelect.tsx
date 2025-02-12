@@ -46,7 +46,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     options && options.find((option) => option.value === selectedValue);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative 4k:text-6xl 4k:flex" ref={dropdownRef}>
       <button
         type="button"
         className={`
@@ -68,7 +68,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       >
         {selectedOption ? selectedOption.name : "Select an option"}
         <svg
-          className="w-4 h-4 ml-1 inline-block"
+          className="w-4 h-4 ml-1 4k:w-12 4k:h-12 inline-block"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -89,11 +89,15 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             absolute
             z-10
             mt-2
+            4k:mt-36
             w-full
             md:w-[180px]
+            4k:w-[620px]
             bg-gray-800
             rounded-lg
+            4k:rounded-3xl
             shadow-lg
+            4k:shadow-2xl
             overflow-hidden
             transition-all
             duration-200

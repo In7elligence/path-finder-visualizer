@@ -1,5 +1,39 @@
+"use client"
+
 import { GridAction } from "../components/Grid/gridReducer";
 import { INode } from "../interfaces/interfaces";
+
+export const getNodeSize = () => {
+  // Base size for none 4k screens (e.g., 1920x1080)
+  const baseSize = 25;
+
+  if (typeof window === "undefined") {
+    return baseSize; // Default node size for SSR/build time
+  }
+
+  const width = (window as Window).innerWidth;
+  const height = (window as Window).innerHeight;
+
+  // Scale factor for larger screens
+  const scaleFactor = Math.min(width / 1920, height / 1080); // 1920x1080 is a common resolution for Full HD
+
+  // Adjust scaling for 4K resolutions
+  const adjustedScaleFactor = scaleFactor < 1 ? scaleFactor : scaleFactor * 1.5; // Increase scaling for larger screens
+
+  // Ensure the node size doesn't get too large or too small
+  return Math.max(baseSize, Math.min(baseSize * adjustedScaleFactor, 50)); // Limit node size between 25px and 50px
+};
+
+// Calculate grid dimensions based on available screen size
+export const calculateGridDimensions = (nodeSize: number) => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  const cols = Math.floor(width / nodeSize) - 1; // -1 to account for potential overflow
+  const rows = Math.floor(height / nodeSize) - 3; // -3 to account for potential overflow
+
+  return { rows, cols };
+};
 
 export const getNewGridWithWallToggled = (
   grid: INode[][],

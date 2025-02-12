@@ -1,9 +1,7 @@
 .node {
   background-color: #ffffff;
   border: 1px solid rgb(175, 216, 248);
-  height: 25px;
-  width: 25px;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1; /* Ensure the node remains square */
 }
 
 .node-finish {

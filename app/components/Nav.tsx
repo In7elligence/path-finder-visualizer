@@ -47,10 +47,13 @@ const Nav: React.FC<INavProps> = ({
       ${scheme.focusRing}
       font-medium 
       rounded-lg 
-      text-sm 
+      4k:rounded-3xl
       px-5
-      py-2.5 
+      4k:px-10
+      py-2.5
+      4k:py-5
       text-center
+      4k:text-8xl
     `;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnColorScheme]);
@@ -103,10 +106,10 @@ const Nav: React.FC<INavProps> = ({
   );
 
   return (
-    <nav className="bg-gray-800 p-4 relative">
-      <div className="container mx-auto flex justify-between md:justify-start items-center gap-12">
+    <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative">
+      <div className="container mx-auto flex justify-between md:justify-start items-center gap-12 4k:gap-40">
         {/* Logo */}
-        <div className="text-white text-lg font-semibold">
+        <div className="text-white text-lg 4k:text-6xl font-semibold">
           Path Finder Visualizer
         </div>
 
@@ -134,7 +137,7 @@ const Nav: React.FC<INavProps> = ({
         </div>
 
         {/* Desktop Menu (Hidden on Mobile, Visible on Desktop) */}
-        <div className="hidden md:flex space-x-4 gap-8">
+        <div className="hidden md:flex space-x-4 gap-8 4k:gap-24">
           {menuItems.map((item) => renderMenuItem(item))}
         </div>
       </div>

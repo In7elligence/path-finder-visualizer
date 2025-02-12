@@ -1,30 +1,23 @@
 "use client";
 
-import React, { useReducer, useEffect, useCallback } from "react";
+import React, { useReducer, useEffect, useCallback, useState } from "react";
 import "./grid.css";
 import Node from "../Node/Node";
-import { NODE_SIZE } from "@/app/constants/constants";
 import { initialGridState } from "./initialState";
 import { gridReducer } from "./gridReducer";
 import Nav from "../Nav";
 import { visualizeDijkstra } from "@/app/algorithms/dijkstras/animation/visualizeDijkstra";
 import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar";
-import { getNewGridWithWallToggled } from "@/app/utils/utils";
+import {
+  calculateGridDimensions,
+  getNewGridWithWallToggled,
+  getNodeSize,
+} from "@/app/utils/utils";
 import { AvailableAlgorithms } from "@/app/types/types";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
-
-  // Calculate grid dimensions based on available screen size
-  const calculateGridDimensions = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    const cols = Math.floor(width / NODE_SIZE) - 1; // -1 to account for potential overflow
-    const rows = Math.floor(height / NODE_SIZE) - 1; // -1 to account for potential overflow
-
-    return { rows, cols };
-  };
+  const [nodeSize, setNodeSize] = useState(getNodeSize());
 
   // Position start and end nodes dynamically
   const positionStartAndEndNodes = (rows: number, cols: number) => {
@@ -179,10 +172,10 @@ const Grid: React.FC = () => {
 
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
-    const { rows, cols } = calculateGridDimensions();
+    const { rows, cols } = calculateGridDimensions(nodeSize); // Pass nodeSize to calculateGridDimensions
     dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
     positionStartAndEndNodes(rows, cols);
-  }, []);
+  }, [nodeSize]);
 
   // Recreate the grid when dimensions or nodes change
   useEffect(() => {
@@ -197,14 +190,18 @@ const Grid: React.FC = () => {
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
-      const { rows, cols } = calculateGridDimensions();
+      // Update the node size
+      setNodeSize(getNodeSize());
+
+      // Recalculate grid dimensions
+      const { rows, cols } = calculateGridDimensions(nodeSize);
       dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
       positionStartAndEndNodes(rows, cols);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [nodeSize]);
 
   const {
     grid,
@@ -249,8 +246,8 @@ const Grid: React.FC = () => {
       <div
         className="grid"
         style={{
-          gridTemplateColumns: `repeat(${gridDimensions.cols}, ${NODE_SIZE}px)`,
-          gridTemplateRows: `repeat(${gridDimensions.rows}, ${NODE_SIZE}px)`,
+          gridTemplateColumns: `repeat(${gridDimensions.cols}, ${nodeSize}px)`,
+          gridTemplateRows: `repeat(${gridDimensions.rows}, ${nodeSize}px)`,
         }}
       >
         {grid.map((row, rowIdx) => {
@@ -277,6 +274,7 @@ const Grid: React.FC = () => {
                     onDropNode={handleDropNode}
                     row={row}
                     direction={direction}
+                    nodeSize={nodeSize}
                   />
                 );
               })}

@@ -12,6 +12,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      screens: {
+        '4k': '3840px', // Custom breakpoint for 4K screens
+      },
     },
   },
   plugins: [],

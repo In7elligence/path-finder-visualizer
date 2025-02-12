@@ -16,6 +16,7 @@ interface INodeProps {
   onDropNode: (row: number, col: number, isStart: boolean) => void;
   row: number;
   direction: NodeDirection;
+  nodeSize: number;
 }
 
 const Node: React.FC<INodeProps> = ({
@@ -32,6 +33,7 @@ const Node: React.FC<INodeProps> = ({
   onDropNode,
   row,
   direction,
+  nodeSize, // Destructure nodeSize
 }) => {
   const extraClassName = isFinish
     ? "node-finish"
@@ -71,6 +73,10 @@ const Node: React.FC<INodeProps> = ({
     <div
       id={`node-${row}-${col}`}
       className={`node ${extraClassName}`}
+      style={{
+        width: `${nodeSize}px`,
+        height: `${nodeSize}px`,
+      }}
       onMouseDown={(e) => {
         if (e.button !== 0 || isAlgoRunning) return; // Prevent interaction if the algorithm is running
         onMouseDown(row, col);
