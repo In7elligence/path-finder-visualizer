@@ -1,21 +1,13 @@
-"use client"
-
 import { GridAction } from "../components/Grid/gridReducer";
+import { NODE_SIZE } from "../constants/constants";
 import { INode } from "../interfaces/interfaces";
 
-export const getNodeSize = () => {
-  // Base size for none 4k screens (e.g., 1920x1080)
-  const baseSize = 25;
-
-  if (typeof window === "undefined") {
-    return baseSize; // Default node size for SSR/build time
-  }
-
-  const width = (window as Window).innerWidth;
-  const height = (window as Window).innerHeight;
+export const getNodeSize = (screenWidth: number, screenHeight: number) => {
+  // Base size for non-4K screens (e.g., 1920x1080)
+  const baseSize = NODE_SIZE;
 
   // Scale factor for larger screens
-  const scaleFactor = Math.min(width / 1920, height / 1080); // 1920x1080 is a common resolution for Full HD
+  const scaleFactor = Math.min(screenWidth / 1920, screenHeight / 1080); // 1920x1080 is a common resolution for Full HD
 
   // Adjust scaling for 4K resolutions
   const adjustedScaleFactor = scaleFactor < 1 ? scaleFactor : scaleFactor * 1.5; // Increase scaling for larger screens

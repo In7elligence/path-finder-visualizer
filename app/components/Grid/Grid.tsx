@@ -14,10 +14,18 @@ import {
   getNodeSize,
 } from "@/app/utils/utils";
 import { AvailableAlgorithms } from "@/app/types/types";
+import { NODE_SIZE } from "@/app/constants/constants";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
-  const [nodeSize, setNodeSize] = useState(getNodeSize());
+  const [nodeSize, setNodeSize] = useState(NODE_SIZE);
+
+  // Calculate grid dimensions based on available screen size
+  const calculateAndSetGridDimensions = useCallback((nodeSize: number) => {
+    const { rows, cols } = calculateGridDimensions(nodeSize);
+    dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
+    positionStartAndEndNodes(rows, cols);
+  }, []);
 
   // Position start and end nodes dynamically
   const positionStartAndEndNodes = (rows: number, cols: number) => {
@@ -172,10 +180,15 @@ const Grid: React.FC = () => {
 
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
-    const { rows, cols } = calculateGridDimensions(nodeSize); // Pass nodeSize to calculateGridDimensions
-    dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
-    positionStartAndEndNodes(rows, cols);
-  }, [nodeSize]);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const initNodeSize = getNodeSize(width, height); // Calculate node size on the client
+
+    setNodeSize(initNodeSize);
+    calculateAndSetGridDimensions(initNodeSize);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   // Recreate the grid when dimensions or nodes change
   useEffect(() => {
@@ -187,21 +200,21 @@ const Grid: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.gridDimensions]);
 
+
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
-      // Update the node size
-      setNodeSize(getNodeSize());
+      const width = window.innerWidth;
+      const height = window.innerHeight;
 
-      // Recalculate grid dimensions
-      const { rows, cols } = calculateGridDimensions(nodeSize);
-      dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
-      positionStartAndEndNodes(rows, cols);
+      const newNodeSize = getNodeSize(width, height); // Recalculate node size on resize
+      setNodeSize(newNodeSize);
+      calculateAndSetGridDimensions(newNodeSize);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [nodeSize]);
+  }, [calculateAndSetGridDimensions]);
 
   const {
     grid,
