@@ -7,6 +7,7 @@ interface INodeProps {
   isFinish: boolean;
   isStart: boolean;
   isWall: boolean;
+  isMazeWall: boolean;
   isVisited: boolean;
   isShortestPath: boolean;
   isAlgoRunning: boolean;
@@ -24,6 +25,7 @@ const Node: React.FC<INodeProps> = ({
   isFinish,
   isStart,
   isWall,
+  isMazeWall,
   isVisited,
   isShortestPath,
   isAlgoRunning,
@@ -39,8 +41,12 @@ const Node: React.FC<INodeProps> = ({
     ? "node-finish"
     : isStart
     ? "node-start"
+    : isWall && isMazeWall
+    ? "node-wall maze-wall"
     : isWall
     ? "node-wall"
+    : isMazeWall
+    ? "maze-wall"
     : isShortestPath && direction
     ? `node-shortest-path node-arrow-${direction}`
     : isShortestPath

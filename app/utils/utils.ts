@@ -36,6 +36,7 @@ export const getNewGridWithWallToggled = (
   const node = newGrid[row][col];
   const newNode = {
     ...node,
+    isMazeWall: false,
     isWall: !node.isWall,
   };
   newGrid[row][col] = newNode;
@@ -110,8 +111,43 @@ export const animateAlgorithm = (
     }, visitedNodesInOrder.length * animationDuration + i * animationDuration);
   }
 
-  // Set algorithm running state to false after all animations are complete
   setTimeout(() => {
     dispatch({ type: "TOGGLE_ALGO", payload: false });
   }, totalAnimationTime);
+};
+
+export const animateRandomBasicMaze = (
+  initialGrid: INode[][],
+  walls: INode[],
+  animationDuration: number,
+  dispatch: React.Dispatch<GridAction>
+) => {
+  // Clone initial grid
+  const gridCopy = initialGrid.map((row) => row.map((node) => ({ ...node })));
+  let currentStep = 0;
+
+  const animateStep = () => {
+    if (currentStep >= walls.length) {
+      dispatch({ type: "TOGGLE_ALGO", payload: false });
+      return;
+    }
+
+    // Update single wall per frame
+    const wall = walls[currentStep];
+    gridCopy[wall.row][wall.col] = {
+      ...gridCopy[wall.row][wall.col],
+      isWall: true,
+      isMazeWall: true,
+    };
+
+    dispatch({ type: "SET_GRID", payload: gridCopy.map((row) => [...row]) });
+    currentStep++;
+
+    // Schedule next frame
+    requestAnimationFrame(() => {
+      setTimeout(animateStep, animationDuration);
+    });
+  };
+
+  animateStep();
 };

@@ -6,15 +6,17 @@ import Node from "../Node/Node";
 import { initialGridState } from "./initialState";
 import { gridReducer } from "./gridReducer";
 import Nav from "../Nav";
-import { visualizeDijkstra } from "@/app/algorithms/dijkstras/animation/visualizeDijkstra";
+import { visualizeDijkstras } from "@/app/algorithms/dijkstras/animation/visualizeDijkstras";
 import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar";
 import {
   calculateGridDimensions,
   getNewGridWithWallToggled,
   getNodeSize,
 } from "@/app/utils/utils";
-import { AvailableAlgorithms } from "@/app/types/types";
+import { AvailableAlgorithms, AvailableMazes } from "@/app/types/types";
 import { NODE_SIZE } from "@/app/constants/constants";
+import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
+import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivision";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
@@ -54,6 +56,7 @@ const Grid: React.FC = () => {
       distance: Infinity,
       isVisited: false,
       isWall: false,
+      isMazeWall: false,
       previousNode: null,
     };
   };
@@ -172,11 +175,30 @@ const Grid: React.FC = () => {
     const { selectedAlgorithm } = state;
 
     if (selectedAlgorithm === "dijkstras") {
-      visualizeDijkstra(state, dispatch);
+      visualizeDijkstras(state, dispatch);
     } else if (selectedAlgorithm === "astar") {
       visualizeAstar(state, dispatch);
     }
   }, [state]);
+
+  const handleMazeGeneration = (maze: AvailableMazes) => {
+    switch (maze) {
+      case "recursiveDivision":
+        visualizeRecursiveDivision(state, dispatch);
+        break;
+      case "recursiveDivisionVerticalSkew":
+        visualizeRecursiveDivision(state, dispatch);
+        break;
+      case "recursiveDivisionHorizontalSkew":
+        visualizeRecursiveDivision(state, dispatch);
+        break;
+      case "randomBasicMaze":
+        visualizeRandomBasicMaze(state, dispatch);
+        break;
+      default:
+        break;
+    }
+  };
 
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
@@ -231,8 +253,13 @@ const Grid: React.FC = () => {
         menuItems={[
           {
             type: "button",
-            name: "Visualize",
+            name: "Visualize!",
             onClick: handleVisualize,
+          },
+          {
+            type: "button",
+            name: "maze",
+            onClick: () => handleMazeGeneration("randomBasicMaze")
           },
           {
             type: "dropdown",
@@ -251,7 +278,7 @@ const Grid: React.FC = () => {
               },
             ],
             onClick: () => {},
-          },
+          }
         ]}
         isAlgoRunning={isAlgoRunning}
         onAlgorithmChange={handleAlgorithmChange}
@@ -267,7 +294,7 @@ const Grid: React.FC = () => {
           return (
             <React.Fragment key={rowIdx}>
               {row.map((node, nodeIdx) => {
-                const { row, col, isFinish, isStart, isWall, direction } = node;
+                const { row, col, isFinish, isStart, isWall, isMazeWall, direction } = node;
                 const isVisited = visitedNodes.includes(node);
                 const isShortestPath = nodesInShortestPath.includes(node);
 
@@ -278,6 +305,7 @@ const Grid: React.FC = () => {
                     isFinish={isFinish}
                     isStart={isStart}
                     isWall={isWall}
+                    isMazeWall={isMazeWall}
                     isVisited={isVisited}
                     isShortestPath={isShortestPath}
                     isAlgoRunning={isAlgoRunning}

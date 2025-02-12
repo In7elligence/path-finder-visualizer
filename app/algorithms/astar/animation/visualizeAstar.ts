@@ -4,8 +4,8 @@ import {
   animateAlgorithm,
   getNodesInShortestPathOrder,
 } from "@/app/utils/utils";
-import { resetGridForAlgorithm } from "../../utils/resetGridForAlgorithm";
 import { astar } from "../utils/astar";
+import { resetGridForAlgorithm } from "../../utils/utils";
 
 export const visualizeAstar = (
   state: IGridState,

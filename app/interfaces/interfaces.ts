@@ -12,7 +12,9 @@ export interface INode {
   distance: number;
   isVisited: boolean;
   isWall: boolean;
+  isMazeWall: boolean;
   previousNode: INode | null;
+  isPath?: boolean; // Marks nodes in the guaranteed path
   direction?: NodeDirection;
   isActiveArrow?: boolean;
   gCost?: number; // Cost from start node to this node (used by A*)

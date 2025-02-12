@@ -5,9 +5,9 @@ import {
   animateAlgorithm,
   getNodesInShortestPathOrder,
 } from "@/app/utils/utils";
-import { resetGridForAlgorithm } from "../../utils/resetGridForAlgorithm";
+import { resetGridForAlgorithm } from "../../utils/utils";
 
-export const visualizeDijkstra = (
+export const visualizeDijkstras = (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>
 ) => {
