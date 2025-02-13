@@ -25,6 +25,7 @@ const btnColorScheme = useMemo(
     const scheme = colorSchemes[btnColorScheme];
 
     return `
+    4k:text-3xl
     bg-transparent
     border-transparent
     text-white

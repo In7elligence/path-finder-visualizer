@@ -50,13 +50,13 @@ const Nav: React.FC<INavProps> = ({
       ${scheme.focusRing}
       font-medium 
       rounded-lg 
-      4k:rounded-3xl
+      4k:rounded-2xl
       px-5
-      4k:px-10
+      4k:px-6
       py-2.5
-      4k:py-5
+      4k:py-4
       text-center
-      4k:text-8xl
+      4k:text-3xl
     `;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnColorScheme]);
@@ -124,7 +124,7 @@ const Nav: React.FC<INavProps> = ({
     <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative">
       <div className="container mx-auto flex justify-between md:justify-start items-center gap-12 4k:gap-40">
         {/* Logo */}
-        <div className="text-white text-lg 4k:text-6xl font-semibold">
+        <div className="text-white text-lg 4k:text-4xl font-semibold">
           Path Finder Visualizer
         </div>
 

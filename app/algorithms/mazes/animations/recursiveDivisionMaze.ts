@@ -2,10 +2,12 @@ import { GridAction } from "@/app/components/Grid/gridReducer";
 import { IGridState } from "@/app/interfaces/interfaces";
 import { recursiveDivisionMaze } from "../utils/recursiveDivision";
 import { removeWallsFromGrid } from "../../utils/utils";
+import { RecursiveDivisions } from "@/app/types/types";
 
 export const visualizeRecursiveDivision = (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
+  orientation?: RecursiveDivisions
 ) => {
   const { grid, startNode, finishNode, gridDimensions, isAlgoRunning } = state;
   const { rows, cols } = gridDimensions;
@@ -22,7 +24,7 @@ export const visualizeRecursiveDivision = (
     rowEnd: rows - 2,
     colStart: 1,
     colEnd: cols - 2,
-    orientation: Math.random() > 0.5 ? "horizontal" : "vertical",
+    orientation: orientation || Math.random() > 0.5 ? "horizontal" : "vertical",
     walls: [],
     surroundingWalls: false,
   });

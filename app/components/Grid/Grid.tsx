@@ -183,10 +183,21 @@ const Grid: React.FC = () => {
   }, [state]);
 
   const handleMazeGeneration = (maze: AvailableMazes) => {
-    if (maze === "recursiveDivision") {
-      visualizeRecursiveDivision(state, dispatch);
-    } else if (maze === "randomBasicMaze") {
-      visualizeRandomBasicMaze(state, dispatch);
+    switch (maze) {
+      case "randomBasicMaze":
+        visualizeRandomBasicMaze(state, dispatch);
+        break;
+      case "recursiveDivision":
+        visualizeRecursiveDivision(state, dispatch);
+        break;
+      case "recursiveDivisionVerticalSkew":
+        visualizeRecursiveDivision(state, dispatch, "vertical");
+        break;
+      case "recursiveDivisionHorizontalSkew":
+        visualizeRecursiveDivision(state, dispatch, "horizontal");
+        break;
+      default:
+        visualizeRecursiveDivision(state, dispatch);
     }
   };
 
@@ -207,12 +218,12 @@ const Grid: React.FC = () => {
     const newGrid = removeWallsFromGrid(grid);
 
     dispatch({ type: "SET_GRID", payload: newGrid });
-  }
+  };
 
   const handleClearPath = () => {
     dispatch({ type: "SET_NODES_IN_SHORTEST_PATH", payload: [] });
     dispatch({ type: "SET_VISITED_NODES", payload: [] });
-  }
+  };
 
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
@@ -298,6 +309,16 @@ const Grid: React.FC = () => {
               },
               {
                 type: "option",
+                name: "Recursive Division (vertical skew)",
+                value: "recursiveDivisionVerticalSkew",
+              },
+              {
+                type: "option",
+                name: "Recursive Division (horizontal skew)",
+                value: "recursiveDivisionHorizontalSkew",
+              },
+              {
+                type: "option",
                 name: "Random Basic Maze",
                 value: "randomBasicMaze",
               },
@@ -318,7 +339,7 @@ const Grid: React.FC = () => {
             type: "simpleButton",
             name: "Clear Path",
             onClick: handleClearPath,
-          }
+          },
         ]}
         isAlgoRunning={isAlgoRunning}
         onAlgorithmChange={handleAlgorithmChange}

@@ -92,7 +92,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   }, []);
 
   return (
-    <div className="relative 4k:text-6xl 4k:flex" ref={dropdownRef}>
+    <div className="relative 4k:text-3xl 4k:flex" ref={dropdownRef}>
       <button
         type="button"
         className={btnClasses}
@@ -124,7 +124,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             mt-2
             4k:mt-36
             w-full
-            md:w-[180px]
+            md:min-w-[180px]
             4k:w-[620px]
             bg-gray-800
             rounded-lg
