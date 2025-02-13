@@ -1,6 +1,7 @@
 import { GridAction } from "@/app/components/Grid/gridReducer";
 import { IGridState } from "@/app/interfaces/interfaces";
 import { recursiveDivisionMaze } from "../utils/recursiveDivision";
+import { removeWallsFromGrid } from "../../utils/utils";
 
 export const visualizeRecursiveDivision = (
   state: IGridState,
@@ -11,13 +12,7 @@ export const visualizeRecursiveDivision = (
 
   if (isAlgoRunning) return;
 
-  const newGrid = grid.map((row) =>
-    row.map((node) => ({
-      ...node,
-      isWall: false,
-      isMazeWall: false,
-    }))
-  );
+  const newGrid = removeWallsFromGrid(grid);
 
   const walls = recursiveDivisionMaze({
     grid: newGrid,
@@ -97,7 +92,6 @@ export const visualizeRecursiveDivision = (
     }
   });
 
-  // Batch animation for performance
   const BATCH_SIZE = Math.max(1, Math.floor(walls.length / 50));
   let currentBatch = 0;
 

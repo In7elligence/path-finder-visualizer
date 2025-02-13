@@ -15,7 +15,7 @@ import {
 import { AvailableAlgorithms, AvailableMazes } from "@/app/types/types";
 import { NODE_SIZE } from "@/app/constants/constants";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
-import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivision";
+import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
 import { removeWallsFromGrid } from "@/app/algorithms/utils/utils";
 import Nav from "../Nav/Nav";
 

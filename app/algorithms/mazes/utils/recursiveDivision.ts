@@ -1,6 +1,8 @@
 import { INode } from "@/app/interfaces/interfaces";
 
-interface MazeParams {
+export type Orientation = "horizontal" | "vertical";
+
+export interface MazeParams {
   grid: INode[][];
   startNode: INode;
   finishNode: INode;
@@ -8,9 +10,9 @@ interface MazeParams {
   rowEnd: number;
   colStart: number;
   colEnd: number;
-  orientation: "horizontal" | "vertical";
-  walls: INode[];
+  orientation: Orientation;
   surroundingWalls: boolean;
+  walls?: INode[];
 }
 
 export const recursiveDivisionMaze = ({
@@ -22,137 +24,103 @@ export const recursiveDivisionMaze = ({
   colStart,
   colEnd,
   orientation,
-  walls,
+  walls: initWalls,
   surroundingWalls,
-}: MazeParams): INode[] => {
+}: MazeParams) => {
+  const walls = initWalls || [];
+
   if (rowEnd < rowStart || colEnd < colStart) return walls;
 
-  // Initialize surrounding walls (first call only)
   if (!surroundingWalls) {
-    walls = grid.reduce((acc, row, rowIndex) => {
-      row.forEach((node, colIndex) => {
-        const isBorder =
-          rowIndex === 0 ||
-          colIndex === 0 ||
-          rowIndex === grid.length - 1 ||
-          colIndex === grid[0].length - 1;
-        const isSpecial =
-          (rowIndex === startNode.row && colIndex === startNode.col) ||
-          (rowIndex === finishNode.row && colIndex === finishNode.col);
-        if (isBorder && !isSpecial) acc.push(node);
-      });
-      return acc;
-    }, [] as INode[]);
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[0].length; col++) {
+        if (
+          (row === 0 ||
+            col === 0 ||
+            row === grid.length - 1 ||
+            col === grid[0].length - 1) &&
+          grid[row][col] !== startNode &&
+          grid[row][col] !== finishNode
+        ) {
+          walls.push(grid[row][col]);
+        }
+      }
+    }
     surroundingWalls = true;
   }
 
-  // Calculate maze dimensions based on your grid size calculation
   const isHorizontal = orientation === "horizontal";
-  const wallRowCol = isHorizontal
-    ? getRandomEven(rowStart, rowEnd)
-    : getRandomEven(colStart, colEnd);
-  const passageRowCol = isHorizontal
-    ? getRandomOdd(colStart, colEnd)
-    : getRandomOdd(rowStart, rowEnd);
 
-  if (isHorizontal && wallRowCol !== undefined) {
-    // Add horizontal wall
-    for (let col = colStart; col <= colEnd; col++) {
-      const node = grid[wallRowCol][col];
-      if (
-        col !== passageRowCol &&
-        !isSpecialNode(node, startNode, finishNode)
-      ) {
-        walls.push(node);
-      }
+  const possibleWalls = [];
+  const possibleGaps = [];
+
+  if (isHorizontal) {
+    for (let row = rowStart + 1; row <= rowEnd - 1; row += 2) {
+      possibleWalls.push(row);
     }
-
-    // Recurse with vertical orientation
-    recursiveDivisionMaze({
-      grid,
-      startNode,
-      finishNode,
-      rowStart,
-      rowEnd: wallRowCol - 2,
-      colStart,
-      colEnd,
-      orientation: "vertical",
-      walls,
-      surroundingWalls,
-    });
-
-    recursiveDivisionMaze({
-      grid,
-      startNode,
-      finishNode,
-      rowStart: wallRowCol + 2,
-      rowEnd,
-      colStart,
-      colEnd,
-      orientation: "vertical",
-      walls,
-      surroundingWalls,
-    });
-  } else if (!isHorizontal && wallRowCol !== undefined) {
-    // Add vertical wall
-    for (let row = rowStart; row <= rowEnd; row++) {
-      const node = grid[row][wallRowCol];
-      if (
-        row !== passageRowCol &&
-        !isSpecialNode(node, startNode, finishNode)
-      ) {
-        walls.push(node);
-      }
+    for (let col = colStart; col <= colEnd; col += 2) {
+      possibleGaps.push(col);
     }
-
-    // Recurse with horizontal orientation
-    recursiveDivisionMaze({
-      grid,
-      startNode,
-      finishNode,
-      rowStart,
-      rowEnd,
-      colStart,
-      colEnd: wallRowCol - 2,
-      orientation: "horizontal",
-      walls,
-      surroundingWalls,
-    });
-
-    recursiveDivisionMaze({
-      grid,
-      startNode,
-      finishNode,
-      rowStart,
-      rowEnd,
-      colStart: wallRowCol + 2,
-      colEnd,
-      orientation: "horizontal",
-      walls,
-      surroundingWalls,
-    });
+  } else {
+    for (let col = colStart + 1; col <= colEnd - 1; col += 2) {
+      possibleWalls.push(col);
+    }
+    for (let row = rowStart; row <= rowEnd; row += 2) {
+      possibleGaps.push(row);
+    }
   }
 
+  if (possibleWalls.length === 0 || possibleGaps.length === 0) return walls;
+
+  const chosenWall =
+    possibleWalls[Math.floor(Math.random() * possibleWalls.length)];
+
+  const gapOptions = possibleGaps.filter((g) => g !== colStart && g !== colEnd);
+  const chosenGap = gapOptions.length
+    ? gapOptions[Math.floor(Math.random() * gapOptions.length)]
+    : possibleGaps[Math.floor(Math.random() * possibleGaps.length)];
+
+  for (
+    let i = isHorizontal ? colStart : rowStart;
+    i <= (isHorizontal ? colEnd : rowEnd);
+    i++
+  ) {
+    const wallNode = isHorizontal ? grid[chosenWall][i] : grid[i][chosenWall];
+
+    if (wallNode === startNode || wallNode === finishNode || i === chosenGap)
+      continue;
+
+    walls.push(wallNode);
+  }
+
+  const newOrientation =
+    rowEnd - rowStart > colEnd - colStart ? "horizontal" : "vertical";
+
+  recursiveDivisionMaze({
+    grid,
+    startNode,
+    finishNode,
+    rowStart,
+    rowEnd: isHorizontal ? chosenWall - 1 : rowEnd,
+    colStart,
+    colEnd: isHorizontal ? colEnd : chosenWall - 1,
+    orientation: newOrientation,
+    walls,
+    surroundingWalls,
+  });
+
+  recursiveDivisionMaze({
+    grid,
+    startNode,
+    finishNode,
+    rowStart: isHorizontal ? chosenWall + 1 : rowStart,
+    rowEnd,
+    colStart: isHorizontal ? colStart : chosenWall + 1,
+    colEnd,
+    orientation: newOrientation,
+    walls,
+    surroundingWalls,
+  });
+
   return walls;
-};
-
-// Helpers
-const getRandomEven = (min: number, max: number): number => {
-  const evenNumbers = Array.from(
-    { length: Math.floor((max - min) / 2) + 1 },
-    (_, i) => min + i * 2
-  );
-  return evenNumbers[Math.floor(Math.random() * evenNumbers.length)];
-};
-
-const getRandomOdd = (min: number, max: number): number => {
-  const oddNumbers = Array.from(
-    { length: Math.ceil((max - min) / 2) },
-    (_, i) => min + i * 2 + 1
-  );
-  return oddNumbers[Math.floor(Math.random() * oddNumbers.length)];
-};
-
-const isSpecialNode = (node: INode, ...specials: INode[]): boolean => {
-  return specials.some((s) => s.row === node.row && s.col === node.col);
 };
