@@ -124,7 +124,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             mt-2
             4k:mt-36
             w-full
-            md:min-w-[180px]
+            md:min-w-[240px]
             4k:w-[620px]
             bg-gray-800
             rounded-lg

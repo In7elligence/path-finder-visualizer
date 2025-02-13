@@ -18,6 +18,9 @@ import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/rand
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
 import { removeWallsFromGrid } from "@/app/algorithms/utils/utils";
 import Nav from "../Nav/Nav";
+import { visualizeGreedyBFS } from "@/app/algorithms/greedyBFS/animation/visualizeGreedyBFS";
+import { visualizeBFS } from "@/app/algorithms/bfs/animation/visualizeBFS";
+import { visualizeDFS } from "@/app/algorithms/dfs/animation/visualizeDFS";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
@@ -175,10 +178,24 @@ const Grid: React.FC = () => {
   const handleVisualizeAlgorithm = useCallback(() => {
     const { selectedAlgorithm } = state;
 
-    if (selectedAlgorithm === "dijkstras") {
-      visualizeDijkstras(state, dispatch);
-    } else if (selectedAlgorithm === "astar") {
-      visualizeAstar(state, dispatch);
+    switch (selectedAlgorithm) {
+      case "dijkstras":
+        visualizeDijkstras(state, dispatch);
+        break;
+      case "astar":
+        visualizeAstar(state, dispatch);
+        break;
+      case "greedyBFS":
+        visualizeGreedyBFS(state, dispatch);
+        break;
+      case "bfs":
+        visualizeBFS(state, dispatch);
+        break;
+      case "dfs":
+        visualizeDFS(state, dispatch);
+        break;
+      default:
+        visualizeDijkstras(state, dispatch);
     }
   }, [state]);
 
@@ -293,6 +310,21 @@ const Grid: React.FC = () => {
                 type: "option",
                 name: "A* Search",
                 value: "astar",
+              },
+              {
+                type: "option",
+                name: "Greedy Best-First Search",
+                value: "greedyBFS",
+              },
+              {
+                type: "option",
+                name: "Breadth-First Search",
+                value: "bfs",
+              },
+              {
+                type: "option",
+                name: "Depth-First Search",
+                value: "dfs",
               },
             ],
             onClick: () => {},

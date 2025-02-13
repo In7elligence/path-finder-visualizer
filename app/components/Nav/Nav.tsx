@@ -164,7 +164,7 @@ const Nav: React.FC<INavProps> = ({
         } bg-gray-800 absolute left-0`}
         style={{ width: "100vw", zIndex: "1" }}
       >
-        <div className="flex flex-col space-y-2 p-4">
+        <div className="flex flex-col-reverse space-y-2 p-4">
           {menuItems.map((item) => renderMenuItem(item))}
         </div>
       </div>
