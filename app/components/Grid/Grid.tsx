@@ -17,6 +17,7 @@ import { AvailableAlgorithms, AvailableMazes } from "@/app/types/types";
 import { NODE_SIZE } from "@/app/constants/constants";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivision";
+import { removeWallsFromGrid } from "@/app/algorithms/utils/utils";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
@@ -189,6 +190,30 @@ const Grid: React.FC = () => {
     }
   };
 
+  const handleResetGrid = () => {
+    const { gridDimensions } = state;
+    const { rows, cols } = gridDimensions;
+
+    if (rows > 0 && cols > 0) {
+      dispatch({ type: "SET_GRID", payload: getInitialGrid(rows, cols) });
+    }
+
+    calculateAndSetGridDimensions(nodeSize);
+  };
+
+  const handleClearWalls = () => {
+    const { grid } = state;
+
+    const newGrid = removeWallsFromGrid(grid);
+
+    dispatch({ type: "SET_GRID", payload: newGrid });
+  }
+
+  const handleClearPath = () => {
+    dispatch({ type: "SET_NODES_IN_SHORTEST_PATH", payload: [] });
+    dispatch({ type: "SET_VISITED_NODES", payload: [] });
+  }
+
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
     const width = window.innerWidth;
@@ -279,6 +304,21 @@ const Grid: React.FC = () => {
             ],
             onClick: (value) => handleMazeGeneration(value as AvailableMazes),
           },
+          {
+            type: "simpleButton",
+            name: "Reset Grid",
+            onClick: handleResetGrid,
+          },
+          {
+            type: "simpleButton",
+            name: "Clear Walls",
+            onClick: handleClearWalls,
+          },
+          {
+            type: "simpleButton",
+            name: "Clear Path",
+            onClick: handleClearPath,
+          }
         ]}
         isAlgoRunning={isAlgoRunning}
         onAlgorithmChange={handleAlgorithmChange}

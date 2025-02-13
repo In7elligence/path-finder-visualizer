@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { IMenuItem } from "../interfaces/interfaces";
 import CustomSelect from "./generic/CustomSelect/CustomSelect";
 import { AvailableAlgorithms, AvailableMazes } from "../types/types";
+import SimpleButton from "./generic/SimpleButton/SimpleButton";
 
 interface INavProps {
   menuItems: IMenuItem[];
@@ -63,16 +64,18 @@ const Nav: React.FC<INavProps> = ({
   const renderMenuItem = useCallback(
     (item: IMenuItem) => {
       switch (item.type) {
-        case "anchor":
+        case "simpleButton":
           return (
-            <a
+            <SimpleButton
               key={item.name}
-              href={item.href || "#"}
-              onClick={() => item.onClick}
-              className={btnClasses}
-            >
-              {item.name}
-            </a>
+              text={item.name}
+              onClick={
+                item.onClick as unknown as
+                  | React.MouseEventHandler<HTMLButtonElement>
+                  | undefined
+              }
+              isAlgoRunning={isAlgoRunning}
+            />
           );
         case "button":
           return (
