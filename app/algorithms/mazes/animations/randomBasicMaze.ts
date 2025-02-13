@@ -1,9 +1,33 @@
 import { GridAction } from "@/app/components/Grid/gridReducer";
 import { IGridState, INode } from "@/app/interfaces/interfaces";
 import { ensureSolvability } from "../utils/utils";
-import { animateRandomBasicMaze } from "@/app/utils/utils";
 import { removeWallsFromGrid } from "../../utils/utils";
 
+const animateRandomBasicMaze = (
+  initialGrid: INode[][],
+  walls: INode[],
+  animationDuration: number,
+  dispatch: React.Dispatch<GridAction>
+) => {
+  const gridWithWalls = initialGrid.map((row) =>
+    row.map((node) => {
+      const isWall = walls.some(
+        (w) => w.row === node.row && w.col === node.col
+      );
+      return {
+        ...node,
+        isWall: isWall || node.isWall,
+        isMazeWall: isWall || node.isMazeWall,
+      };
+    })
+  );
+
+  dispatch({ type: "SET_GRID", payload: gridWithWalls });
+
+  setTimeout(() => {
+    dispatch({ type: "TOGGLE_ALGO", payload: false });
+  }, animationDuration);
+};
 
 export const visualizeRandomBasicMaze = (
   state: IGridState,

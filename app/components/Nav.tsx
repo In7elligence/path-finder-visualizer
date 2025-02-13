@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { IMenuItem } from "../interfaces/interfaces";
 import CustomSelect from "./generic/CustomSelect/CustomSelect";
-import { AvailableAlgorithms } from "../types/types";
+import { AvailableAlgorithms, AvailableMazes } from "../types/types";
 
 interface INavProps {
   menuItems: IMenuItem[];
   isAlgoRunning?: boolean;
   onAlgorithmChange?: (value: AvailableAlgorithms) => void;
+  onMazeChange?: (value: AvailableMazes) => void;
 }
 
 const Nav: React.FC<INavProps> = ({
@@ -39,7 +40,8 @@ const Nav: React.FC<INavProps> = ({
   const btnClasses = useMemo(() => {
     const scheme = colorSchemes[btnColorScheme];
     return `
-      text-white bg-gradient-to-r
+      text-white
+      bg-gradient-to-r
       ${scheme.gradient}
       hover:bg-gradient-to-br 
       focus:ring-4 
@@ -66,7 +68,7 @@ const Nav: React.FC<INavProps> = ({
             <a
               key={item.name}
               href={item.href || "#"}
-              onClick={item.onClick}
+              onClick={() => item.onClick}
               className={btnClasses}
             >
               {item.name}
@@ -76,7 +78,12 @@ const Nav: React.FC<INavProps> = ({
           return (
             <button
               key={item.name}
-              onClick={item.onClick}
+              onClick={
+                // stupid type fix, TODO: figure out better way...
+                item.onClick as unknown as
+                  | React.MouseEventHandler<HTMLButtonElement>
+                  | undefined
+              }
               className={btnClasses}
               disabled={isAlgoRunning}
             >
@@ -93,9 +100,14 @@ const Nav: React.FC<INavProps> = ({
               }))}
               defaultValue={item.value}
               onChange={(value) => {
-                if (onAlgorithmChange)
+                if (item.name === "Mazes" && item.onClick) {
+                  item.onClick(value);
+                } else if (item.name === "Algorithm" && onAlgorithmChange) {
                   onAlgorithmChange(value as AvailableAlgorithms);
+                }
               }}
+              immediateAction={item.name === "Mazes"}
+              isAlgoRunning={isAlgoRunning}
             />
           );
         default:

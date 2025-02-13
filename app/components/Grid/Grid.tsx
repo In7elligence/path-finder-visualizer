@@ -171,7 +171,7 @@ const Grid: React.FC = () => {
     dispatch({ type: "SET_SELECTED_ALGORITHM", payload: value });
   };
 
-  const handleVisualize = useCallback(() => {
+  const handleVisualizeAlgorithm = useCallback(() => {
     const { selectedAlgorithm } = state;
 
     if (selectedAlgorithm === "dijkstras") {
@@ -182,21 +182,10 @@ const Grid: React.FC = () => {
   }, [state]);
 
   const handleMazeGeneration = (maze: AvailableMazes) => {
-    switch (maze) {
-      case "recursiveDivision":
-        visualizeRecursiveDivision(state, dispatch);
-        break;
-      case "recursiveDivisionVerticalSkew":
-        visualizeRecursiveDivision(state, dispatch);
-        break;
-      case "recursiveDivisionHorizontalSkew":
-        visualizeRecursiveDivision(state, dispatch);
-        break;
-      case "randomBasicMaze":
-        visualizeRandomBasicMaze(state, dispatch);
-        break;
-      default:
-        break;
+    if (maze === "recursiveDivision") {
+      visualizeRecursiveDivision(state, dispatch);
+    } else if (maze === "randomBasicMaze") {
+      visualizeRandomBasicMaze(state, dispatch);
     }
   };
 
@@ -208,9 +197,8 @@ const Grid: React.FC = () => {
 
     setNodeSize(initNodeSize);
     calculateAndSetGridDimensions(initNodeSize);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   // Recreate the grid when dimensions or nodes change
   useEffect(() => {
@@ -221,7 +209,6 @@ const Grid: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.gridDimensions]);
-
 
   // Handle window resize
   useEffect(() => {
@@ -254,12 +241,7 @@ const Grid: React.FC = () => {
           {
             type: "button",
             name: "Visualize!",
-            onClick: handleVisualize,
-          },
-          {
-            type: "button",
-            name: "maze",
-            onClick: () => handleMazeGeneration("randomBasicMaze")
+            onClick: handleVisualizeAlgorithm,
           },
           {
             type: "dropdown",
@@ -278,7 +260,25 @@ const Grid: React.FC = () => {
               },
             ],
             onClick: () => {},
-          }
+          },
+          {
+            type: "dropdown",
+            name: "Mazes",
+            value: "",
+            children: [
+              {
+                type: "option",
+                name: "Recursive Division",
+                value: "recursiveDivision",
+              },
+              {
+                type: "option",
+                name: "Random Basic Maze",
+                value: "randomBasicMaze",
+              },
+            ],
+            onClick: (value) => handleMazeGeneration(value as AvailableMazes),
+          },
         ]}
         isAlgoRunning={isAlgoRunning}
         onAlgorithmChange={handleAlgorithmChange}
@@ -294,7 +294,15 @@ const Grid: React.FC = () => {
           return (
             <React.Fragment key={rowIdx}>
               {row.map((node, nodeIdx) => {
-                const { row, col, isFinish, isStart, isWall, isMazeWall, direction } = node;
+                const {
+                  row,
+                  col,
+                  isFinish,
+                  isStart,
+                  isWall,
+                  isMazeWall,
+                  direction,
+                } = node;
                 const isVisited = visitedNodes.includes(node);
                 const isShortestPath = nodesInShortestPath.includes(node);
 

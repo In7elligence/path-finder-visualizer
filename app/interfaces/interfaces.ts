@@ -41,5 +41,5 @@ export interface IMenuItem {
   href?: string;
   value?: string;
   children?: IMenuItem[];
-  onClick?: () => void;
+  onClick?: (value?: string) => void;
 }
