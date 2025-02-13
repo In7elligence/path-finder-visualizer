@@ -128,15 +128,17 @@ export const ensureSolvability = (
   return walls.filter((wall) => !grid[wall.row][wall.col].isPath);
 };
 
-export const getGridCorners = (grid: INode[][]): { row: number; col: number }[] => {
+export const getGridCorners = (
+  grid: INode[][]
+): { row: number; col: number }[] => {
   const lastRow = grid.length - 1;
   const lastCol = grid[0].length - 1;
-  
+
   return [
     { row: 0, col: 0 }, // Top-left
     { row: 0, col: lastCol }, // Top-right
     { row: lastRow, col: 0 }, // Bottom-left
-    { row: lastRow, col: lastCol } // Bottom-right
+    { row: lastRow, col: lastCol }, // Bottom-right
   ];
 };
 
@@ -146,8 +148,8 @@ export const protectCornerNodes = (
   finishNode: INode
 ) => {
   const corners = getGridCorners(grid);
-  const protectedNodes = [startNode, finishNode].filter(node => 
-    corners.some(corner => corner.row === node.row && corner.col === node.col)
+  const protectedNodes = [startNode, finishNode].filter((node) =>
+    corners.some((corner) => corner.row === node.row && corner.col === node.col)
   );
 
   protectedNodes.forEach(({ row, col }) => {
@@ -155,11 +157,8 @@ export const protectCornerNodes = (
     const adjacentNodes = [
       { row: row, col: col + 1 },
       { row: row + 1, col: col },
-      { row: row + 1, col: col + 1 }
-    ].filter(pos => 
-      pos.row < grid.length && 
-      pos.col < grid[0].length
-    );
+      { row: row + 1, col: col + 1 },
+    ].filter((pos) => pos.row < grid.length && pos.col < grid[0].length);
 
     adjacentNodes.forEach(({ row, col }) => {
       grid[row][col].isWall = false;
@@ -169,121 +168,213 @@ export const protectCornerNodes = (
 };
 
 export const recursiveDivisionMaze = (
-    grid: INode[][],
-    startRow: number,
-    endRow: number,
-    startCol: number,
-    endCol: number,
-    orientation: "horizontal" | "vertical",
-    walls: INode[],
-    surroundingWalls: boolean,
-    startNode: INode,
-    finishNode: INode
-  ): void => {
-    if (endRow < startRow || endCol < startCol) return;
-  
-    // Initialize surrounding walls on first call
-    if (!surroundingWalls) {
-      for (let row = 0; row < grid.length; row++) {
-        for (let col = 0; col < grid[0].length; col++) {
+  grid: INode[][],
+  startRow: number,
+  endRow: number,
+  startCol: number,
+  endCol: number,
+  orientation: "horizontal" | "vertical",
+  walls: INode[],
+  surroundingWalls: boolean,
+  startNode: INode,
+  finishNode: INode
+): void => {
+  if (endRow < startRow || endCol < startCol) return;
+
+  // Initialize surrounding walls on first call
+  if (!surroundingWalls) {
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[0].length; col++) {
+        if (
+          row === 0 ||
+          col === 0 ||
+          row === grid.length - 1 ||
+          col === grid[0].length - 1
+        ) {
           if (
-            row === 0 || 
-            col === 0 ||
-            row === grid.length - 1 ||
-            col === grid[0].length - 1
+            !(row === startNode.row && col === startNode.col) &&
+            !(row === finishNode.row && col === finishNode.col)
           ) {
-            if (
-              !(row === startNode.row && col === startNode.col) &&
-              !(row === finishNode.row && col === finishNode.col)
-            ) {
-              walls.push(grid[row][col]);
-            }
+            walls.push(grid[row][col]);
           }
         }
       }
-      surroundingWalls = true;
     }
-  
-    if (orientation === "horizontal") {
-      const possibleRows = [];
-      for (let row = startRow; row <= endRow; row += 2) {
-        possibleRows.push(row);
+    surroundingWalls = true;
+  }
+
+  if (orientation === "horizontal") {
+    const possibleRows = [];
+    for (let row = startRow; row <= endRow; row += 2) {
+      possibleRows.push(row);
+    }
+
+    const possibleCols = [];
+    for (let col = startCol - 1; col <= endCol + 1; col += 2) {
+      possibleCols.push(col);
+    }
+
+    const randomRow =
+      possibleRows[Math.floor(Math.random() * possibleRows.length)];
+    const randomCol =
+      possibleCols[Math.floor(Math.random() * possibleCols.length)];
+
+    if (randomRow === undefined || randomCol === undefined) return;
+
+    for (let col = startCol - 1; col <= endCol + 1; col++) {
+      if (
+        col !== randomCol &&
+        grid[randomRow]?.[col] &&
+        !isSpecialNode(grid[randomRow][col], startNode, finishNode)
+      ) {
+        walls.push(grid[randomRow][col]);
       }
-  
-      const possibleCols = [];
-      for (let col = startCol - 1; col <= endCol + 1; col += 2) {
-        possibleCols.push(col);
-      }
-  
-      const randomRow = possibleRows[Math.floor(Math.random() * possibleRows.length)];
-      const randomCol = possibleCols[Math.floor(Math.random() * possibleCols.length)];
-  
-      if (randomRow === undefined || randomCol === undefined) return;
-  
-      for (let col = startCol - 1; col <= endCol + 1; col++) {
-        if (
-          col !== randomCol &&
-          grid[randomRow]?.[col] &&
-          !isSpecialNode(grid[randomRow][col], startNode, finishNode)
-        ) {
-          walls.push(grid[randomRow][col]);
-        }
-      }
-  
-      if (randomRow - 2 - startRow > endCol - startCol) {
-        recursiveDivisionMaze(grid, startRow, randomRow - 2, startCol, endCol, "horizontal", walls, surroundingWalls, startNode, finishNode);
-      } else {
-        recursiveDivisionMaze(grid, startRow, randomRow - 2, startCol, endCol, "vertical", walls, surroundingWalls, startNode, finishNode);
-      }
-  
-      if (endRow - (randomRow + 2) > endCol - startCol) {
-        recursiveDivisionMaze(grid, randomRow + 2, endRow, startCol, endCol, "horizontal", walls, surroundingWalls, startNode, finishNode);
-      } else {
-        recursiveDivisionMaze(grid, randomRow + 2, endRow, startCol, endCol, "vertical", walls, surroundingWalls, startNode, finishNode);
-      }
+    }
+
+    if (randomRow - 2 - startRow > endCol - startCol) {
+      recursiveDivisionMaze(
+        grid,
+        startRow,
+        randomRow - 2,
+        startCol,
+        endCol,
+        "horizontal",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
     } else {
-      const possibleCols = [];
-      for (let col = startCol; col <= endCol; col += 2) {
-        possibleCols.push(col);
-      }
-  
-      const possibleRows = [];
-      for (let row = startRow - 1; row <= endRow + 1; row += 2) {
-        possibleRows.push(row);
-      }
-  
-      const randomCol = possibleCols[Math.floor(Math.random() * possibleCols.length)];
-      const randomRow = possibleRows[Math.floor(Math.random() * possibleRows.length)];
-  
-      if (randomCol === undefined || randomRow === undefined) return;
-  
-      for (let row = startRow - 1; row <= endRow + 1; row++) {
-        if (
-          row !== randomRow &&
-          grid[row]?.[randomCol] &&
-          !isSpecialNode(grid[row][randomCol], startNode, finishNode)
-        ) {
-          walls.push(grid[row][randomCol]);
-        }
-      }
-  
-      if (endRow - startRow > randomCol - 2 - startCol) {
-        recursiveDivisionMaze(grid, startRow, endRow, startCol, randomCol - 2, "horizontal", walls, surroundingWalls, startNode, finishNode);
-      } else {
-        recursiveDivisionMaze(grid, startRow, endRow, startCol, randomCol - 2, "vertical", walls, surroundingWalls, startNode, finishNode);
-      }
-  
-      if (endRow - startRow > endCol - (randomCol + 2)) {
-        recursiveDivisionMaze(grid, startRow, endRow, randomCol + 2, endCol, "horizontal", walls, surroundingWalls, startNode, finishNode);
-      } else {
-        recursiveDivisionMaze(grid, startRow, endRow, randomCol + 2, endCol, "vertical", walls, surroundingWalls, startNode, finishNode);
+      recursiveDivisionMaze(
+        grid,
+        startRow,
+        randomRow - 2,
+        startCol,
+        endCol,
+        "vertical",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
+    }
+
+    if (endRow - (randomRow + 2) > endCol - startCol) {
+      recursiveDivisionMaze(
+        grid,
+        randomRow + 2,
+        endRow,
+        startCol,
+        endCol,
+        "horizontal",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
+    } else {
+      recursiveDivisionMaze(
+        grid,
+        randomRow + 2,
+        endRow,
+        startCol,
+        endCol,
+        "vertical",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
+    }
+  } else {
+    const possibleCols = [];
+    for (let col = startCol; col <= endCol; col += 2) {
+      possibleCols.push(col);
+    }
+
+    const possibleRows = [];
+    for (let row = startRow - 1; row <= endRow + 1; row += 2) {
+      possibleRows.push(row);
+    }
+
+    const randomCol =
+      possibleCols[Math.floor(Math.random() * possibleCols.length)];
+    const randomRow =
+      possibleRows[Math.floor(Math.random() * possibleRows.length)];
+
+    if (randomCol === undefined || randomRow === undefined) return;
+
+    for (let row = startRow - 1; row <= endRow + 1; row++) {
+      if (
+        row !== randomRow &&
+        grid[row]?.[randomCol] &&
+        !isSpecialNode(grid[row][randomCol], startNode, finishNode)
+      ) {
+        walls.push(grid[row][randomCol]);
       }
     }
-  };
-  
-  // Helper function
-  const isSpecialNode = (node: INode, ...specialNodes: INode[]) => {
-    return specialNodes.some(
-      special => special.row === node.row && special.col === node.col
-    );
-  };
+
+    if (endRow - startRow > randomCol - 2 - startCol) {
+      recursiveDivisionMaze(
+        grid,
+        startRow,
+        endRow,
+        startCol,
+        randomCol - 2,
+        "horizontal",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
+    } else {
+      recursiveDivisionMaze(
+        grid,
+        startRow,
+        endRow,
+        startCol,
+        randomCol - 2,
+        "vertical",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
+    }
+
+    if (endRow - startRow > endCol - (randomCol + 2)) {
+      recursiveDivisionMaze(
+        grid,
+        startRow,
+        endRow,
+        randomCol + 2,
+        endCol,
+        "horizontal",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
+    } else {
+      recursiveDivisionMaze(
+        grid,
+        startRow,
+        endRow,
+        randomCol + 2,
+        endCol,
+        "vertical",
+        walls,
+        surroundingWalls,
+        startNode,
+        finishNode
+      );
+    }
+  }
+};
+
+// Helper function
+const isSpecialNode = (node: INode, ...specialNodes: INode[]) => {
+  return specialNodes.some(
+    (special) => special.row === node.row && special.col === node.col
+  );
+};

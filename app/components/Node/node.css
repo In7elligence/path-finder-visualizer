@@ -160,17 +160,17 @@
 
 @keyframes wallAnimation {
   0% {
-      transform: scale(0.3);
-      background-color: rgb(12, 53, 71);
+    transform: scale(0.3);
+    background-color: rgb(12, 53, 71);
   }
 
   50% {
-      transform: scale(1.2);
-      background-color: rgb(12, 53, 71);
+    transform: scale(1.2);
+    background-color: rgb(12, 53, 71);
   }
 
   100% {
-      transform: scale(1);
-      background-color: rgb(12, 53, 71);
+    transform: scale(1);
+    background-color: rgb(12, 53, 71);
   }
 }
