@@ -5,7 +5,6 @@ import "./grid.css";
 import Node from "../Node/Node";
 import { initialGridState } from "./initialState";
 import { gridReducer } from "./gridReducer";
-import Nav from "../Nav";
 import { visualizeDijkstras } from "@/app/algorithms/dijkstras/animation/visualizeDijkstras";
 import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar";
 import {
@@ -18,6 +17,7 @@ import { NODE_SIZE } from "@/app/constants/constants";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivision";
 import { removeWallsFromGrid } from "@/app/algorithms/utils/utils";
+import Nav from "../Nav/Nav";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);

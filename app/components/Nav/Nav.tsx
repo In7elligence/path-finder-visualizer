@@ -1,8 +1,8 @@
+import { IMenuItem } from "@/app/interfaces/interfaces";
+import { AvailableAlgorithms, AvailableMazes } from "@/app/types/types";
 import React, { useCallback, useMemo, useState } from "react";
-import { IMenuItem } from "../interfaces/interfaces";
-import CustomSelect from "./generic/CustomSelect/CustomSelect";
-import { AvailableAlgorithms, AvailableMazes } from "../types/types";
-import SimpleButton from "./generic/SimpleButton/SimpleButton";
+import SimpleButton from "../generic/SimpleButton/SimpleButton";
+import CustomSelect from "../generic/CustomSelect/CustomSelect";
 
 interface INavProps {
   menuItems: IMenuItem[];
