@@ -16,10 +16,9 @@ export interface INode {
   previousNode: INode | null;
   isPath?: boolean; // Marks nodes in the guaranteed path
   direction?: NodeDirection;
-  isActiveArrow?: boolean;
-  gCost?: number; // Cost from start node to this node (used by A*)
-  hCost?: number; // Heuristic cost from this node to finish node (used by A*)
-  fCost?: number; // Total cost (gCost + hCost) (used by A*)
+  gCost?: number; // Cost from start node to this node
+  hCost?: number; // Heuristic cost from this node to finish node
+  fCost?: number; // Total cost (gCost + hCost)
 }
 
 export interface IGridState {
