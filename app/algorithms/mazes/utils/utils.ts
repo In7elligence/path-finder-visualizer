@@ -121,8 +121,9 @@ export const recursiveDivision = (
 // Ensure the maze is solvable
 export const ensureSolvability = (
   grid: INode[][],
-  start: INode,
-  finish: INode,
+  _start: INode,
+  _finish: INode,
+  _bomb: INode,
   walls: INode[]
 ): INode[] => {
   return walls.filter((wall) => !grid[wall.row][wall.col].isPath);

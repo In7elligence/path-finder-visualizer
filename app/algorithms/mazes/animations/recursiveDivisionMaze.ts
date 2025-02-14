@@ -9,7 +9,7 @@ export const visualizeRecursiveDivision = (
   dispatch: React.Dispatch<GridAction>,
   orientation?: RecursiveDivisions
 ) => {
-  const { grid, startNode, finishNode, gridDimensions, isAlgoRunning } = state;
+  const { grid, startNode, finishNode, bombNode, gridDimensions, isAlgoRunning } = state;
   const { rows, cols } = gridDimensions;
 
   if (isAlgoRunning) return;
@@ -20,6 +20,7 @@ export const visualizeRecursiveDivision = (
     grid: newGrid,
     startNode: newGrid[startNode.row][startNode.col],
     finishNode: newGrid[finishNode.row][finishNode.col],
+    bombNode: newGrid[bombNode.row][bombNode.col],
     rowStart: 1,
     rowEnd: rows - 2,
     colStart: 1,
@@ -71,8 +72,8 @@ export const visualizeRecursiveDivision = (
     },
   ];
 
-  // Check both start and finish nodes
-  [startNode, finishNode].forEach((node) => {
+  // Check start, finish and bomb nodes
+  [startNode, finishNode, bombNode].forEach((node) => {
     const corner = corners.find(
       (c) => c.position.row === node.row && c.position.col === node.col
     );

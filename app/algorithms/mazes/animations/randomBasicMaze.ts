@@ -33,7 +33,7 @@ export const visualizeRandomBasicMaze = (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>
 ) => {
-  const { grid, startNode, finishNode, animationDuration, isAlgoRunning } =
+  const { grid, startNode, finishNode, bombNode, animationDuration, isAlgoRunning } =
     state;
 
   if (isAlgoRunning) return;
@@ -47,6 +47,7 @@ export const visualizeRandomBasicMaze = (
 
   const start = newGrid[startNode.row][startNode.col];
   const finish = newGrid[finishNode.row][finishNode.col];
+  const bomb = newGrid[bombNode.row][bombNode.col];
   const walls: INode[] = [];
 
   for (let row = 0; row < newGrid.length; row++) {
@@ -55,6 +56,7 @@ export const visualizeRandomBasicMaze = (
         Math.random() < 0.3 &&
         !newGrid[row][col].isStart &&
         !newGrid[row][col].isFinish &&
+        !newGrid[row][col].isBomb &&
         !newGrid[row][col].isWall &&
         !newGrid[row][col].isMazeWall
       ) {
@@ -63,6 +65,6 @@ export const visualizeRandomBasicMaze = (
     }
   }
 
-  ensureSolvability(newGrid, start, finish, walls);
+  ensureSolvability(newGrid, start, finish, bomb, walls);
   animateRandomBasicMaze(newGrid, walls, animationDuration, dispatch);
 };

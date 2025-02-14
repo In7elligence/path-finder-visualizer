@@ -6,6 +6,7 @@ export interface MazeParams {
   grid: INode[][];
   startNode: INode;
   finishNode: INode;
+  bombNode: INode;
   rowStart: number;
   rowEnd: number;
   colStart: number;
@@ -19,6 +20,7 @@ export const recursiveDivisionMaze = ({
   grid,
   startNode,
   finishNode,
+  bombNode,
   rowStart,
   rowEnd,
   colStart,
@@ -40,7 +42,8 @@ export const recursiveDivisionMaze = ({
             row === grid.length - 1 ||
             col === grid[0].length - 1) &&
           grid[row][col] !== startNode &&
-          grid[row][col] !== finishNode
+          grid[row][col] !== finishNode &&
+          grid[row][col] !== bombNode
         ) {
           walls.push(grid[row][col]);
         }
@@ -87,7 +90,12 @@ export const recursiveDivisionMaze = ({
   ) {
     const wallNode = isHorizontal ? grid[chosenWall][i] : grid[i][chosenWall];
 
-    if (wallNode === startNode || wallNode === finishNode || i === chosenGap)
+    if (
+      wallNode === startNode ||
+      wallNode === finishNode ||
+      wallNode === bombNode ||
+      i === chosenGap
+    )
       continue;
 
     walls.push(wallNode);
@@ -100,6 +108,7 @@ export const recursiveDivisionMaze = ({
     grid,
     startNode,
     finishNode,
+    bombNode,
     rowStart,
     rowEnd: isHorizontal ? chosenWall - 1 : rowEnd,
     colStart,
@@ -113,6 +122,7 @@ export const recursiveDivisionMaze = ({
     grid,
     startNode,
     finishNode,
+    bombNode,
     rowStart: isHorizontal ? chosenWall + 1 : rowStart,
     rowEnd,
     colStart: isHorizontal ? colStart : chosenWall + 1,
