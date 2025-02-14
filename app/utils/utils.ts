@@ -79,6 +79,12 @@ export const getNodesInShortestPathOrder = (finishNode: INode | null) => {
   return nodesInShortestPathOrder;
 };
 
+export const doesBombExistInGrid = (grid: INode[][]) => {
+  return grid.some((row) =>
+    row.some((node) => node.isBomb && !node.isBombDefused)
+  );
+};
+
 export const animateAlgorithm = (
   visitedNodesInOrder: INode[],
   nodesInShortestPathOrder: INode[],

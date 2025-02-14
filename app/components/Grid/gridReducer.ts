@@ -7,6 +7,7 @@ export type GridAction =
   | { type: "SET_GRID_DIMENSIONS"; payload: { rows: number; cols: number } }
   | { type: "SET_START_NODE"; payload: { row: number; col: number } }
   | { type: "SET_FINISH_NODE"; payload: { row: number; col: number } }
+  | { type: "SET_BOMB_NODE"; payload: { row: number; col: number } }
   | { type: "SET_VISITED_NODES"; payload: INode[] }
   | { type: "SET_NODES_IN_SHORTEST_PATH"; payload: INode[] }
   | { type: "TOGGLE_ALGO"; payload: boolean }
@@ -27,6 +28,8 @@ export const gridReducer = (
       return { ...state, startNode: action.payload };
     case "SET_FINISH_NODE":
       return { ...state, finishNode: action.payload };
+    case "SET_BOMB_NODE":
+      return { ...state, bombNode: action.payload };
     case "SET_VISITED_NODES":
       return { ...state, visitedNodes: action.payload };
     case "SET_NODES_IN_SHORTEST_PATH":

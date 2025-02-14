@@ -1,11 +1,13 @@
 import React from "react";
 import "./node.css";
-import { NodeDirection } from "@/app/types/types";
-
+import { NodeDirection, SpecialNode } from "@/app/types/types";
 interface INodeProps {
   col: number;
   isFinish: boolean;
   isStart: boolean;
+  bombExist: boolean;
+  isBombDefused: boolean;
+  isBomb: boolean;
   isWall: boolean;
   isMazeWall: boolean;
   isVisited: boolean;
@@ -14,7 +16,7 @@ interface INodeProps {
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
-  onDropNode: (row: number, col: number, isStart: boolean) => void;
+  onDropNode: (row: number, col: number, nodeType: SpecialNode) => void;
   row: number;
   direction: NodeDirection;
   nodeSize: number;
@@ -25,6 +27,9 @@ const Node: React.FC<INodeProps> = ({
   col,
   isFinish,
   isStart,
+  bombExist,
+  isBombDefused,
+  isBomb,
   isWall,
   isMazeWall,
   isVisited,
@@ -43,6 +48,8 @@ const Node: React.FC<INodeProps> = ({
     ? "node-finish"
     : isStart
     ? "node-start"
+    : isBomb
+    ? "node-bomb"
     : isWall && isMazeWall
     ? "node-wall maze-wall"
     : isWall
@@ -53,6 +60,8 @@ const Node: React.FC<INodeProps> = ({
     ? `node-shortest-path node-arrow-${direction}`
     : isShortestPath
     ? "node-shortest-path"
+    : (bombExist && isVisited && !isBombDefused)
+    ? "visited-while-bomb-active"
     : isVisited
     ? "node-visited"
     : (isStart || isFinish) && isMousePressed
@@ -64,19 +73,18 @@ const Node: React.FC<INodeProps> = ({
       e.preventDefault();
       return;
     }
-    e.dataTransfer.setData("text/plain", JSON.stringify({ isStart }));
+
+    let type = "";
+    if (isStart) type = "start";
+    if (isFinish) type = "finish";
+    if (isBomb) type = "bomb";
+
+    e.dataTransfer.setData("text/plain", type);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    if (isAlgoRunning) {
-      e.preventDefault(); // Prevent dropping if the algorithm is running
-      return;
-    }
-
-    const data = e.dataTransfer.getData("text/plain");
-    const { isStart: isDraggingStart } = JSON.parse(data);
-
-    onDropNode(row, col, isDraggingStart);
+    const type = e.dataTransfer.getData("text/plain") as SpecialNode;
+    onDropNode(row, col, type);
   };
 
   return (
@@ -96,7 +104,7 @@ const Node: React.FC<INodeProps> = ({
         onMouseEnter(row, col);
       }}
       onMouseUp={() => onMouseUp()}
-      draggable={(isFinish || isStart) && !isAlgoRunning} // Disable dragging if the algorithm is running
+      draggable={(isFinish || isStart || isBomb) && !isAlgoRunning} // Disable dragging if the algorithm is running
       onDragStart={handleDragStart}
       onDragOver={(e) => e.preventDefault()} // Allow drop
       onDrop={handleDrop}

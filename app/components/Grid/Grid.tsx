@@ -7,19 +7,26 @@ import { initialGridState } from "./initialState";
 import { gridReducer } from "./gridReducer";
 import {
   calculateGridDimensions,
+  doesBombExistInGrid,
   getNewGridWithWallToggled,
   getNodeSize,
 } from "@/app/utils/utils";
-import { AvailableAlgorithms, AvailableMazes } from "@/app/types/types";
+import {
+  AvailableAlgorithms,
+  AvailableMazes,
+  SpecialNode,
+} from "@/app/types/types";
 import { NODE_SIZE } from "@/app/constants/constants";
 import Nav from "../Nav/Nav";
 import {
   clearPath,
   clearWalls,
   createNode,
-  dropNode,
+  dropSpecialNode,
   generateMaze,
+  placeRandomBomb,
   positionStartAndEndNodes,
+  removeBomb,
   visualizeAlgorithm,
 } from "./helperFnList";
 
@@ -49,13 +56,15 @@ const Grid: React.FC = () => {
 
   const handleMouseDown = useCallback(
     (row: number, col: number) => {
-      const { startNode, finishNode } = state;
+      const { startNode, finishNode, bombNode } = state;
       const { row: startRow, col: startCol } = startNode;
       const { row: finishRow, col: finishCol } = finishNode;
+      const { row: bombRow, col: bombCol } = bombNode;
 
       if (
         (row === startRow && col === startCol) ||
-        (row === finishRow && col === finishCol)
+        (row === finishRow && col === finishCol) ||
+        (row === bombRow && col === bombCol)
       ) {
         return;
       }
@@ -86,8 +95,8 @@ const Grid: React.FC = () => {
   }, []);
 
   const handleDropNode = useCallback(
-    (row: number, col: number, isStart: boolean) =>
-      dropNode(state, row, col, isStart, dispatch),
+    (row: number, col: number, nodeType: SpecialNode) =>
+      dropSpecialNode(state, row, col, nodeType, dispatch),
     [state]
   );
 
@@ -163,8 +172,10 @@ const Grid: React.FC = () => {
     nodesInShortestPath,
     isAlgoRunning,
     selectedAlgorithm,
-    isMousePressed,
+    isMousePressed
   } = state;
+
+  const bombExist = doesBombExistInGrid(grid);
 
   return (
     <React.Fragment>
@@ -238,6 +249,11 @@ const Grid: React.FC = () => {
           },
           {
             type: "simpleButton",
+            name: bombExist ? "Remove Bomb" : "Place Bomb",
+            onClick: () => bombExist ? removeBomb(state, dispatch) : placeRandomBomb(state, dispatch),
+          },
+          {
+            type: "simpleButton",
             name: "Reset Grid",
             onClick: handleResetGrid,
           },
@@ -271,6 +287,8 @@ const Grid: React.FC = () => {
                   col,
                   isFinish,
                   isStart,
+                  isBomb,
+                  isBombDefused,
                   isWall,
                   isMazeWall,
                   direction,
@@ -284,6 +302,9 @@ const Grid: React.FC = () => {
                     col={col}
                     isFinish={isFinish}
                     isStart={isStart}
+                    bombExist={bombExist}
+                    isBombDefused={isBombDefused || false}
+                    isBomb={isBomb}
                     isWall={isWall}
                     isMazeWall={isMazeWall}
                     isVisited={isVisited}

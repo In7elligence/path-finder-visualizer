@@ -5,19 +5,20 @@ import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar"
 import { visualizeGreedyBFS } from "@/app/algorithms/greedyBFS/animation/visualizeGreedyBFS";
 import { visualizeBFS } from "@/app/algorithms/bfs/animation/visualizeBFS";
 import { visualizeDFS } from "@/app/algorithms/dfs/animation/visualizeDFS";
-import { IGridState } from "@/app/interfaces/interfaces";
+import { IGridState, INode } from "@/app/interfaces/interfaces";
 import { removeWallsFromGrid } from "@/app/algorithms/utils/utils";
 import { AvailableMazes } from "@/app/types/types";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
 
-export const createNode = (state: IGridState, col: number, row: number) => {
-  const { startNode, finishNode } = state;
+export const createNode = (state: IGridState, col: number, row: number): INode => {
+  const { startNode, finishNode, bombNode } = state;
   return {
     col,
     row,
     isStart: row === startNode.row && col === startNode.col,
     isFinish: row === finishNode.row && col === finishNode.col,
+    isBomb: row === bombNode.row && col === bombNode.col,
     distance: Infinity,
     isVisited: false,
     isWall: false,
@@ -47,60 +48,125 @@ export const positionStartAndEndNodes = (
   });
 };
 
-export const dropNode = (
+export const placeBombNode = (
   state: IGridState,
-  row: number,
-  col: number,
-  isStart: boolean,
   dispatch: React.Dispatch<GridAction>
 ) => {
   const { grid, startNode, finishNode } = state;
+  const validNodes: { row: number; col: number }[] = [];
+  const minDistance = 5; // Minimum distance from start/finish
 
-  // Ensure the drop target is not a wall
+  // Find all valid nodes
+  grid.forEach((row, rowIdx) => {
+    row.forEach((node, colIdx) => {
+      const isStart = rowIdx === startNode.row && colIdx === startNode.col;
+      const isFinish = rowIdx === finishNode.row && colIdx === finishNode.col;
+      const distanceFromStart =
+        Math.abs(rowIdx - startNode.row) + Math.abs(colIdx - startNode.col);
+      const distanceFromFinish =
+        Math.abs(rowIdx - finishNode.row) + Math.abs(colIdx - finishNode.col);
+
+      if (
+        !node.isWall &&
+        !isStart &&
+        !isFinish &&
+        distanceFromStart >= minDistance &&
+        distanceFromFinish >= minDistance
+      ) {
+        validNodes.push({ row: rowIdx, col: colIdx });
+      }
+    });
+  });
+
+  if (validNodes.length > 0) {
+    const randomIndex = Math.floor(Math.random() * validNodes.length);
+    dispatch({ type: "SET_BOMB_NODE", payload: validNodes[randomIndex] });
+  }
+};
+
+export const placeRandomBomb = (
+  state: IGridState,
+  dispatch: React.Dispatch<GridAction>
+) => {
+  const { grid, startNode, finishNode } = state;
+  const validNodes = grid
+    .flat()
+    .filter(
+      (node) =>
+        !node.isWall &&
+        !node.isStart &&
+        !node.isFinish &&
+        Math.abs(node.row - startNode.row) +
+          Math.abs(node.col - startNode.col) >
+          5 &&
+        Math.abs(node.row - finishNode.row) +
+          Math.abs(node.col - finishNode.col) >
+          5
+    );
+
+  if (validNodes.length > 0) {
+    const randomNode =
+      validNodes[Math.floor(Math.random() * validNodes.length)];
+    dropSpecialNode(state, randomNode.row, randomNode.col, "bomb", dispatch);
+  }
+};
+
+export const dropSpecialNode = (
+  state: IGridState,
+  row: number,
+  col: number,
+  nodeType: "start" | "finish" | "bomb",
+  dispatch: React.Dispatch<GridAction>
+) => {
+  const { grid, startNode, finishNode, bombNode } = state;
+
+  // Prevent placement on walls
   if (grid[row][col].isWall) return;
 
-  // Ensure the start and finish nodes are not the same
-  if (isStart && row === finishNode.row && col === finishNode.col) return;
-  if (!isStart && row === startNode.row && col === startNode.col) return;
+  // Prevent overlaps
+  switch (nodeType) {
+    case "start":
+      if (row === finishNode.row && col === finishNode.col) return;
+      if (row === bombNode.row && col === bombNode.col) return;
+      break;
+    case "finish":
+      if (row === startNode.row && col === startNode.col) return;
+      if (row === bombNode.row && col === bombNode.col) return;
+      break;
+    case "bomb":
+      if (row === startNode.row && col === startNode.col) return;
+      if (row === finishNode.row && col === finishNode.col) return;
+      break;
+  }
 
-  // Create a new grid with the updated start/finish node positions
+  // Create new grid with updated positions
   const newGrid = grid.map((rowNodes, rowIdx) =>
-    rowNodes.map((node, colIdx) => {
-      // Reset the original start/finish node position
-      if (node.isStart && isStart) {
-        return { ...node, isStart: false };
-      }
-      if (node.isFinish && !isStart) {
-        return { ...node, isFinish: false };
-      }
-
-      // Set the new start/finish node position
-      if (rowIdx === row && colIdx === col) {
-        return {
-          ...node,
-          isStart: isStart,
-          isFinish: !isStart,
-        };
-      }
-
-      // Preserve the other node (start or finish)
-      if (node.isStart && !isStart) {
-        return { ...node, isStart: true, isFinish: false };
-      }
-      if (node.isFinish && isStart) {
-        return { ...node, isStart: false, isFinish: true };
-      }
-
-      return node;
-    })
+    rowNodes.map((node, colIdx) => ({
+      ...node,
+      isStart:
+        nodeType === "start" ? rowIdx === row && colIdx === col : node.isStart,
+      isFinish:
+        nodeType === "finish"
+          ? rowIdx === row && colIdx === col
+          : node.isFinish,
+      isBomb:
+        nodeType === "bomb" ? rowIdx === row && colIdx === col : node.isBomb,
+    }))
   );
 
   dispatch({ type: "SET_GRID", payload: newGrid });
 
-  if (isStart) {
-    dispatch({ type: "SET_START_NODE", payload: { row, col } });
-  } else {
-    dispatch({ type: "SET_FINISH_NODE", payload: { row, col } });
+  // Update specific node position in state
+  switch (nodeType) {
+    case "start":
+      dispatch({ type: "SET_START_NODE", payload: { row, col } });
+      break;
+    case "finish":
+      dispatch({ type: "SET_FINISH_NODE", payload: { row, col } });
+      break;
+    case "bomb":
+      dispatch({ type: "SET_BOMB_NODE", payload: { row, col } });
+      break;
   }
 };
 
@@ -153,6 +219,20 @@ export const generateMaze = (
       visualizeRecursiveDivision(state, dispatch);
   }
 };
+
+export const removeBomb = (state: IGridState, dispatch: React.Dispatch<GridAction>) => {
+  const { grid } = state;
+
+  const newGrid = grid.map((row) =>
+    row.map((node) => ({
+      ...node,
+      isBomb: false
+    }))
+  );
+  
+  dispatch({ type: "SET_GRID", payload: newGrid});
+  dispatch({ type: "SET_BOMB_NODE", payload: { row: -1, col: -1 } });
+}
 
 export const clearWalls = (
   state: IGridState,

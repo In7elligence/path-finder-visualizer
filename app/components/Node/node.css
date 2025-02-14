@@ -33,7 +33,7 @@
 }
 
 .node-visited {
-  animation-name: visitedAnimation;
+  animation-name: visitedBlueAnimation;
   animation-duration: 1.5s;
   animation-timing-function: ease-out;
   animation-delay: 0;
@@ -58,6 +58,27 @@
 .node-dragging-disabled {
   cursor: not-allowed;
 }
+
+.node-bomb {
+  background-image: url("/images/bomb.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  background-color: #ffffff;
+}
+
+.visited-while-bomb-active {
+  border: 1px solid rgb(175, 216, 248);
+  animation-name: visitedObjectAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
 
 .node-arrow-up {
   background-image: url("/images/arrow-up.svg");
@@ -123,7 +144,7 @@
   animation-play-state: running;
 }
 
-@keyframes visitedAnimation {
+@keyframes visitedBlueAnimation {
   0% {
     transform: scale(0.3);
     background-color: rgba(0, 0, 66, 0.75);
@@ -142,6 +163,28 @@
   100% {
     transform: scale(1);
     background-color: rgba(0, 190, 218, 0.75);
+  }
+}
+
+@keyframes visitedObjectAnimation {
+  0% {
+    transform: scale(.3);
+    background-color: rgba(41, 4, 24, 0.75);
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: rgba(97, 0, 20, 0.75);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(216, 5, 141, 0.75)
+  }
+
+  100% {
+    transform: scale(1.0);
+    background-color: rgba(178, 67, 255, 0.75);
   }
 }
 

@@ -14,6 +14,8 @@ export interface INode {
   isWall: boolean;
   isMazeWall: boolean;
   previousNode: INode | null;
+  isBomb: boolean;
+  isBombDefused?: boolean; // Marks if a bomb node is diffused
   isPath?: boolean; // Marks nodes in the guaranteed path
   direction?: NodeDirection;
   gCost?: number; // Cost from start node to this node
@@ -27,6 +29,7 @@ export interface IGridState {
   gridDimensions: { rows: number; cols: number };
   startNode: { row: number; col: number };
   finishNode: { row: number; col: number };
+  bombNode: { row: number; col: number };
   visitedNodes: INode[];
   nodesInShortestPath: INode[];
   selectedAlgorithm: AvailableAlgorithms;

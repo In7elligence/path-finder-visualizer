@@ -6,6 +6,7 @@ export const initialGridState: IGridState = {
   gridDimensions: { rows: 0, cols: 0 },
   startNode: { row: 0, col: 0 },
   finishNode: { row: 0, col: 0 },
+  bombNode: { row: -1, col: -1 },
   visitedNodes: [],
   nodesInShortestPath: [],
   selectedAlgorithm: "dijkstras",
