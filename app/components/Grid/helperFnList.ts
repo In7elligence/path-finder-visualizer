@@ -12,13 +12,13 @@ import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/rand
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
 
 export const createNode = (state: IGridState, col: number, row: number): INode => {
-  const { startNode, finishNode, bombNode } = state;
+  const { startNode, finishNode } = state;
   return {
     col,
     row,
     isStart: row === startNode.row && col === startNode.col,
     isFinish: row === finishNode.row && col === finishNode.col,
-    isBomb: row === bombNode.row && col === bombNode.col,
+    isBomb: false,
     distance: Infinity,
     isVisited: false,
     isWall: false,
