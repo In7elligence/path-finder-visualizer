@@ -163,6 +163,7 @@ const Grid: React.FC = () => {
     nodesInShortestPath,
     isAlgoRunning,
     selectedAlgorithm,
+    isMousePressed,
   } = state;
 
   return (
@@ -295,6 +296,7 @@ const Grid: React.FC = () => {
                     row={row}
                     direction={direction}
                     nodeSize={nodeSize}
+                    isMousePressed={isMousePressed}
                   />
                 );
               })}

@@ -18,6 +18,7 @@ interface INodeProps {
   row: number;
   direction: NodeDirection;
   nodeSize: number;
+  isMousePressed: boolean;
 }
 
 const Node: React.FC<INodeProps> = ({
@@ -35,7 +36,8 @@ const Node: React.FC<INodeProps> = ({
   onDropNode,
   row,
   direction,
-  nodeSize, // Destructure nodeSize
+  nodeSize,
+  isMousePressed,
 }) => {
   const extraClassName = isFinish
     ? "node-finish"
@@ -53,11 +55,13 @@ const Node: React.FC<INodeProps> = ({
     ? "node-shortest-path"
     : isVisited
     ? "node-visited"
+    : (isStart || isFinish) && isMousePressed
+    ? "node-dragging-disabled"
     : "";
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    if (isAlgoRunning) {
-      e.preventDefault(); // Prevent dragging if the algorithm is running
+    if (isAlgoRunning || isMousePressed) {
+      e.preventDefault();
       return;
     }
     e.dataTransfer.setData("text/plain", JSON.stringify({ isStart }));

@@ -55,6 +55,10 @@
   animation-play-state: running;
 }
 
+.node-dragging-disabled {
+  cursor: not-allowed;
+}
+
 .node-arrow-up {
   background-image: url("/images/arrow-up.svg");
   background-repeat: no-repeat;
