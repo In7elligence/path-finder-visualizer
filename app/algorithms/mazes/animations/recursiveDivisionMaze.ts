@@ -9,18 +9,24 @@ export const visualizeRecursiveDivision = (
   dispatch: React.Dispatch<GridAction>,
   orientation?: RecursiveDivisions
 ) => {
-  const { grid, startNode, finishNode, bombNode, gridDimensions, isAlgoRunning } = state;
+  const { grid, startNode, finishNode, bombNode: initBombNode, gridDimensions, isAlgoRunning } = state;
   const { rows, cols } = gridDimensions;
 
   if (isAlgoRunning) return;
 
   const newGrid = removeWallsFromGrid(grid);
 
+  let bombNode = undefined;
+
+  if (initBombNode.row !== -1 && initBombNode.col !== -1) {
+    bombNode = newGrid[initBombNode.row][initBombNode.col]
+  }
+
   const walls = recursiveDivisionMaze({
     grid: newGrid,
     startNode: newGrid[startNode.row][startNode.col],
     finishNode: newGrid[finishNode.row][finishNode.col],
-    bombNode: newGrid[bombNode.row][bombNode.col],
+    bombNode: bombNode,
     rowStart: 1,
     rowEnd: rows - 2,
     colStart: 1,
@@ -75,7 +81,7 @@ export const visualizeRecursiveDivision = (
   // Check start, finish and bomb nodes
   [startNode, finishNode, bombNode].forEach((node) => {
     const corner = corners.find(
-      (c) => c.position.row === node.row && c.position.col === node.col
+      (c) => c.position.row === node?.row && c.position.col === node.col
     );
 
     if (corner) {

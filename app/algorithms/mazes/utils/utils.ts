@@ -123,8 +123,9 @@ export const ensureSolvability = (
   grid: INode[][],
   _start: INode,
   _finish: INode,
-  _bomb: INode,
-  walls: INode[]
+  walls: INode[],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  bomb?: INode,
 ): INode[] => {
   return walls.filter((wall) => !grid[wall.row][wall.col].isPath);
 };

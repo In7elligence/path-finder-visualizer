@@ -6,13 +6,13 @@ export interface MazeParams {
   grid: INode[][];
   startNode: INode;
   finishNode: INode;
-  bombNode: INode;
   rowStart: number;
   rowEnd: number;
   colStart: number;
   colEnd: number;
   orientation: Orientation;
   surroundingWalls: boolean;
+  bombNode?: INode;
   walls?: INode[];
 }
 
@@ -20,13 +20,13 @@ export const recursiveDivisionMaze = ({
   grid,
   startNode,
   finishNode,
-  bombNode,
   rowStart,
   rowEnd,
   colStart,
   colEnd,
   orientation,
   walls: initWalls,
+  bombNode,
   surroundingWalls,
 }: MazeParams) => {
   const walls = initWalls || [];
