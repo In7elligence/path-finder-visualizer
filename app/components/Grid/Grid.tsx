@@ -81,6 +81,7 @@ const Grid: React.FC = () => {
   const handleMouseEnter = useCallback(
     (row: number, col: number) => {
       const { isMousePressed, grid } = state;
+
       if (!isMousePressed) return;
 
       const newGrid = getNewGridWithWallToggled(grid, row, col);
@@ -119,7 +120,7 @@ const Grid: React.FC = () => {
     const { rows, cols } = gridDimensions;
 
     dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: undefined });
-    dispatch({ type: "SET_BOMB_NODE", payload: {row: -1, col: -1 }})
+    dispatch({ type: "SET_BOMB_NODE", payload: { row: -1, col: -1 } });
 
     if (rows > 0 && cols > 0) {
       dispatch({ type: "SET_GRID", payload: getInitialGrid(rows, cols) });
@@ -177,7 +178,7 @@ const Grid: React.FC = () => {
     isAlgoRunning,
     selectedAlgorithm,
     isMousePressed,
-    bombDefused
+    bombDefused,
   } = state;
 
   const bombExist = doesBombExistInGrid(grid);
@@ -255,7 +256,10 @@ const Grid: React.FC = () => {
           {
             type: "simpleButton",
             name: bombExist ? "Remove Bomb" : "Place Bomb",
-            onClick: () => bombExist ? removeBomb(state, dispatch) : placeRandomBomb(state, dispatch),
+            onClick: () =>
+              bombExist
+                ? removeBomb(state, dispatch)
+                : placeRandomBomb(state, dispatch),
           },
           {
             type: "simpleButton",

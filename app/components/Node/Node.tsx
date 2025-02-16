@@ -46,6 +46,9 @@ const Node: React.FC<INodeProps> = ({
   nodeSize,
   isMousePressed,
 }) => {
+  if (isFinish && isWall) {
+    console.log("is finish and wall");
+  }
   const extraClassName =
     isFinish && isShortestPath && bombExist
       ? "node-robot"

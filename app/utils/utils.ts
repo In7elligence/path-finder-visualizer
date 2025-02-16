@@ -41,6 +41,11 @@ export const getNewGridWithWallToggled = (
     isMazeWall: false,
     isWall: !node.isWall,
   };
+  // Case to prevent start and finish nodes becoming walls
+  if (newGrid[row][col].isStart || newGrid[row][col].isFinish) {
+    return newGrid;
+  }
+
   newGrid[row][col] = newNode;
 
   return newGrid;
