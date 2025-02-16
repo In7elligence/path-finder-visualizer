@@ -6,33 +6,92 @@
 !*/
 
 import { INode } from "@/app/interfaces/interfaces";
-import { getUnvisitedNeighbors } from "../../utils/utils";
 
-const getAllNodes = (grid: INode[][]) => {
-  const nodes = [];
-  for (const row of grid) {
-    for (const node of row) {
-      nodes.push(node);
+class PriorityQueue<T> {
+  private heap: { element: T; priority: number }[];
+
+  constructor() {
+    this.heap = [];
+  }
+
+  enqueue(element: T, priority: number): void {
+    this.heap.push({ element, priority });
+    this.bubbleUp(this.heap.length - 1);
+  }
+
+  dequeue(): { element: T; priority: number } | null {
+    if (this.isEmpty()) return null;
+    const min = this.heap[0];
+    const end = this.heap.pop();
+    if (this.heap.length > 0 && end) {
+      this.heap[0] = end;
+      this.sinkDown(0);
+    }
+    return min;
+  }
+
+  isEmpty(): boolean {
+    return this.heap.length === 0;
+  }
+
+  private bubbleUp(index: number): void {
+    const element = this.heap[index];
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+      const parent = this.heap[parentIndex];
+      if (element.priority < parent.priority) {
+        this.heap[index] = parent;
+        this.heap[parentIndex] = element;
+        index = parentIndex;
+      } else {
+        break;
+      }
     }
   }
-  return nodes;
-};
 
-const sortNodesByDistance = (unvisitedNodes: INode[]) => {
-  unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
-};
+  private sinkDown(index: number): void {
+    const length = this.heap.length;
+    const element = this.heap[index];
+    while (true) {
+      const leftChildIndex = 2 * index + 1;
+      const rightChildIndex = 2 * index + 2;
+      let swapIndex = null;
 
-const updateUnvisitedNeighbors = (
-  node: INode,
-  grid: INode[][],
-  isBombPhase: boolean
-) => {
-  const unvisitedNeighbors = getUnvisitedNeighbors(node, grid, isBombPhase);
+      if (leftChildIndex < length) {
+        const leftChild = this.heap[leftChildIndex];
+        if (leftChild.priority < element.priority) {
+          swapIndex = leftChildIndex;
+        }
+      }
 
-  for (const neighbor of unvisitedNeighbors) {
-    neighbor.distance = node.distance + 1;
-    neighbor.previousNode = node;
+      if (rightChildIndex < length) {
+        const rightChild = this.heap[rightChildIndex];
+        if (
+          (swapIndex === null && rightChild.priority < element.priority) ||
+          (swapIndex !== null && rightChild.priority < this.heap[leftChildIndex].priority)
+        ) {
+          swapIndex = rightChildIndex;
+        }
+      }
+
+      if (swapIndex === null) break;
+      this.heap[index] = this.heap[swapIndex];
+      this.heap[swapIndex] = element;
+      index = swapIndex;
+    }
   }
+}
+
+const getNeighbors = (node: INode, grid: INode[][]): INode[] => {
+  const neighbors: INode[] = [];
+  const { row, col } = node;
+
+  if (row > 0) neighbors.push(grid[row - 1][col]);
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (col > 0) neighbors.push(grid[row][col - 1]);
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+
+  return neighbors;
 };
 
 // By backtracking from the finish node.
@@ -41,39 +100,49 @@ export const dijkstra = (
   startNode: INode,
   finishNode: INode
 ): INode[] => {
-  // Reset node states
-  grid.forEach((row) =>
-    row.forEach((node) => {
-      node.previousNode = null;
-      node.distance = Infinity;
-    })
-  );
+  // Reset nodes
+  grid.forEach(row => row.forEach(node => {
+    node.distance = Infinity;
+    node.previousNode = null;
+    node.isBlueVisited = false;
+    node.isPurpleVisited = false;
+  }));
 
-  const visitedNodesInOrder: INode[] = [];
   startNode.distance = 0;
-  const unvisitedNodes = getAllNodes(grid);
+  const visitedNodesInOrder: INode[] = [];
+  const priorityQueue = new PriorityQueue<INode>();
+  priorityQueue.enqueue(startNode, startNode.distance);
 
-  while (unvisitedNodes.length > 0) {
-    sortNodesByDistance(unvisitedNodes);
-    const closestNode = unvisitedNodes.shift()!;
+  while (!priorityQueue.isEmpty()) {
+    const queueEntry = priorityQueue.dequeue();
+    if (!queueEntry) break;
 
-    // If the closest node is a wall or unreachable, skip it
-    if (closestNode?.isWall) continue;
-    if (closestNode?.distance === Infinity) return visitedNodesInOrder;
+    const { element: currentNode, priority } = queueEntry;
 
-    if (closestNode) {
-      if (finishNode.isBomb) {
-        closestNode.isPurpleVisited = true;
-      } else {
-        closestNode.isBlueVisited = true;
-      }
-      visitedNodesInOrder.push(closestNode);
+    // Skip stale entries and walls
+    if (priority > currentNode.distance || currentNode.isWall) continue;
+
+    // Mark visited
+    if (finishNode.isBomb) {
+      currentNode.isPurpleVisited = true;
+    } else {
+      currentNode.isBlueVisited = true;
     }
+    visitedNodesInOrder.push(currentNode);
 
-    if (closestNode === finishNode) return visitedNodesInOrder;
+    if (currentNode === finishNode) return visitedNodesInOrder;
 
-    if (closestNode)
-      updateUnvisitedNeighbors(closestNode, grid, finishNode.isBomb);
+    const neighbors = getNeighbors(currentNode, grid);
+    for (const neighbor of neighbors) {
+      if (neighbor.isWall) continue;
+
+      const tentativeDistance = currentNode.distance + 1;
+      if (tentativeDistance < neighbor.distance) {
+        neighbor.distance = tentativeDistance;
+        neighbor.previousNode = currentNode;
+        priorityQueue.enqueue(neighbor, neighbor.distance);
+      }
+    }
   }
 
   return visitedNodesInOrder;
