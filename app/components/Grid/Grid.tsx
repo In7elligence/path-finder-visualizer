@@ -276,6 +276,7 @@ const Grid: React.FC = () => {
             name: "Clear Path",
             onClick: handleClearPath,
           },
+          // TODO: Add a "animation speed" select option?
         ]}
         isAlgoRunning={isAlgoRunning}
         onAlgorithmChange={handleAlgorithmChange}

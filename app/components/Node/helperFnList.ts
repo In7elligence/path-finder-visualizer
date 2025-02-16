@@ -77,6 +77,10 @@ export const getNodeClasses = (state: NodeState): string => {
       classes: "node-start node-shortest-path",
     },
     {
+        test: ({ isStart, isBlueVisited } = state) => isStart && isBlueVisited,
+        classes: "node-start node-visited",
+      },
+    {
       test: ({ isStart } = state) => isStart,
       classes: "node-start",
     },
