@@ -1,24 +1,6 @@
 import { INode } from "@/app/interfaces/interfaces";
 import { NodeDirection } from "@/app/types/types";
 
-export const getUnvisitedNeighbors = (
-  node: INode,
-  grid: INode[][],
-  isBombPhase: boolean
-) => {
-  const neighbors = [];
-  const { col, row } = node;
-
-  if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-  if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-
-  return neighbors.filter((neighbor) =>
-    isBombPhase ? !neighbor.isPurpleVisited : !neighbor.isBlueVisited
-  );
-};
-
 export const resetGridForAlgorithm = (grid: INode[][]): INode[][] => {
   return grid.map((row) =>
     row.map((node) => ({

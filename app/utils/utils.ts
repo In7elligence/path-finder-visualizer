@@ -174,10 +174,6 @@ export const animatePath = (
           currentNode.direction = latestDirection;
         }
 
-        // if (currentNode && currentNode.isFinish && i === PathNodesInOrder.length - 1) {
-        //   previousNode.direction = latestDirection;
-        // }
-
         if (currentNode.isBomb) {
           // Mark bomb as defused
           dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: true });

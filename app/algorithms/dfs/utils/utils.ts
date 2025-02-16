@@ -1,28 +1,51 @@
 import { INode } from "@/app/interfaces/interfaces";
-import { getUnvisitedNeighbors } from "../../utils/utils";
+
+const getDFSneighbors = (
+  node: INode,
+  grid: INode[][],
+  isBombPhase: boolean
+): INode[] => {
+  const neighbors: INode[] = [];
+  const { row, col } = node;
+
+  // Check neighbors in reverse order (right, left, down, up) to maintain correct DFS order
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]); // Right
+  if (col > 0) neighbors.push(grid[row][col - 1]); // Left
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]); // Down
+  if (row > 0) neighbors.push(grid[row - 1][col]); // Up
+
+  return neighbors.filter(
+    (neighbor) =>
+      !neighbor.isWall &&
+      (isBombPhase ? !neighbor.isPurpleVisited : !neighbor.isBlueVisited)
+  );
+};
 
 export const dfs = (
   grid: INode[][],
   startNode: INode,
   finishNode: INode
 ): INode[] => {
+  const isBombPhase = finishNode.isBomb;
   const visitedNodesInOrder: INode[] = [];
   const stack: INode[] = [];
 
-  // Reset node states
-  grid.forEach((row) =>
-    row.forEach((node) => {
-      if (finishNode.isBomb) {
+  // Fast grid reset using matrix coordinates
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      const node = grid[row][col];
+      node.previousNode = null;
+
+      if (isBombPhase) {
         node.isPurpleVisited = false;
       } else {
         node.isBlueVisited = false;
       }
+    }
+  }
 
-      node.previousNode = null;
-    })
-  );
-
-  if (finishNode.isBomb) {
+  // Initialize starting node
+  if (isBombPhase) {
     startNode.isPurpleVisited = true;
   } else {
     startNode.isBlueVisited = true;
@@ -34,35 +57,25 @@ export const dfs = (
   while (stack.length > 0) {
     const currentNode = stack.pop()!;
 
+    // Early exit if we find the finish node
     if (currentNode === finishNode) return visitedNodesInOrder;
 
-    if (currentNode.isWall) continue;
+    const neighbors = getDFSneighbors(currentNode, grid, isBombPhase);
 
-    const neighbors = getUnvisitedNeighbors(
-      currentNode,
-      grid,
-      finishNode.isBomb
-    ).reverse(); // Reverse for DFS order
     for (const neighbor of neighbors) {
-      if (finishNode.isBomb) {
-        if (!neighbor.isBlueVisited && !neighbor.isWall) {
-          neighbor.isBlueVisited = true;
-          neighbor.previousNode = currentNode;
-          visitedNodesInOrder.push(neighbor);
-          stack.push(neighbor);
-
-          if (neighbor === finishNode) return visitedNodesInOrder;
-        }
+      // Mark visited immediately to prevent duplicates
+      if (isBombPhase) {
+        neighbor.isPurpleVisited = true;
       } else {
-        if (!neighbor.isBlueVisited && !neighbor.isWall) {
-          neighbor.isBlueVisited = true;
-          neighbor.previousNode = currentNode;
-          visitedNodesInOrder.push(neighbor);
-          stack.push(neighbor);
-
-          if (neighbor === finishNode) return visitedNodesInOrder;
-        }
+        neighbor.isBlueVisited = true;
       }
+
+      neighbor.previousNode = currentNode;
+      visitedNodesInOrder.push(neighbor);
+      stack.push(neighbor);
+
+      // Early exit when pushing to stack
+      if (neighbor === finishNode) return visitedNodesInOrder;
     }
   }
 

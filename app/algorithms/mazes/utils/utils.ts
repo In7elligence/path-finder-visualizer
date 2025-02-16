@@ -128,7 +128,7 @@ export const recursiveDivision = (
   }
 };
 
-// Ensure the maze is solvable
+// Ensure the maze is solvable (not particularly used or reliable)
 export const ensureSolvability = (
   grid: INode[][],
   _start: INode,
