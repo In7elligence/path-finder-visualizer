@@ -56,7 +56,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           block
           w-full
           p-2.5
-          text-left
+          text-center
+          md:text-left
           ${scheme.cursor}
           ${scheme.hover}
           transition-colors

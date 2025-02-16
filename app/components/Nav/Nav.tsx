@@ -48,7 +48,9 @@ const Nav: React.FC<INavProps> = ({
       focus:ring-4 
       focus:outline-none 
       ${scheme.focusRing}
-      font-medium 
+      font-medium
+      mt-4
+      md:mt-auto
       rounded-lg 
       4k:rounded-2xl
       px-5
