@@ -11,7 +11,11 @@ import { AvailableMazes } from "@/app/types/types";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
 
-export const createNode = (state: IGridState, col: number, row: number): INode => {
+export const createNode = (
+  state: IGridState,
+  col: number,
+  row: number
+): INode => {
   const { startNode, finishNode } = state;
   return {
     col,
@@ -222,20 +226,23 @@ export const generateMaze = (
   }
 };
 
-export const removeBomb = (state: IGridState, dispatch: React.Dispatch<GridAction>) => {
+export const removeBomb = (
+  state: IGridState,
+  dispatch: React.Dispatch<GridAction>
+) => {
   const { grid } = state;
 
   const newGrid = grid.map((row) =>
     row.map((node) => ({
       ...node,
-      isBomb: false
+      isBomb: false,
     }))
   );
-  
-  dispatch({ type: "SET_GRID", payload: newGrid});
+
+  dispatch({ type: "SET_GRID", payload: newGrid });
   dispatch({ type: "SET_BOMB_NODE", payload: { row: -1, col: -1 } });
   dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: undefined });
-}
+};
 
 export const clearWalls = (
   state: IGridState,

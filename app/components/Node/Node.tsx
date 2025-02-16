@@ -55,7 +55,7 @@ const Node: React.FC<INodeProps> = ({
       ? `node-shortest-path node-arrow-${direction}`
       : isFinish
       ? "node-finish"
-      : (isStart && bombExist)
+      : isStart && bombExist
       ? "node-robot"
       : isStart
       ? "node-start"

@@ -54,7 +54,12 @@ export const recursiveDivision = (
   for (let i = startCol; i <= endCol; i++) {
     if (isHorizontal) {
       const node = grid[wallPosition][i];
-      if (i !== passagePosition && !node.isStart && !node.isFinish && !node.isBomb) {
+      if (
+        i !== passagePosition &&
+        !node.isStart &&
+        !node.isFinish &&
+        !node.isBomb
+      ) {
         walls.push(node);
       }
     }
@@ -63,7 +68,12 @@ export const recursiveDivision = (
   for (let i = startRow; i <= endRow; i++) {
     if (!isHorizontal) {
       const node = grid[i][wallPosition];
-      if (i !== passagePosition && !node.isStart && !node.isFinish && !node.isBomb) {
+      if (
+        i !== passagePosition &&
+        !node.isStart &&
+        !node.isFinish &&
+        !node.isBomb
+      ) {
         walls.push(node);
       }
     }
@@ -125,7 +135,7 @@ export const ensureSolvability = (
   _finish: INode,
   walls: INode[],
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  bomb?: INode,
+  bomb?: INode
 ): INode[] => {
   return walls.filter((wall) => !grid[wall.row][wall.col].isPath);
 };

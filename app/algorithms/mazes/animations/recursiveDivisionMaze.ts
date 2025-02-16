@@ -9,7 +9,14 @@ export const visualizeRecursiveDivision = (
   dispatch: React.Dispatch<GridAction>,
   orientation?: RecursiveDivisions
 ) => {
-  const { grid, startNode, finishNode, bombNode: initBombNode, gridDimensions, isAlgoRunning } = state;
+  const {
+    grid,
+    startNode,
+    finishNode,
+    bombNode: initBombNode,
+    gridDimensions,
+    isAlgoRunning,
+  } = state;
   const { rows, cols } = gridDimensions;
 
   if (isAlgoRunning) return;
@@ -19,7 +26,7 @@ export const visualizeRecursiveDivision = (
   let bombNode = undefined;
 
   if (initBombNode.row !== -1 && initBombNode.col !== -1) {
-    bombNode = newGrid[initBombNode.row][initBombNode.col]
+    bombNode = newGrid[initBombNode.row][initBombNode.col];
   }
 
   const walls = recursiveDivisionMaze({

@@ -20,7 +20,8 @@ const inter = localFont({
 
 export const metadata: Metadata = {
   title: "Path Finder Visualizer",
-  description: "An algorithmic path finder visualizer made by Martin Beck Andersen in Next.js",
+  description:
+    "An algorithmic path finder visualizer made by Martin Beck Andersen in Next.js",
 };
 
 export default function RootLayout({
@@ -30,11 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
 }

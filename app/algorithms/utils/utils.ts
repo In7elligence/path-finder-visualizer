@@ -1,7 +1,11 @@
 import { INode } from "@/app/interfaces/interfaces";
 import { NodeDirection } from "@/app/types/types";
 
-export const getUnvisitedNeighbors = (node: INode, grid: INode[][], isBombPhase: boolean) => {
+export const getUnvisitedNeighbors = (
+  node: INode,
+  grid: INode[][],
+  isBombPhase: boolean
+) => {
   const neighbors = [];
   const { col, row } = node;
 
@@ -10,7 +14,7 @@ export const getUnvisitedNeighbors = (node: INode, grid: INode[][], isBombPhase:
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
-  return neighbors.filter(neighbor => 
+  return neighbors.filter((neighbor) =>
     isBombPhase ? !neighbor.isPurpleVisited : !neighbor.isBlueVisited
   );
 };
@@ -30,7 +34,7 @@ export const resetGridForAlgorithm = (grid: INode[][]): INode[][] => {
       previousNode: null,
       isStart: node.isStart,
       isFinish: node.isFinish,
-      isBomb: node.isBomb
+      isBomb: node.isBomb,
     }))
   );
 };
@@ -53,8 +57,8 @@ export const removeWallsFromGrid = (grid: INode[][]) => {
 };
 
 export const getDirection = (from: INode, to: INode): NodeDirection => {
-  if (to.row < from.row) return 'up';
-  if (to.row > from.row) return 'down'; 
-  if (to.col < from.col) return 'left';
-  return 'right';
+  if (to.row < from.row) return "up";
+  if (to.row > from.row) return "down";
+  if (to.col < from.col) return "left";
+  return "right";
 };

@@ -42,30 +42,42 @@ export const visualizeDijkstras = async (
 
   if (initBombNode.row !== -1 && initBombNode.col !== -1) {
     dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: false });
-    
+
     bombNode = newGrid[initBombNode.row][initBombNode.col];
   }
 
   if (bombNode) {
     const purpleVisitedNodes = dijkstra(newGrid, start, bombNode);
-    await animateBombPhase(purpleVisitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateBombPhase(
+      purpleVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
 
     const shortestPathToBomb = getNodesInShortestPathOrder(bombNode);
 
     const bombAsStart = newGrid[bombNode.row][bombNode.col];
 
     const blueVisitedNodes = dijkstra(newGrid, bombAsStart, finish);
-    await animateNeutralPhase(blueVisitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateNeutralPhase(
+      blueVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
 
     const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish);
 
-    const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish]
-    
+    const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish];
+
     await animatePath(fullPath, pathAnimationDuration, dispatch);
   } else {
     const visitedNodes = dijkstra(newGrid, start, finish);
     const path = getNodesInShortestPathOrder(finish);
-    await animateNeutralPhase(visitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateNeutralPhase(
+      visitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
     await animatePath(path, pathAnimationDuration, dispatch);
   }
 

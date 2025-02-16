@@ -48,23 +48,35 @@ export const visualizeDFS = async (
 
   if (bombNode) {
     const purpleVisitedNodes = dfs(newGrid, start, bombNode);
-    await animateBombPhase(purpleVisitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateBombPhase(
+      purpleVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
 
     const shortestPathToBomb = getNodesInShortestPathOrder(bombNode);
 
     const bombAsStart = newGrid[bombNode.row][bombNode.col];
     const blueVisitedNodes = dfs(newGrid, bombAsStart, finish);
-    await animateNeutralPhase(blueVisitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateNeutralPhase(
+      blueVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
 
     const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish);
 
     const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish];
-    
+
     await animatePath(fullPath, pathAnimationDuration, dispatch);
   } else {
     const visitedNodes = dfs(newGrid, start, finish);
     const path = getNodesInShortestPathOrder(finish);
-    await animateNeutralPhase(visitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateNeutralPhase(
+      visitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
     await animatePath(path, pathAnimationDuration, dispatch);
   }
 

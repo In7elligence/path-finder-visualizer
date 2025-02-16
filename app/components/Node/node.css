@@ -90,7 +90,6 @@
   animation-play-state: running;
 }
 
-
 .node-arrow-up {
   background-image: url("/images/arrow-up.svg");
   background-repeat: no-repeat;
@@ -179,7 +178,7 @@
 
 @keyframes visitedPurpleAnimation {
   0% {
-    transform: scale(.3);
+    transform: scale(0.3);
     background-color: rgba(41, 4, 24, 0.75);
     border-radius: 100%;
   }
@@ -190,11 +189,11 @@
 
   75% {
     transform: scale(1.2);
-    background-color: rgba(216, 5, 141, 0.75)
+    background-color: rgba(216, 5, 141, 0.75);
   }
 
   100% {
-    transform: scale(1.0);
+    transform: scale(1);
     background-color: rgba(178, 67, 255, 0.75);
   }
 }

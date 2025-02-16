@@ -45,7 +45,11 @@ export const greedyBFS = (
 
     if (currentNode === finishNode) return visitedNodesInOrder;
 
-    const neighbors = getUnvisitedNeighbors(currentNode, grid, finishNode.isBomb);
+    const neighbors = getUnvisitedNeighbors(
+      currentNode,
+      grid,
+      finishNode.isBomb
+    );
     for (const neighbor of neighbors) {
       if (finishNode.isBomb) {
         if (!neighbor.isPurpleVisited && !neighbor.isWall) {

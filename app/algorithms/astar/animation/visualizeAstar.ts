@@ -48,23 +48,35 @@ export const visualizeAstar = async (
 
   if (bombNode) {
     const purpleVisitedNodes = astar(newGrid, start, bombNode);
-    await animateBombPhase(purpleVisitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateBombPhase(
+      purpleVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
 
     const shortestPathToBomb = getNodesInShortestPathOrder(bombNode);
 
     const bombAsStart = newGrid[bombNode.row][bombNode.col];
     const blueVisitedNodes = astar(newGrid, bombAsStart, finish);
-    await animateNeutralPhase(blueVisitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateNeutralPhase(
+      blueVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
 
     const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish);
 
     const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish];
-    
+
     await animatePath(fullPath, pathAnimationDuration, dispatch);
   } else {
     const visitedNodes = astar(newGrid, start, finish);
     const path = getNodesInShortestPathOrder(finish);
-    await animateNeutralPhase(visitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animateNeutralPhase(
+      visitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
     await animatePath(path, pathAnimationDuration, dispatch);
   }
 

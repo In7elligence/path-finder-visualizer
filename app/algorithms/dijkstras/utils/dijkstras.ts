@@ -22,7 +22,11 @@ const sortNodesByDistance = (unvisitedNodes: INode[]) => {
   unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
 };
 
-const updateUnvisitedNeighbors = (node: INode, grid: INode[][], isBombPhase: boolean) => {
+const updateUnvisitedNeighbors = (
+  node: INode,
+  grid: INode[][],
+  isBombPhase: boolean
+) => {
   const unvisitedNeighbors = getUnvisitedNeighbors(node, grid, isBombPhase);
 
   for (const neighbor of unvisitedNeighbors) {
@@ -35,7 +39,7 @@ const updateUnvisitedNeighbors = (node: INode, grid: INode[][], isBombPhase: boo
 export const dijkstra = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode,
+  finishNode: INode
 ): INode[] => {
   // Reset node states
   grid.forEach((row) =>
@@ -68,7 +72,8 @@ export const dijkstra = (
 
     if (closestNode === finishNode) return visitedNodesInOrder;
 
-    if (closestNode) updateUnvisitedNeighbors(closestNode, grid, finishNode.isBomb);
+    if (closestNode)
+      updateUnvisitedNeighbors(closestNode, grid, finishNode.isBomb);
   }
 
   return visitedNodesInOrder;
