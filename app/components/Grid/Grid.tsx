@@ -118,6 +118,9 @@ const Grid: React.FC = () => {
     const { gridDimensions } = state;
     const { rows, cols } = gridDimensions;
 
+    dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: undefined });
+    dispatch({ type: "SET_BOMB_NODE", payload: {row: -1, col: -1 }})
+
     if (rows > 0 && cols > 0) {
       dispatch({ type: "SET_GRID", payload: getInitialGrid(rows, cols) });
     }
@@ -168,11 +171,13 @@ const Grid: React.FC = () => {
   const {
     grid,
     gridDimensions,
-    visitedNodes,
     nodesInShortestPath,
+    visitedBlueNodes,
+    visitedPurpleNodes,
     isAlgoRunning,
     selectedAlgorithm,
-    isMousePressed
+    isMousePressed,
+    bombDefused
   } = state;
 
   const bombExist = doesBombExistInGrid(grid);
@@ -288,13 +293,13 @@ const Grid: React.FC = () => {
                   isFinish,
                   isStart,
                   isBomb,
-                  isBombDefused,
                   isWall,
                   isMazeWall,
                   direction,
                 } = node;
-                const isVisited = visitedNodes.includes(node);
                 const isShortestPath = nodesInShortestPath.includes(node);
+                const isPurpleVisited = visitedPurpleNodes.includes(node);
+                const isBlueVisited = visitedBlueNodes.includes(node);
 
                 return (
                   <Node
@@ -303,11 +308,12 @@ const Grid: React.FC = () => {
                     isFinish={isFinish}
                     isStart={isStart}
                     bombExist={bombExist}
-                    isBombDefused={isBombDefused || false}
+                    isBombDefused={bombDefused}
                     isBomb={isBomb}
                     isWall={isWall}
                     isMazeWall={isMazeWall}
-                    isVisited={isVisited}
+                    isBlueVisited={isBlueVisited}
+                    isPurpleVisited={isPurpleVisited}
                     isShortestPath={isShortestPath}
                     isAlgoRunning={isAlgoRunning}
                     onMouseDown={(row, col) => handleMouseDown(row, col)}

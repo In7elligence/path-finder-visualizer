@@ -9,22 +9,27 @@ export const getUnvisitedNeighbors = (node: INode, grid: INode[][]) => {
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
-  return neighbors.filter((neighbor) => !neighbor.isVisited);
+  return neighbors.filter((neighbor) => !neighbor.isBlueVisited && !neighbor.isPurpleVisited);
 };
 
-export const resetGridForAlgorithm = (grid: INode[][]) => {
-  const newGrid = grid.map((row) =>
+export const resetGridForAlgorithm = (grid: INode[][]): INode[][] => {
+  return grid.map((row) =>
     row.map((node) => ({
       ...node,
-      isVisited: false,
+      isBlueVisited: false,
+      isPurpleVisited: false,
       distance: Infinity,
+      isPath: false,
+      gCost: Infinity,
+      hCost: Infinity,
+      fCost: Infinity,
+      direction: undefined,
       previousNode: null,
-      gCost: Infinity, // Reset for A*
-      hCost: Infinity, // Reset for A*
-      fCost: Infinity, // Reset for A*
+      isStart: node.isStart,
+      isFinish: node.isFinish,
+      isBomb: node.isBomb
     }))
   );
-  return newGrid;
 };
 
 export const removeWallsFromGrid = (grid: INode[][]) => {

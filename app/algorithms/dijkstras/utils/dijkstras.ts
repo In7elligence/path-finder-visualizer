@@ -35,8 +35,15 @@ const updateUnvisitedNeighbors = (node: INode, grid: INode[][]) => {
 export const dijkstra = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ): INode[] => {
+  // Reset node states
+  grid.forEach((row) =>
+    row.forEach((node) => {
+      node.previousNode = null;
+    })
+  );
+
   const visitedNodesInOrder: INode[] = [];
   startNode.distance = 0;
   const unvisitedNodes = getAllNodes(grid);
@@ -50,7 +57,11 @@ export const dijkstra = (
     if (closestNode?.distance === Infinity) return visitedNodesInOrder;
 
     if (closestNode) {
-      closestNode.isVisited = true;
+      if (finishNode.isBomb) {
+        closestNode.isPurpleVisited = true;
+      } else {
+        closestNode.isBlueVisited = true;
+      }
       visitedNodesInOrder.push(closestNode);
     }
 

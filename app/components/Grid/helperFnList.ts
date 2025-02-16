@@ -20,7 +20,8 @@ export const createNode = (state: IGridState, col: number, row: number): INode =
     isFinish: row === finishNode.row && col === finishNode.col,
     isBomb: false,
     distance: Infinity,
-    isVisited: false,
+    isBlueVisited: false,
+    isPurpleVisited: false,
     isWall: false,
     isMazeWall: false,
     previousNode: null,
@@ -166,6 +167,7 @@ export const dropSpecialNode = (
       break;
     case "bomb":
       dispatch({ type: "SET_BOMB_NODE", payload: { row, col } });
+      dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: false });
       break;
   }
 };
@@ -232,6 +234,7 @@ export const removeBomb = (state: IGridState, dispatch: React.Dispatch<GridActio
   
   dispatch({ type: "SET_GRID", payload: newGrid});
   dispatch({ type: "SET_BOMB_NODE", payload: { row: -1, col: -1 } });
+  dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: undefined });
 }
 
 export const clearWalls = (
@@ -247,5 +250,6 @@ export const clearWalls = (
 
 export const clearPath = (dispatch: React.Dispatch<GridAction>) => {
   dispatch({ type: "SET_NODES_IN_SHORTEST_PATH", payload: [] });
-  dispatch({ type: "SET_VISITED_NODES", payload: [] });
+  dispatch({ type: "SET_VISITED_PURPLE_NODES", payload: [] });
+  dispatch({ type: "SET_VISITED_BLUE_NODES", payload: [] });
 };

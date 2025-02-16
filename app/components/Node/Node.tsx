@@ -6,11 +6,11 @@ interface INodeProps {
   isFinish: boolean;
   isStart: boolean;
   bombExist: boolean;
-  isBombDefused: boolean;
   isBomb: boolean;
   isWall: boolean;
   isMazeWall: boolean;
-  isVisited: boolean;
+  isBlueVisited: boolean;
+  isPurpleVisited: boolean;
   isShortestPath: boolean;
   isAlgoRunning: boolean;
   onMouseDown: (row: number, col: number) => void;
@@ -21,18 +21,18 @@ interface INodeProps {
   direction: NodeDirection;
   nodeSize: number;
   isMousePressed: boolean;
+  isBombDefused?: boolean;
 }
 
 const Node: React.FC<INodeProps> = ({
   col,
   isFinish,
   isStart,
-  bombExist,
-  isBombDefused,
   isBomb,
   isWall,
   isMazeWall,
-  isVisited,
+  isBlueVisited,
+  isPurpleVisited,
   isShortestPath,
   isAlgoRunning,
   onMouseDown,
@@ -60,10 +60,10 @@ const Node: React.FC<INodeProps> = ({
     ? `node-shortest-path node-arrow-${direction}`
     : isShortestPath
     ? "node-shortest-path"
-    : (bombExist && isVisited && !isBombDefused)
-    ? "visited-while-bomb-active"
-    : isVisited
+    : isBlueVisited
     ? "node-visited"
+    : isPurpleVisited
+    ? "visited-while-bomb-active"
     : (isStart || isFinish) && isMousePressed
     ? "node-dragging-disabled"
     : "";

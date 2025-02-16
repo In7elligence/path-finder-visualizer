@@ -1,3 +1,4 @@
+import { animationManager } from "../algorithms/AnimationManager/AnimationManager";
 import { GridAction } from "../components/Grid/gridReducer";
 import { NODE_SIZE } from "../constants/constants";
 import { INode } from "../interfaces/interfaces";
@@ -80,44 +81,84 @@ export const getNodesInShortestPathOrder = (finishNode: INode | null) => {
 };
 
 export const doesBombExistInGrid = (grid: INode[][]) => {
-  return grid.some((row) =>
-    row.some((node) => node.isBomb && !node.isBombDefused)
-  );
+  return grid.some((row) => row.some((node) => node.isBomb));
 };
 
-export const animateAlgorithm = (
+export const animateBombPhase = (
   visitedNodesInOrder: INode[],
-  nodesInShortestPathOrder: INode[],
-  animationDuration: number,
+  duration: number,
   dispatch: React.Dispatch<GridAction>
-) => {
-  // Calculate total animation time
-  const totalAnimationTime =
-    visitedNodesInOrder.length * animationDuration + // Time for visited nodes
-    nodesInShortestPathOrder.length * animationDuration; // Time for shortest path nodes
+): Promise<void> => {
+  animationManager.clearAllTimeouts();
 
-  // Animate visited nodes
-  for (let i = 0; i < visitedNodesInOrder.length; i++) {
-    setTimeout(() => {
-      dispatch({
-        type: "SET_VISITED_NODES",
-        payload: visitedNodesInOrder.slice(0, i + 1),
-      });
-    }, animationDuration * i);
-  }
+  return new Promise((resolve) => {
+    visitedNodesInOrder.forEach((_, i) => {
+      const timeoutId = window.setTimeout(() => {
+        dispatch({
+          type: "SET_VISITED_PURPLE_NODES",
+          payload: visitedNodesInOrder.slice(0, i + 1),
+        });
+      }, i * duration);
+      animationManager.addTimeout(timeoutId);
+    });
 
-  // Animate shortest path nodes one at a time
-  for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-    setTimeout(() => {
-      // Update the shortest path nodes to include only the current node
-      dispatch({
-        type: "SET_NODES_IN_SHORTEST_PATH",
-        payload: nodesInShortestPathOrder.slice(0, i + 1),
-      });
-    }, visitedNodesInOrder.length * animationDuration + i * animationDuration);
-  }
+    const totalTime = visitedNodesInOrder.length * duration;
+    const bombAnimationFinalTimeout = window.setTimeout(
+      () => resolve(),
+      totalTime
+    );
+    animationManager.addTimeout(bombAnimationFinalTimeout);
+  });
+};
 
-  setTimeout(() => {
-    dispatch({ type: "TOGGLE_ALGO", payload: false });
-  }, totalAnimationTime);
+export const animateNeutralPhase = (
+  visitedNodesInOrder: INode[],
+  duration: number,
+  dispatch: React.Dispatch<GridAction>
+): Promise<void> => {
+  animationManager.clearAllTimeouts();
+
+  return new Promise((resolve) => {
+    visitedNodesInOrder.forEach((_, i) => {
+      const timeoutId = window.setTimeout(() => {
+        dispatch({
+          type: "SET_VISITED_BLUE_NODES",
+          payload: visitedNodesInOrder.slice(0, i + 1),
+        });
+      }, i * duration);
+      animationManager.addTimeout(timeoutId);
+    });
+
+    const totalTime = visitedNodesInOrder.length * duration;
+    const neutralAnimationFinalTimeout = window.setTimeout(
+      () => resolve(),
+      totalTime
+    );
+    animationManager.addTimeout(neutralAnimationFinalTimeout);
+  });
+};
+
+export const animatePath = (
+  PathNodesInOrder: INode[],
+  duration: number,
+  dispatch: React.Dispatch<GridAction>
+): Promise<void> => {
+  animationManager.clearAllTimeouts();
+
+  return new Promise((resolve) => {
+    PathNodesInOrder.forEach((_, i) => {
+      const timeoutId = window.setTimeout(() => {
+        dispatch({
+          type: "SET_NODES_IN_SHORTEST_PATH",
+          payload: PathNodesInOrder.slice(0, i + 1),
+        });
+      }, PathNodesInOrder.length + i * duration);
+      animationManager.addTimeout(timeoutId);
+    });
+
+    // Final resolve
+    const totalTime = PathNodesInOrder.length * duration;
+    const pathFinalTimeout = window.setTimeout(() => resolve(), totalTime);
+    animationManager.addTimeout(pathFinalTimeout);
+  });
 };

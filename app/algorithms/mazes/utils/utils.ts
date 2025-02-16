@@ -54,7 +54,7 @@ export const recursiveDivision = (
   for (let i = startCol; i <= endCol; i++) {
     if (isHorizontal) {
       const node = grid[wallPosition][i];
-      if (i !== passagePosition && !node.isStart && !node.isFinish) {
+      if (i !== passagePosition && !node.isStart && !node.isFinish && !node.isBomb) {
         walls.push(node);
       }
     }
@@ -63,7 +63,7 @@ export const recursiveDivision = (
   for (let i = startRow; i <= endRow; i++) {
     if (!isHorizontal) {
       const node = grid[i][wallPosition];
-      if (i !== passagePosition && !node.isStart && !node.isFinish) {
+      if (i !== passagePosition && !node.isStart && !node.isFinish && !node.isBomb) {
         walls.push(node);
       }
     }

@@ -10,12 +10,12 @@ export interface INode {
   isStart: boolean;
   isFinish: boolean;
   distance: number;
-  isVisited: boolean;
+  isPurpleVisited: boolean;
+  isBlueVisited: boolean;
   isWall: boolean;
   isMazeWall: boolean;
   previousNode: INode | null;
   isBomb: boolean;
-  isBombDefused?: boolean; // Marks if a bomb node is diffused
   isPath?: boolean; // Marks nodes in the guaranteed path
   direction?: NodeDirection;
   gCost?: number; // Cost from start node to this node
@@ -30,11 +30,13 @@ export interface IGridState {
   startNode: { row: number; col: number };
   finishNode: { row: number; col: number };
   bombNode: { row: number; col: number };
-  visitedNodes: INode[];
+  visitedPurpleNodes: INode[];
+  visitedBlueNodes: INode[];
   nodesInShortestPath: INode[];
   selectedAlgorithm: AvailableAlgorithms;
   isAlgoRunning: boolean;
   animationDuration: number;
+  bombDefused?: boolean;
 }
 
 export interface IMenuItem {

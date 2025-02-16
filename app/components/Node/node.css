@@ -69,7 +69,7 @@
 
 .visited-while-bomb-active {
   border: 1px solid rgb(175, 216, 248);
-  animation-name: visitedObjectAnimation;
+  animation-name: visitedPurpleAnimation;
   animation-duration: 1.5s;
   animation-timing-function: ease-out;
   animation-delay: 0;
@@ -166,7 +166,7 @@
   }
 }
 
-@keyframes visitedObjectAnimation {
+@keyframes visitedPurpleAnimation {
   0% {
     transform: scale(.3);
     background-color: rgba(41, 4, 24, 0.75);

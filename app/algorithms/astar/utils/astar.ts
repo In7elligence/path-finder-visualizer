@@ -83,7 +83,11 @@ export const astar = (
     if (closestNode?.fCost === Infinity) return visitedNodesInOrder;
 
     if (closestNode) {
-      closestNode.isVisited = true;
+      if (finishNode.isBomb) {
+        closestNode.isPurpleVisited = true;
+      } else {
+        closestNode.isBlueVisited = true;
+      }
       visitedNodesInOrder.push(closestNode);
     }
 

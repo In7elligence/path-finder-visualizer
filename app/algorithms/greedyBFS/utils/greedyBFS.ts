@@ -17,13 +17,24 @@ export const greedyBFS = (
   // Initialize hCost and reset node states
   for (const row of grid) {
     for (const node of row) {
-      node.hCost = Math.abs(node.row - finishNode.row) + Math.abs(node.col - finishNode.col);
-      node.isVisited = false;
+      node.hCost =
+        Math.abs(node.row - finishNode.row) +
+        Math.abs(node.col - finishNode.col);
+      if (finishNode.isBomb) {
+        node.isPurpleVisited = false;
+      } else {
+        node.isBlueVisited = false;
+      }
       node.previousNode = null;
     }
   }
 
-  startNode.isVisited = true;
+  if (finishNode.isBomb) {
+    startNode.isPurpleVisited = true;
+  } else {
+    startNode.isBlueVisited = true;
+  }
+
   unvisitedNodes.push(startNode);
   visitedNodesInOrder.push(startNode);
 
@@ -37,13 +48,24 @@ export const greedyBFS = (
 
     const neighbors = getUnvisitedNeighbors(currentNode, grid);
     for (const neighbor of neighbors) {
-      if (!neighbor.isVisited && !neighbor.isWall) {
-        neighbor.isVisited = true;
-        neighbor.previousNode = currentNode;
-        visitedNodesInOrder.push(neighbor);
-        unvisitedNodes.push(neighbor);
+      if (finishNode.isBomb) {
+        if (!neighbor.isPurpleVisited && !neighbor.isWall) {
+          neighbor.isPurpleVisited = true;
+          neighbor.previousNode = currentNode;
+          visitedNodesInOrder.push(neighbor);
+          unvisitedNodes.push(neighbor);
 
-        if (neighbor === finishNode) return visitedNodesInOrder;
+          if (neighbor === finishNode) return visitedNodesInOrder;
+        }
+      } else {
+        if (!neighbor.isBlueVisited && !neighbor.isWall) {
+          neighbor.isBlueVisited = true;
+          neighbor.previousNode = currentNode;
+          visitedNodesInOrder.push(neighbor);
+          unvisitedNodes.push(neighbor);
+
+          if (neighbor === finishNode) return visitedNodesInOrder;
+        }
       }
     }
   }
