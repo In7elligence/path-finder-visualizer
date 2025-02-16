@@ -46,6 +46,10 @@ const Node: React.FC<INodeProps> = ({
   nodeSize,
   isMousePressed,
 }) => {
+  /*!
+   *Readability for the extraClassName isn't great, but I cannot be arsed
+   * to add another dependency just for class management.
+  !*/
   const extraClassName =
     isFinish && isShortestPath && bombExist
       ? "node-robot node-shortest-path"
