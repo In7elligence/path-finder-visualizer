@@ -1,4 +1,3 @@
-// utils/greedybfs.ts
 import { INode } from "@/app/interfaces/interfaces";
 import { getUnvisitedNeighbors } from "../../utils/utils";
 
@@ -46,7 +45,7 @@ export const greedyBFS = (
 
     if (currentNode === finishNode) return visitedNodesInOrder;
 
-    const neighbors = getUnvisitedNeighbors(currentNode, grid);
+    const neighbors = getUnvisitedNeighbors(currentNode, grid, finishNode.isBomb);
     for (const neighbor of neighbors) {
       if (finishNode.isBomb) {
         if (!neighbor.isPurpleVisited && !neighbor.isWall) {

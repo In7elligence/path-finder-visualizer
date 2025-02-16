@@ -38,7 +38,7 @@ export const dfs = (
 
     if (currentNode.isWall) continue;
 
-    const neighbors = getUnvisitedNeighbors(currentNode, grid).reverse(); // Reverse for DFS order
+    const neighbors = getUnvisitedNeighbors(currentNode, grid, finishNode.isBomb).reverse(); // Reverse for DFS order
     for (const neighbor of neighbors) {
       if (finishNode.isBomb) {
         if (!neighbor.isBlueVisited && !neighbor.isWall) {

@@ -18,6 +18,7 @@ export interface INode {
   isBomb: boolean;
   isPath?: boolean; // Marks nodes in the guaranteed path
   direction?: NodeDirection;
+  cachedDirection?: NodeDirection;
   gCost?: number; // Cost from start node to this node
   hCost?: number; // Heuristic cost from this node to finish node
   fCost?: number; // Total cost (gCost + hCost)
@@ -35,7 +36,8 @@ export interface IGridState {
   nodesInShortestPath: INode[];
   selectedAlgorithm: AvailableAlgorithms;
   isAlgoRunning: boolean;
-  animationDuration: number;
+  visitedNodeAnimationDuration: number;
+  pathAnimationDuration: number;
   bombDefused?: boolean;
 }
 

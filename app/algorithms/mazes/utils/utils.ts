@@ -8,7 +8,7 @@ export const buildGuaranteedPath = (
   let current = start;
   const path = [];
 
-  // Create direct path first
+  // Create direct path
   while (current.row !== finish.row || current.col !== finish.col) {
     const nextRow =
       current.row < finish.row ? current.row + 1 : current.row - 1;
@@ -374,7 +374,6 @@ export const recursiveDivisionMaze = (
   }
 };
 
-// Helper function
 const isSpecialNode = (node: INode, ...specialNodes: INode[]) => {
   return specialNodes.some(
     (special) => special.row === node.row && special.col === node.col

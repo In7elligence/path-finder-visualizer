@@ -1,49 +1,41 @@
 import { INode } from "../../../interfaces/interfaces";
-import { getUnvisitedNeighbors } from "../../utils/utils";
 
-const getAllNodes = (grid: INode[][]) => {
-  const nodes = [];
-  for (const row of grid) {
-    for (const node of row) {
-      nodes.push(node);
-    }
+class PriorityQueue {
+  private elements: INode[] = [];
+
+  enqueue(node: INode) {
+    this.elements.push(node);
+    this.elements.sort((a, b) => a.fCost! - b.fCost!);
   }
-  return nodes;
-};
+
+  dequeue(): INode | undefined {
+    return this.elements.shift();
+  }
+
+  isEmpty(): boolean {
+    return this.elements.length === 0;
+  }
+
+  contains(node: INode): boolean {
+    return this.elements.some((n) => n.row === node.row && n.col === node.col);
+  }
+}
 
 // Calculate the Manhattan distance heuristic
 const getManhattanDistance = (nodeA: INode, nodeB: INode) => {
   return Math.abs(nodeA.row - nodeB.row) + Math.abs(nodeA.col - nodeB.col);
 };
 
-// total cost (f = g + h)
-const sortNodesByTotalCost = (unvisitedNodes: INode[]) => {
-  unvisitedNodes.sort(
-    (nodeA, nodeB) => (nodeA.fCost || 0) - (nodeB.fCost || 0)
-  );
-};
+const getUnvisitedNeighbors = (node: INode, grid: INode[][]) => {
+  const neighbors = [];
+  const { col, row } = node;
 
-// Update unvisited neighbors with new g, h, and f costs
-const updateUnvisitedNeighbors = (
-  node: INode,
-  grid: INode[][],
-  finishNode: INode
-) => {
-  const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
+  if (row > 0) neighbors.push(grid[row - 1][col]);
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (col > 0) neighbors.push(grid[row][col - 1]);
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
-  for (const neighbor of unvisitedNeighbors) {
-    const gCost = (node.gCost || 0) + 1; // Each step has a cost of 1
-    const hCost = getManhattanDistance(neighbor, finishNode);
-    const fCost = gCost + hCost;
-
-    // If this path to the neighbor is better, update the neighbor
-    if (fCost < (neighbor.fCost || 0)) {
-      neighbor.gCost = gCost;
-      neighbor.hCost = hCost;
-      neighbor.fCost = fCost;
-      neighbor.previousNode = node;
-    }
-  }
+  return neighbors;
 };
 
 /*!
@@ -56,44 +48,56 @@ export const astar = (
   startNode: INode,
   finishNode: INode
 ): INode[] => {
+  const openSet = new PriorityQueue();
+  const closedSet = new Set<string>();
   const visitedNodesInOrder: INode[] = [];
 
-  // Initialize costs for all nodes
-  for (const row of grid) {
-    for (const node of row) {
+  // Initialize grid
+  grid.forEach((row) =>
+    row.forEach((node) => {
       node.gCost = Infinity;
       node.hCost = Infinity;
       node.fCost = Infinity;
-    }
-  }
+      node.previousNode = null;
+    })
+  );
 
-  // Initialize costs for the start node
   startNode.gCost = 0;
   startNode.hCost = getManhattanDistance(startNode, finishNode);
-  startNode.fCost = startNode.gCost + startNode.hCost;
+  startNode.fCost = startNode.hCost;
+  openSet.enqueue(startNode);
 
-  const unvisitedNodes = getAllNodes(grid);
+  while (!openSet.isEmpty()) {
+    const currentNode = openSet.dequeue();
+    if (!currentNode) break;
 
-  while (unvisitedNodes.length > 0) {
-    sortNodesByTotalCost(unvisitedNodes);
-    const closestNode = unvisitedNodes.shift();
+    // Add to closed set early to prevent reprocessing
+    closedSet.add(`${currentNode.row},${currentNode.col}`);
+    visitedNodesInOrder.push(currentNode);
 
-    // If the closest node is a wall or unreachable, skip it
-    if (closestNode?.isWall) continue;
-    if (closestNode?.fCost === Infinity) return visitedNodesInOrder;
+    // Early exit when reaching finish
+    if (currentNode === finishNode) break;
 
-    if (closestNode) {
-      if (finishNode.isBomb) {
-        closestNode.isPurpleVisited = true;
-      } else {
-        closestNode.isBlueVisited = true;
+    const neighbors = getUnvisitedNeighbors(currentNode, grid);
+
+    for (const neighbor of neighbors) {
+      if (neighbor.isWall || closedSet.has(`${neighbor.row},${neighbor.col}`)) {
+        continue;
       }
-      visitedNodesInOrder.push(closestNode);
+
+      const tentativeGCost = currentNode.gCost! + 1;
+
+      if (tentativeGCost < neighbor.gCost!) {
+        neighbor.previousNode = currentNode;
+        neighbor.gCost = tentativeGCost;
+        neighbor.hCost = getManhattanDistance(neighbor, finishNode);
+        neighbor.fCost = neighbor.gCost + neighbor.hCost;
+
+        if (!openSet.contains(neighbor)) {
+          openSet.enqueue(neighbor);
+        }
+      }
     }
-
-    if (closestNode === finishNode) return visitedNodesInOrder;
-
-    if (closestNode) updateUnvisitedNeighbors(closestNode, grid, finishNode);
   }
 
   return visitedNodesInOrder;

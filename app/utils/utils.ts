@@ -22,6 +22,7 @@ export const calculateGridDimensions = (nodeSize: number) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
+  // TODO: Make this dynamic by taking height of menu and calculate using that instead of fixed numbers
   const cols = Math.floor(width / nodeSize) - 1; // -1 to account for potential overflow
   const rows = Math.floor(height / nodeSize) - 3; // -3 to account for potential overflow
 
@@ -68,12 +69,16 @@ export const getNodesInShortestPathOrder = (finishNode: INode | null) => {
 
     if (next.row < current.row) {
       current.direction = "up";
+      current.cachedDirection = "up";
     } else if (next.row > current.row) {
       current.direction = "down";
+      current.cachedDirection = "down";
     } else if (next.col < current.col) {
       current.direction = "left";
+      current.cachedDirection = "left";
     } else if (next.col > current.col) {
       current.direction = "right";
+      current.cachedDirection = "right";
     }
   }
 
@@ -148,6 +153,34 @@ export const animatePath = (
   return new Promise((resolve) => {
     PathNodesInOrder.forEach((_, i) => {
       const timeoutId = window.setTimeout(() => {
+        const currentNode = PathNodesInOrder[i];
+        const previousNode = PathNodesInOrder[i - 1];
+        const latestDirection = previousNode?.direction;
+
+        if (previousNode && i < PathNodesInOrder.length) {
+          previousNode.direction = undefined;
+        }
+
+        if (currentNode.direction === undefined) {
+          currentNode.direction = currentNode.cachedDirection;
+        }
+
+        if (currentNode.isFinish) {
+          console.log({
+            currentNode,
+            direction: currentNode.direction
+          })
+        }
+
+        if (currentNode && currentNode.isFinish && i === PathNodesInOrder.length - 1) {
+          previousNode.direction = latestDirection;
+        }
+        
+        if (currentNode.isBomb) {
+          // Mark bomb as defused
+          dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: true });
+        }
+
         dispatch({
           type: "SET_NODES_IN_SHORTEST_PATH",
           payload: PathNodesInOrder.slice(0, i + 1),

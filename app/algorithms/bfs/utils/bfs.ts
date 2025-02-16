@@ -38,7 +38,7 @@ export const bfs = (
 
     if (currentNode.isWall) continue;
 
-    const neighbors = getUnvisitedNeighbors(currentNode, grid);
+    const neighbors = getUnvisitedNeighbors(currentNode, grid, finishNode.isBomb);
     for (const neighbor of neighbors) {
       if (finishNode.isBomb) {
         if (!neighbor.isPurpleVisited && !neighbor.isWall) {

@@ -29,6 +29,8 @@ const Node: React.FC<INodeProps> = ({
   isFinish,
   isStart,
   isBomb,
+  isBombDefused,
+  bombExist,
   isWall,
   isMazeWall,
   isBlueVisited,
@@ -46,8 +48,12 @@ const Node: React.FC<INodeProps> = ({
 }) => {
   const extraClassName = isFinish
     ? "node-finish"
+    : (isStart && bombExist)
+    ? "node-robot"
     : isStart
     ? "node-start"
+    : (isBomb && isBombDefused)
+    ? "node-bomb defused-bomb"
     : isBomb
     ? "node-bomb"
     : isWall && isMazeWall
@@ -56,7 +62,9 @@ const Node: React.FC<INodeProps> = ({
     ? "node-wall"
     : isMazeWall
     ? "maze-wall"
-    : isShortestPath && direction
+    : (isShortestPath && direction && bombExist)
+    ? "node-robot"
+    : (isShortestPath && direction)
     ? `node-shortest-path node-arrow-${direction}`
     : isShortestPath
     ? "node-shortest-path"
@@ -96,17 +104,17 @@ const Node: React.FC<INodeProps> = ({
         height: `${nodeSize}px`,
       }}
       onMouseDown={(e) => {
-        if (e.button !== 0 || isAlgoRunning) return; // Prevent interaction if the algorithm is running
+        if (e.button !== 0 || isAlgoRunning) return;
         onMouseDown(row, col);
       }}
       onMouseEnter={() => {
-        if (isAlgoRunning) return; // Prevent interaction if the algorithm is running
+        if (isAlgoRunning) return;
         onMouseEnter(row, col);
       }}
       onMouseUp={() => onMouseUp()}
-      draggable={(isFinish || isStart || isBomb) && !isAlgoRunning} // Disable dragging if the algorithm is running
+      draggable={(isFinish || isStart || isBomb) && !isAlgoRunning}
       onDragStart={handleDragStart}
-      onDragOver={(e) => e.preventDefault()} // Allow drop
+      onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
     />
   );

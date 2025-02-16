@@ -19,7 +19,8 @@ export const visualizeAstar = async (
     startNode,
     finishNode,
     bombNode: initBombNode,
-    animationDuration,
+    visitedNodeAnimationDuration,
+    pathAnimationDuration,
     isAlgoRunning,
   } = state;
 
@@ -40,35 +41,31 @@ export const visualizeAstar = async (
   let bombNode: INode | undefined;
 
   if (initBombNode.row !== -1 && initBombNode.col !== -1) {
+    dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: false });
+
     bombNode = newGrid[initBombNode.row][initBombNode.col];
   }
 
   if (bombNode) {
-    // Phase 1: Start → Bomb
     const purpleVisitedNodes = astar(newGrid, start, bombNode);
-    await animateBombPhase(purpleVisitedNodes, animationDuration, dispatch);
-
-    // Mark bomb as defused
-    dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: true });
+    await animateBombPhase(purpleVisitedNodes, visitedNodeAnimationDuration, dispatch);
 
     const shortestPathToBomb = getNodesInShortestPathOrder(bombNode);
 
-    // Phase 2: Bomb → Finish (no grid reset!)
     const bombAsStart = newGrid[bombNode.row][bombNode.col];
     const blueVisitedNodes = astar(newGrid, bombAsStart, finish);
-    await animateNeutralPhase(blueVisitedNodes, animationDuration, dispatch);
+    await animateNeutralPhase(blueVisitedNodes, visitedNodeAnimationDuration, dispatch);
 
     const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish);
 
-    // Get full path from finish node
     const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish];
-    await animatePath(fullPath, animationDuration, dispatch);
+    
+    await animatePath(fullPath, pathAnimationDuration, dispatch);
   } else {
-    // No bomb case
     const visitedNodes = astar(newGrid, start, finish);
     const path = getNodesInShortestPathOrder(finish);
-    await animateNeutralPhase(visitedNodes, animationDuration, dispatch);
-    await animatePath(path, animationDuration, dispatch);
+    await animateNeutralPhase(visitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animatePath(path, pathAnimationDuration, dispatch);
   }
 
   dispatch({ type: "TOGGLE_ALGO", payload: false });

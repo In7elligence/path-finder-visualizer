@@ -1,4 +1,3 @@
-// utils/visualizeGreedyBFS.ts
 import { IGridState, INode } from "@/app/interfaces/interfaces";
 import { GridAction } from "@/app/components/Grid/gridReducer";
 import {
@@ -15,7 +14,15 @@ export const visualizeGreedyBFS = async (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>
 ) => {
-  const { grid, startNode, finishNode, bombNode: initBombNode, animationDuration, isAlgoRunning } = state;
+  const {
+    grid,
+    startNode,
+    finishNode,
+    bombNode: initBombNode,
+    visitedNodeAnimationDuration,
+    pathAnimationDuration,
+    isAlgoRunning,
+  } = state;
 
   if (isAlgoRunning) return;
 
@@ -30,41 +37,47 @@ export const visualizeGreedyBFS = async (
   dispatch({ type: "TOGGLE_ALGO", payload: true });
 
   const start = newGrid[startNode.row][startNode.col];
-    const finish = newGrid[finishNode.row][finishNode.col];
-    let bombNode: INode | undefined;
-  
-    if (initBombNode.row !== -1 && initBombNode.col !== -1) {
-      bombNode = newGrid[initBombNode.row][initBombNode.col];
-    }
-  
-    if (bombNode) {
-      // Phase 1: Start → Bomb
-      const purpleVisitedNodes = greedyBFS(newGrid, start, bombNode);
-      await animateBombPhase(purpleVisitedNodes, animationDuration, dispatch);
-  
-      // Mark bomb as defused
-      dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: true });
-  
-      const shortestPathToBomb = getNodesInShortestPathOrder(bombNode)
-  
-      // Phase 2: Bomb → Finish (no grid reset!)
-      const bombAsStart = newGrid[bombNode.row][bombNode.col];
-      const blueVisitedNodes = greedyBFS(newGrid, bombAsStart, finish);
-      await animateNeutralPhase(blueVisitedNodes, animationDuration, dispatch);
-  
-      const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish)
-  
-      // Get full path from finish node
-      const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish];
-      await animatePath(fullPath, animationDuration, dispatch);
-    } else {
-  
-      // No bomb case
-      const visitedNodes = greedyBFS(newGrid, start, finish);
-      const path = getNodesInShortestPathOrder(finish);
-      await animateNeutralPhase(visitedNodes, animationDuration, dispatch);
-      await animatePath(path, animationDuration, dispatch);
-    }
-  
-    dispatch({ type: "TOGGLE_ALGO", payload: false });
+  const finish = newGrid[finishNode.row][finishNode.col];
+  let bombNode: INode | undefined;
+
+  if (initBombNode.row !== -1 && initBombNode.col !== -1) {
+    dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: false });
+
+    bombNode = newGrid[initBombNode.row][initBombNode.col];
+  }
+
+  if (bombNode) {
+    const purpleVisitedNodes = greedyBFS(newGrid, start, bombNode);
+    await animateBombPhase(
+      purpleVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
+
+    const shortestPathToBomb = getNodesInShortestPathOrder(bombNode);
+
+    const bombAsStart = newGrid[bombNode.row][bombNode.col];
+    const blueVisitedNodes = greedyBFS(newGrid, bombAsStart, finish);
+    await animateNeutralPhase(
+      blueVisitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
+
+    const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish);
+
+    const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish];
+    await animatePath(fullPath, pathAnimationDuration, dispatch);
+  } else {
+    const visitedNodes = greedyBFS(newGrid, start, finish);
+    const path = getNodesInShortestPathOrder(finish);
+    await animateNeutralPhase(
+      visitedNodes,
+      visitedNodeAnimationDuration,
+      dispatch
+    );
+    await animatePath(path, pathAnimationDuration, dispatch);
+  }
+
+  dispatch({ type: "TOGGLE_ALGO", payload: false });
 };

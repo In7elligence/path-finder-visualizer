@@ -18,6 +18,13 @@
   background-size: contain;
 }
 
+.node-robot {
+  background-image: url("/images/robot.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
 .node-wall {
   background-color: rgb(12, 53, 71);
 }
@@ -65,6 +72,10 @@
   background-position: center;
   background-size: 60%;
   background-color: #ffffff;
+}
+
+.defused-bomb {
+  opacity: 0.5;
 }
 
 .visited-while-bomb-active {

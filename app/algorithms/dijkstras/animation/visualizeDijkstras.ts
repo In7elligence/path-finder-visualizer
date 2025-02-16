@@ -19,15 +19,15 @@ export const visualizeDijkstras = async (
     startNode,
     finishNode,
     bombNode: initBombNode,
-    animationDuration,
-    isAlgoRunning
+    visitedNodeAnimationDuration,
+    pathAnimationDuration,
+    isAlgoRunning,
   } = state;
 
   if (isAlgoRunning) return;
 
   animationManager.clearAllTimeouts();
 
-  // Reset grid and initialize
   const newGrid = resetGridForAlgorithm(grid);
 
   dispatch({ type: "SET_GRID", payload: newGrid });
@@ -41,36 +41,32 @@ export const visualizeDijkstras = async (
   let bombNode: INode | undefined;
 
   if (initBombNode.row !== -1 && initBombNode.col !== -1) {
+    dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: false });
+    
     bombNode = newGrid[initBombNode.row][initBombNode.col];
   }
 
   if (bombNode) {
-    // Phase 1: Start → Bomb
     const purpleVisitedNodes = dijkstra(newGrid, start, bombNode);
-    await animateBombPhase(purpleVisitedNodes, animationDuration, dispatch);
+    await animateBombPhase(purpleVisitedNodes, visitedNodeAnimationDuration, dispatch);
 
-    // Mark bomb as defused
-    dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: true });
+    const shortestPathToBomb = getNodesInShortestPathOrder(bombNode);
 
-    const shortestPathToBomb = getNodesInShortestPathOrder(bombNode)
-
-    // Phase 2: Bomb → Finish (no grid reset!)
     const bombAsStart = newGrid[bombNode.row][bombNode.col];
-    
+
     const blueVisitedNodes = dijkstra(newGrid, bombAsStart, finish);
-    await animateNeutralPhase(blueVisitedNodes, animationDuration, dispatch);
+    await animateNeutralPhase(blueVisitedNodes, visitedNodeAnimationDuration, dispatch);
 
-    const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish)
+    const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish);
 
-    // Get full path: start -> bomb -> finish
-    const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish];
-    await animatePath(fullPath, animationDuration, dispatch);
+    const fullPath = [...shortestPathToBomb, ...shortestPathFromBombTofinish]
+    
+    await animatePath(fullPath, pathAnimationDuration, dispatch);
   } else {
-    // No bomb case
     const visitedNodes = dijkstra(newGrid, start, finish);
     const path = getNodesInShortestPathOrder(finish);
-    await animateNeutralPhase(visitedNodes, animationDuration, dispatch);
-    await animatePath(path, animationDuration, dispatch);
+    await animateNeutralPhase(visitedNodes, visitedNodeAnimationDuration, dispatch);
+    await animatePath(path, pathAnimationDuration, dispatch);
   }
 
   dispatch({ type: "TOGGLE_ALGO", payload: false });

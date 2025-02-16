@@ -82,7 +82,6 @@ const Nav: React.FC<INavProps> = ({
             <button
               key={item.name}
               onClick={
-                // stupid type fix, TODO: figure out better way...
                 item.onClick as unknown as
                   | React.MouseEventHandler<HTMLButtonElement>
                   | undefined

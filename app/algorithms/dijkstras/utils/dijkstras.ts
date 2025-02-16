@@ -22,8 +22,8 @@ const sortNodesByDistance = (unvisitedNodes: INode[]) => {
   unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
 };
 
-const updateUnvisitedNeighbors = (node: INode, grid: INode[][]) => {
-  const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
+const updateUnvisitedNeighbors = (node: INode, grid: INode[][], isBombPhase: boolean) => {
+  const unvisitedNeighbors = getUnvisitedNeighbors(node, grid, isBombPhase);
 
   for (const neighbor of unvisitedNeighbors) {
     neighbor.distance = node.distance + 1;
@@ -31,7 +31,7 @@ const updateUnvisitedNeighbors = (node: INode, grid: INode[][]) => {
   }
 };
 
-// by backtracking from the finish node.
+// By backtracking from the finish node.
 export const dijkstra = (
   grid: INode[][],
   startNode: INode,
@@ -41,6 +41,7 @@ export const dijkstra = (
   grid.forEach((row) =>
     row.forEach((node) => {
       node.previousNode = null;
+      node.distance = Infinity;
     })
   );
 
@@ -50,7 +51,7 @@ export const dijkstra = (
 
   while (unvisitedNodes.length > 0) {
     sortNodesByDistance(unvisitedNodes);
-    const closestNode = unvisitedNodes.shift();
+    const closestNode = unvisitedNodes.shift()!;
 
     // If the closest node is a wall or unreachable, skip it
     if (closestNode?.isWall) continue;
@@ -67,7 +68,7 @@ export const dijkstra = (
 
     if (closestNode === finishNode) return visitedNodesInOrder;
 
-    if (closestNode) updateUnvisitedNeighbors(closestNode, grid);
+    if (closestNode) updateUnvisitedNeighbors(closestNode, grid, finishNode.isBomb);
   }
 
   return visitedNodesInOrder;
