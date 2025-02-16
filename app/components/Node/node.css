@@ -25,6 +25,10 @@
   background-size: contain;
 }
 
+.node-yellow-color {
+  background-color: rgb(255, 254, 106);;
+}
+
 .node-wall {
   background-color: rgb(12, 53, 71);
 }

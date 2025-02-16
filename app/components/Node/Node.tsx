@@ -48,19 +48,21 @@ const Node: React.FC<INodeProps> = ({
 }) => {
   const extraClassName =
     isFinish && isShortestPath && bombExist
-      ? "node-robot"
+      ? "node-robot node-shortest-path"
       : isShortestPath && direction && bombExist
       ? "node-robot"
       : isShortestPath && direction
       ? `node-shortest-path node-arrow-${direction}`
+      : isFinish && isShortestPath
+      ? "node-finish node-shortest-path"
       : isFinish
       ? "node-finish"
       : isStart && bombExist
       ? "node-robot"
       : isStart
       ? "node-start"
-      : isBomb && isBombDefused
-      ? "node-bomb defused-bomb"
+      : isBomb && isBombDefused && isShortestPath
+      ? "node-bomb defused-bomb node-shortest-path"
       : isBomb
       ? "node-bomb"
       : isWall && isMazeWall
