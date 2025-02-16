@@ -166,15 +166,12 @@ export const animatePath = (
         }
 
         if (currentNode.isFinish) {
-          console.log({
-            currentNode,
-            direction: currentNode.direction
-          })
+          currentNode.direction = latestDirection;
         }
 
-        if (currentNode && currentNode.isFinish && i === PathNodesInOrder.length - 1) {
-          previousNode.direction = latestDirection;
-        }
+        // if (currentNode && currentNode.isFinish && i === PathNodesInOrder.length - 1) {
+        //   previousNode.direction = latestDirection;
+        // }
         
         if (currentNode.isBomb) {
           // Mark bomb as defused

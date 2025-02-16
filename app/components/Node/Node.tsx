@@ -46,35 +46,36 @@ const Node: React.FC<INodeProps> = ({
   nodeSize,
   isMousePressed,
 }) => {
-  const extraClassName = isFinish
-    ? "node-finish"
-    : (isStart && bombExist)
-    ? "node-robot"
-    : isStart
-    ? "node-start"
-    : (isBomb && isBombDefused)
-    ? "node-bomb defused-bomb"
-    : isBomb
-    ? "node-bomb"
-    : isWall && isMazeWall
-    ? "node-wall maze-wall"
-    : isWall
-    ? "node-wall"
-    : isMazeWall
-    ? "maze-wall"
-    : (isShortestPath && direction && bombExist)
-    ? "node-robot"
-    : (isShortestPath && direction)
-    ? `node-shortest-path node-arrow-${direction}`
-    : isShortestPath
-    ? "node-shortest-path"
-    : isBlueVisited
-    ? "node-visited"
-    : isPurpleVisited
-    ? "visited-while-bomb-active"
-    : (isStart || isFinish) && isMousePressed
-    ? "node-dragging-disabled"
-    : "";
+  const extraClassName =
+    isFinish && isShortestPath && bombExist
+      ? "node-robot"
+      : isShortestPath && direction && bombExist
+      ? "node-robot"
+      : isShortestPath && direction
+      ? `node-shortest-path node-arrow-${direction}`
+      : isFinish
+      ? "node-finish"
+      : isStart
+      ? "node-start"
+      : isBomb && isBombDefused
+      ? "node-bomb defused-bomb"
+      : isBomb
+      ? "node-bomb"
+      : isWall && isMazeWall
+      ? "node-wall maze-wall"
+      : isWall
+      ? "node-wall"
+      : isMazeWall
+      ? "maze-wall"
+      : isShortestPath
+      ? "node-shortest-path"
+      : isBlueVisited
+      ? "node-visited"
+      : isPurpleVisited
+      ? "visited-while-bomb-active"
+      : (isStart || isFinish) && isMousePressed
+      ? "node-dragging-disabled"
+      : "";
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     if (isAlgoRunning || isMousePressed) {
