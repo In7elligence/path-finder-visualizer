@@ -16,7 +16,14 @@ type NodeState = Pick<
   | "isMousePressed"
 >;
 
-// This still isn't great for maintainability...
+/*! 
+ * This still isn't great for maintainability...
+ *
+ * The logic sort of has to be thought of in reverse.
+ * What is the last case logic and work your way down
+ * from that to the first case logic. This is because
+ * order of specificity matters (yay, CSS!)
+!*/
 export const getNodeClasses = (state: NodeState): string => {
   const conditions = [
     {
