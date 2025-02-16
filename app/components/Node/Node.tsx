@@ -1,7 +1,8 @@
 import React from "react";
 import "./node.css";
 import { NodeDirection, SpecialNode } from "@/app/types/types";
-interface INodeProps {
+import { getNodeClasses } from "./helperFnList";
+export interface INodeProps {
   col: number;
   isFinish: boolean;
   isStart: boolean;
@@ -46,44 +47,20 @@ const Node: React.FC<INodeProps> = ({
   nodeSize,
   isMousePressed,
 }) => {
-  /*!
-   *Readability for the extraClassName isn't great, but I cannot be arsed
-   * to add another dependency just for class management.
-  !*/
-  const extraClassName =
-    isFinish && isShortestPath && bombExist
-      ? "node-robot node-shortest-path"
-      : isShortestPath && direction && bombExist
-      ? "node-robot"
-      : isShortestPath && direction
-      ? `node-shortest-path node-arrow-${direction}`
-      : isFinish && isShortestPath
-      ? "node-finish node-shortest-path"
-      : isFinish
-      ? "node-finish"
-      : isStart && bombExist
-      ? "node-robot"
-      : isStart
-      ? "node-start"
-      : isBomb && isBombDefused && isShortestPath
-      ? "node-bomb defused-bomb node-shortest-path"
-      : isBomb
-      ? "node-bomb"
-      : isWall && isMazeWall
-      ? "node-wall maze-wall"
-      : isWall
-      ? "node-wall"
-      : isMazeWall
-      ? "maze-wall"
-      : isShortestPath
-      ? "node-shortest-path"
-      : isBlueVisited
-      ? "node-visited"
-      : isPurpleVisited
-      ? "visited-while-bomb-active"
-      : (isStart || isFinish) && isMousePressed
-      ? "node-dragging-disabled"
-      : "";
+  const extraClassName = getNodeClasses({
+    isFinish,
+    isShortestPath,
+    bombExist,
+    direction,
+    isStart,
+    isBomb,
+    isBombDefused,
+    isWall,
+    isMazeWall,
+    isBlueVisited,
+    isPurpleVisited,
+    isMousePressed,
+  });
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     if (isAlgoRunning || isMousePressed) {
