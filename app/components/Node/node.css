@@ -154,18 +154,9 @@
   animation-play-state: running;
 }
 
-/*!
- * transform: rotateZ(360deg) with @keyframes animations:
- *
- * his will composite the elements into their own layers
- * (by tricking the browser into thinking it will be doing 3D transforms) and the browser should,
- * in most cases, take advantage of GPU acceleration, lessening the burden on the CPU.
-!*/
-
 @keyframes visitedBlueAnimation {
   0% {
     transform: scale(0.3);
-    transform: rotateZ(360deg);
     background-color: rgba(0, 0, 66, 0.75);
     border-radius: 100%;
   }
@@ -176,13 +167,11 @@
 
   75% {
     transform: scale(1.2);
-    transform: rotateZ(360deg);
     background-color: rgba(0, 217, 159, 0.75);
   }
 
   100% {
     transform: scale(1);
-    transform: rotateZ(360deg);
     background-color: rgba(0, 190, 218, 0.75);
   }
 }
@@ -190,7 +179,6 @@
 @keyframes visitedPurpleAnimation {
   0% {
     transform: scale(0.3);
-    transform: rotateZ(360deg);
     background-color: rgba(41, 4, 24, 0.75);
     border-radius: 100%;
   }
@@ -201,13 +189,11 @@
 
   75% {
     transform: scale(1.2);
-    transform: rotateZ(360deg);
     background-color: rgba(216, 5, 141, 0.75);
   }
 
   100% {
     transform: scale(1);
-    transform: rotateZ(360deg);
     background-color: rgba(178, 67, 255, 0.75);
   }
 }
@@ -215,19 +201,16 @@
 @keyframes shortestPath {
   0% {
     transform: scale(0.6);
-    transform: rotateZ(360deg);
     background-color: rgb(255, 254, 106);
   }
 
   50% {
     transform: scale(1.2);
-    transform: rotateZ(360deg);
     background-color: rgb(255, 254, 106);
   }
 
   100% {
     transform: scale(1);
-    transform: rotateZ(360deg);
     background-color: rgb(255, 254, 106);
   }
 }
@@ -235,19 +218,16 @@
 @keyframes wallAnimation {
   0% {
     transform: scale(0.3);
-    transform: rotateZ(360deg);
     background-color: rgb(12, 53, 71);
   }
 
   50% {
     transform: scale(1.2);
-    transform: rotateZ(360deg);
     background-color: rgb(12, 53, 71);
   }
 
   100% {
     transform: scale(1);
-    transform: rotateZ(360deg);
     background-color: rgb(12, 53, 71);
   }
 }
