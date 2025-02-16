@@ -282,7 +282,7 @@ const Grid: React.FC = () => {
         onAlgorithmChange={handleAlgorithmChange}
       />
       <div
-        className="grid"
+        className="grid mx-auto mt-3 md:mt-auto"
         style={{
           gridTemplateColumns: `repeat(${gridDimensions.cols}, ${nodeSize}px)`,
           gridTemplateRows: `repeat(${gridDimensions.rows}, ${nodeSize}px)`,
