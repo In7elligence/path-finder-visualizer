@@ -19,9 +19,9 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Path Finder Visualizer",
+  title: "Pathfinding Visualizer",
   description:
-    "An algorithmic path finder visualizer made by Martin Beck Andersen in Next.js",
+    "An algorithmic pathfinding visualizer made by Martin Beck Andersen in Next.js",
 };
 
 export default function RootLayout({

@@ -126,7 +126,7 @@ const Nav: React.FC<INavProps> = ({
       <div className="container mx-auto flex justify-between md:justify-start items-center gap-12 4k:gap-40">
         {/* Logo */}
         <div className="text-white text-lg 4k:text-4xl font-semibold">
-          Path Finder Visualizer
+          Pathfinding Visualizer
         </div>
 
         {/* Burger Menu Button (Visible on Mobile) */}
