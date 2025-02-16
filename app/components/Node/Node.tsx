@@ -46,9 +46,6 @@ const Node: React.FC<INodeProps> = ({
   nodeSize,
   isMousePressed,
 }) => {
-  if (isFinish && isWall) {
-    console.log("is finish and wall");
-  }
   const extraClassName =
     isFinish && isShortestPath && bombExist
       ? "node-robot"
@@ -58,6 +55,8 @@ const Node: React.FC<INodeProps> = ({
       ? `node-shortest-path node-arrow-${direction}`
       : isFinish
       ? "node-finish"
+      : (isStart && bombExist)
+      ? "node-robot"
       : isStart
       ? "node-start"
       : isBomb && isBombDefused
