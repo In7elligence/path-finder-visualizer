@@ -1,26 +1,17 @@
 import { IMenuItem } from "@/app/interfaces/interfaces";
-import { AvailableAlgorithms, AvailableMazes } from "@/app/types/types";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import SimpleButton from "../generic/SimpleButton/SimpleButton";
 import CustomSelect from "../generic/CustomSelect/CustomSelect";
 
 interface INavProps {
   menuItems: IMenuItem[];
   isAlgoRunning?: boolean;
-  onAlgorithmChange?: (value: AvailableAlgorithms) => void;
-  onMazeChange?: (value: AvailableMazes) => void;
 }
 
-const Nav: React.FC<INavProps> = ({
-  menuItems,
-  isAlgoRunning,
-  onAlgorithmChange,
-}) => {
+const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const btnColorScheme = useMemo(
     () => (isAlgoRunning ? "red" : "teal"),
@@ -60,66 +51,52 @@ const Nav: React.FC<INavProps> = ({
       text-center
       4k:text-3xl
     `;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnColorScheme]);
 
-  const renderMenuItem = useCallback(
-    (item: IMenuItem) => {
-      switch (item.type) {
-        case "simpleButton":
-          return (
-            <SimpleButton
-              key={item.name}
-              text={item.name}
-              onClick={
-                item.onClick as unknown as
-                  | React.MouseEventHandler<HTMLButtonElement>
-                  | undefined
-              }
-              isAlgoRunning={isAlgoRunning}
-            />
-          );
-        case "button":
-          return (
-            <button
-              key={item.name}
-              onClick={
-                item.onClick as unknown as
-                  | React.MouseEventHandler<HTMLButtonElement>
-                  | undefined
-              }
-              className={btnClasses}
-              disabled={isAlgoRunning}
-            >
-              {item.name}
-            </button>
-          );
-        case "dropdown":
-          return (
-            <CustomSelect
-              key={item.name}
-              options={item.children?.map((child) => ({
-                name: child.name,
-                value: child.value,
-              }))}
-              defaultValue={item.value}
-              onChange={(value) => {
-                if (item.name === "Mazes" && item.onClick) {
-                  item.onClick(value);
-                } else if (item.name === "Algorithm" && onAlgorithmChange) {
-                  onAlgorithmChange(value as AvailableAlgorithms);
-                }
-              }}
-              immediateAction={item.name === "Mazes"}
-              isAlgoRunning={isAlgoRunning}
-            />
-          );
-        default:
-          return null;
-      }
-    },
-    [btnClasses, isAlgoRunning, onAlgorithmChange]
-  );
+  const renderMenuItem = (item: IMenuItem) => {
+    switch (item.type) {
+      case "simpleButton":
+        return (
+          <SimpleButton
+            key={item.name}
+            text={item.name}
+            onClick={item.onClick}
+            isAlgoRunning={isAlgoRunning}
+          />
+        );
+
+      case "button":
+        return (
+          <button
+            key={item.name}
+            onClick={item.onClick}
+            className={btnClasses}
+            disabled={isAlgoRunning}
+          >
+            {item.name}
+          </button>
+        );
+
+      case "dropdown":
+        return (
+          <CustomSelect
+            key={item.name}
+            options={item.children?.map((child) => ({
+              name: child.name,
+              value: child.value,
+            })) || []}
+            value={item.value}
+            placeholder={item.name}
+            onChange={item.onChange}
+            disabled={isAlgoRunning}
+            formatDisplayText={item.formatDisplayText}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative">
@@ -129,25 +106,25 @@ const Nav: React.FC<INavProps> = ({
           Pathfinding Visualizer
         </div>
 
-        {/* Burger Menu Button (Visible on Mobile) */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
             className="text-white focus:outline-none"
+            aria-label="Toggle menu"
           >
-            {!isMenuOpen ? (
+            {isMenuOpen ? (
               <svg
                 className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             ) : (
@@ -156,34 +133,32 @@ const Nav: React.FC<INavProps> = ({
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16m-7 6h7"
                 />
               </svg>
             )}
           </button>
         </div>
 
-        {/* Desktop Menu (Hidden on Mobile, Visible on Desktop) */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex space-x-4 gap-8 4k:gap-24">
-          {menuItems.map((item) => renderMenuItem(item))}
+          {menuItems.map(renderMenuItem)}
         </div>
       </div>
 
-      {/* Mobile Menu (Hidden by Default) */}
+      {/* Mobile Menu */}
       <div
         className={`md:hidden ${
           isMenuOpen ? "block" : "hidden"
-        } bg-gray-800 absolute left-0`}
-        style={{ width: "100vw", zIndex: "1" }}
+        } bg-gray-800 absolute left-0 w-full z-10`}
       >
         <div className="flex flex-col-reverse space-y-2 p-4">
-          {menuItems.map((item) => renderMenuItem(item))}
+          {menuItems.map(renderMenuItem)}
         </div>
       </div>
     </nav>

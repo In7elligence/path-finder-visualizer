@@ -2,35 +2,30 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 
 interface DropdownOption {
   name: string;
-  value: string | undefined;
+  value: string;
 }
 
 interface CustomSelectProps {
-  options: DropdownOption[] | undefined;
-  onChange: (value: string) => void;
-  defaultValue?: string;
-  immediateAction?: boolean;
-  isAlgoRunning?: boolean;
+  options: DropdownOption[];
+  value?: string;
+  placeholder?: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
+  formatDisplayText?: (selectedOption: DropdownOption | undefined) => string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
-  defaultValue,
+  value,
+  placeholder = "Select an option",
   onChange,
-  immediateAction,
-  isAlgoRunning,
+  disabled = false,
+  formatDisplayText,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(defaultValue || "");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const selectedOption =
-    options && options.find((option) => option.value === selectedValue);
-
-  const btnColorScheme = useMemo(
-    () => (isAlgoRunning ? "disabled" : "normal"),
-    [isAlgoRunning]
-  );
+  const selectedOption = options.find((option) => option.value === value);
 
   const colorSchemes = {
     normal: {
@@ -45,35 +40,37 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     },
   };
 
+  const btnColorScheme = useMemo(
+    () => (disabled ? "disabled" : "normal"),
+    [disabled]
+  );
+
   const btnClasses = useMemo(() => {
     const scheme = colorSchemes[btnColorScheme];
     return `
-          bg-gray-800
-          rounded-lg
-          focus:ring-2
-          ${scheme.focusRing}
-          focus:outline-none
-          block
-          w-full
-          p-2.5
-          text-center
-          md:text-left
-          ${scheme.cursor}
-          ${scheme.hover}
-          transition-colors
-          duration-200
-      `;
+      bg-gray-800
+      rounded-lg
+      focus:ring-2
+      ${scheme.focusRing}
+      focus:outline-none
+      block
+      w-full
+      p-2.5
+      text-center
+      md:text-left
+      ${scheme.cursor}
+      ${scheme.hover}
+      transition-colors
+      duration-200
+    `;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [btnColorScheme]);
+  }, [btnColorScheme, disabled]);
 
-  const handleSelect = (value: string) => {
-    setSelectedValue(immediateAction ? "Mazes" : value);
-    onChange(value);
+  const handleSelect = (selectedValue: string) => {
+    if (disabled) return;
+    if (onChange) onChange(selectedValue);
+
     setIsOpen(false);
-
-    if (immediateAction) {
-      setIsOpen(false);
-    }
   };
 
   useEffect(() => {
@@ -97,10 +94,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       <button
         type="button"
         className={btnClasses}
-        onClick={() => setIsOpen(!isOpen)}
-        disabled={isAlgoRunning}
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
       >
-        {selectedOption ? selectedOption.name : "Mazes"}
+        {formatDisplayText
+          ? formatDisplayText(selectedOption)
+          : selectedOption
+          ? selectedOption.name
+          : placeholder}
         <svg
           className="w-4 h-4 ml-1 4k:w-12 4k:h-12 inline-block"
           fill="none"
@@ -137,18 +138,18 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             duration-200
           `}
         >
-          {options?.map((option) => (
+          {options.map((option) => (
             <div
               key={option.value}
               className={`
                 p-2.5
-                cursor-pointer
+                cursor-pointe
                 hover:bg-teal-700
                 transition-colors
                 duration-200
-                ${selectedValue === option.value ? "bg-teal-700" : ""}
+                ${value === option.value ? "bg-teal-700" : ""}
               `}
-              onClick={() => handleSelect(option.value || "")}
+              onClick={() => !disabled && handleSelect(option.value)}
             >
               {option.name}
             </div>

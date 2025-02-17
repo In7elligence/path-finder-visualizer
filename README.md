@@ -39,6 +39,7 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 - You can clear a path drawn by the algrithm by clicking the "Clear Path" button in the menu.
 - The Start, Target and Bomb node are classified as _special_ nodes.
   You can drag and drop special nodes on the Grid, but you can't drop a special node on top of another special node, or on top of a wall node.
+- You can select the animation speed of which the visited nodes and shortest path will be animated: Fast, Average or Slow.
 - All functionality mentioned above will be disabled during the active animation time of an algorithm.
 
 ## Why Next.js with React and TypeScript?

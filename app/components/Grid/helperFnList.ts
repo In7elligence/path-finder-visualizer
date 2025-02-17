@@ -5,11 +5,23 @@ import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar"
 import { visualizeGreedyBFS } from "@/app/algorithms/greedyBFS/animation/visualizeGreedyBFS";
 import { visualizeBFS } from "@/app/algorithms/bfs/animation/visualizeBFS";
 import { visualizeDFS } from "@/app/algorithms/dfs/animation/visualizeDFS";
-import { IGridState, INode } from "@/app/interfaces/interfaces";
+import { IAnimationSpeedMap, IGridState, INode } from "@/app/interfaces/interfaces";
 import { removeWallsFromGrid } from "@/app/algorithms/utils/utils";
 import { AvailableMazes } from "@/app/types/types";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
+
+export const visitedNodeAnimationSpeedMap: IAnimationSpeedMap = {
+  fast: 10,
+  average: 25,
+  slow: 50
+}
+
+export const pathAnimationSpeedMap: IAnimationSpeedMap = {
+  fast: 50,
+  average: 75,
+  slow: 100
+}
 
 export const createNode = (
   state: IGridState,

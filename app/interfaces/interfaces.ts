@@ -1,4 +1,5 @@
 import {
+  AnimationSpeed,
   AvailableAlgorithms,
   NavItemType,
   NodeDirection,
@@ -36,6 +37,7 @@ export interface IGridState {
   nodesInShortestPath: INode[];
   selectedAlgorithm: AvailableAlgorithms;
   isAlgoRunning: boolean;
+  animationSpeed: AnimationSpeed; // Text indication of the animation speed in general (fast by default)
   visitedNodeAnimationDuration: number;
   pathAnimationDuration: number;
   bombDefused?: boolean;
@@ -44,10 +46,16 @@ export interface IGridState {
 export interface IMenuItem {
   type: NavItemType;
   name: string;
-  href?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;  
   value?: string;
-  children?: IMenuItem[];
-  onClick?: (value?: string) => void;
+  onChange?: (value: string) => void;
+  children?: Array<{
+    name: string;
+    value: string;
+    type?: "option";
+  }>;
+  href?: string;
+  formatDisplayText?: (selectedOption: { name: string; value: string } | undefined) => string;
 }
 
 export interface IAlgoInfoMap {
@@ -58,4 +66,10 @@ export interface IAlgoInfoMap {
     guarantee: "guarantees" | "does not guarantee";
     closing: "the shortest path!";
   };
+}
+
+export interface IAnimationSpeedMap {
+  fast: number;
+  average: number;
+  slow: number;
 }

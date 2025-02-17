@@ -12,6 +12,7 @@ export const initialGridState: IGridState = {
   nodesInShortestPath: [],
   selectedAlgorithm: "dijkstras",
   isAlgoRunning: false,
+  animationSpeed: "fast", // Text indication of the animation speed in general (fast by default)
   visitedNodeAnimationDuration: 10, // Animation/setTimeout duration for visited nodes
   pathAnimationDuration: 50, // Animation/setTimeout duration for final path
 };

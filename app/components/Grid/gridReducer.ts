@@ -1,5 +1,5 @@
 import { IGridState, INode } from "@/app/interfaces/interfaces";
-import { AvailableAlgorithms } from "@/app/types/types";
+import { AnimationSpeed, AvailableAlgorithms } from "@/app/types/types";
 
 export type GridAction =
   | { type: "SET_GRID"; payload: INode[][] }
@@ -13,7 +13,10 @@ export type GridAction =
   | { type: "SET_VISITED_BLUE_NODES"; payload: INode[] }
   | { type: "SET_NODES_IN_SHORTEST_PATH"; payload: INode[] }
   | { type: "TOGGLE_ALGO"; payload: boolean }
-  | { type: "SET_SELECTED_ALGORITHM"; payload: AvailableAlgorithms };
+  | { type: "SET_SELECTED_ALGORITHM"; payload: AvailableAlgorithms }
+  | { type: "SET_ANIMATION_SPEED"; payload: AnimationSpeed }
+  | { type: "SET_VISITED_NODE_ANIMATION_SPEED"; payload: number }
+  | { type: "SET_PATH_NODE_ANIMATION_SPEED"; payload: number };
 
 export const gridReducer = (
   state: IGridState,
@@ -44,6 +47,12 @@ export const gridReducer = (
       return { ...state, isAlgoRunning: action.payload };
     case "SET_SELECTED_ALGORITHM":
       return { ...state, selectedAlgorithm: action.payload };
+    case "SET_ANIMATION_SPEED":
+      return { ...state, animationSpeed: action.payload };
+    case "SET_VISITED_NODE_ANIMATION_SPEED":
+      return { ...state, visitedNodeAnimationDuration: action.payload };
+    case "SET_PATH_NODE_ANIMATION_SPEED":
+      return { ...state, pathAnimationDuration: action.payload };
     default:
       return state;
   }

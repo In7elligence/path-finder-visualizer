@@ -18,6 +18,7 @@ import {
   getNodeSize,
 } from "@/app/utils/utils";
 import {
+  AnimationSpeed,
   AvailableAlgorithms,
   AvailableMazes,
   SpecialNode,
@@ -30,9 +31,11 @@ import {
   createNode,
   dropSpecialNode,
   generateMaze,
+  pathAnimationSpeedMap,
   placeRandomBomb,
   positionStartAndEndNodes,
   removeBomb,
+  visitedNodeAnimationSpeedMap,
   visualizeAlgorithm,
 } from "./helperFnList";
 import InfoBar from "../InfoBar/InfoBar";
@@ -145,6 +148,24 @@ const Grid: React.FC = () => {
 
   const handleClearPath = () => clearPath(dispatch);
 
+  const handleSetAnimationSpeed = (speed: AnimationSpeed) => {
+    const visitedAnimationSpeed = visitedNodeAnimationSpeedMap[speed];
+    const pathAnimationSpeed = pathAnimationSpeedMap[speed];
+
+    dispatch({
+      type: "SET_ANIMATION_SPEED",
+      payload: speed,
+    });
+    dispatch({
+      type: "SET_VISITED_NODE_ANIMATION_SPEED",
+      payload: visitedAnimationSpeed,
+    });
+    dispatch({
+      type: "SET_PATH_NODE_ANIMATION_SPEED",
+      payload: pathAnimationSpeed,
+    });
+  };
+
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
     const width = window.innerWidth;
@@ -191,6 +212,7 @@ const Grid: React.FC = () => {
     selectedAlgorithm,
     isMousePressed,
     bombDefused,
+    animationSpeed,
   } = state;
 
   const bombExist = doesBombExistInGrid(grid);
@@ -236,12 +258,13 @@ const Grid: React.FC = () => {
                   value: "dfs",
                 },
               ],
-              onClick: () => {},
+              onChange: (value) =>
+                handleAlgorithmChange(value as AvailableAlgorithms),
             },
             {
               type: "dropdown",
               name: "Mazes",
-              value: "",
+              value: "", // Keeps name prop as displayed select text
               children: [
                 {
                   type: "option",
@@ -264,7 +287,9 @@ const Grid: React.FC = () => {
                   value: "randomBasicMaze",
                 },
               ],
-              onClick: (value) => handleMazeGeneration(value as AvailableMazes),
+              onChange: (value) => {
+                handleMazeGeneration(value as AvailableMazes);
+              },
             },
             {
               type: "simpleButton",
@@ -289,10 +314,23 @@ const Grid: React.FC = () => {
               name: "Clear Path",
               onClick: handleClearPath,
             },
-            // TODO: Add a "animation speed" select option?
+            {
+              type: "dropdown",
+              name: "Animation Speed",
+              value: animationSpeed,
+              children: [
+                { name: "Fast", value: "fast" },
+                { name: "Average", value: "average" },
+                { name: "Slow", value: "slow" },
+              ],
+              onChange: (value) => {
+                handleSetAnimationSpeed(value as AnimationSpeed);
+              },
+              formatDisplayText: (selected) =>
+                selected ? `Speed: ${selected.name}` : "Animation Speed",
+            },
           ]}
           isAlgoRunning={isAlgoRunning}
-          onAlgorithmChange={handleAlgorithmChange}
         />
         <InfoBar
           nodeSize={nodeSize}
