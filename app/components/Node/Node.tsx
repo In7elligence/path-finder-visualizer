@@ -106,4 +106,4 @@ const Node: React.FC<INodeProps> = ({
   );
 };
 
-export default Node;
+export default React.memo(Node);
