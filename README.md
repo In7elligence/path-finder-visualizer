@@ -31,7 +31,7 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 - Clicking the "Visualize!" button will initiate a visualization of the selected algorithm (Dijkstra's Algorithm by default).
 - You can select which algorithm to visualize, by clicking the algorithms drop-down menu.
 - You can generate mazes by choosing a maze from the mazes drop-down menu.
-  - In addition, you can left-click, or hold left-click, and draw walls on the grid manually.
+  - In addition, you can left-click, or hold left-click, and draw walls on the grid manually. Clicking on an existing wall node, or trying draw over it will remove the wall. 
 - You can place a bomb on a random location on the Grid by clicking the "Place Bomb" button in the menu.
   - You can subsequently remove the bomb again by clicking the "Remove Bomb" button in the menu.
 - You can reset the Grid to its initial state by clicking the "Reset Grid" button in the menu.
