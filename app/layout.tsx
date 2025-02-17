@@ -20,8 +20,26 @@ const inter = localFont({
 
 export const metadata: Metadata = {
   title: "Pathfinding Visualizer",
-  description:
-    "An algorithmic pathfinding visualizer made by Martin Beck Andersen in Next.js",
+  description: `Visualize popular pathfinding algorithms including Dijkstra's,
+    A* Search, Greedy BFS, BFS, and DFS in an interactive web app.
+    Built with Next.js by Martin Beck Andersen to demonstrate algorithmic concepts.`.trim(),
+  keywords: [
+    "pathfinding visualizer",
+    "Dijkstra's Algorithm",
+    "A* Search",
+    "Greedy Best-First Search",
+    "Breadth-First Search",
+    "Depth-First Search",
+    "algorithm visualization",
+    "Next.js project",
+    "Martin Beck Andersen",
+    "pathfinding algorithms",
+    "interactive learning",
+    "web development",
+    "React visualization",
+    "algorithm simulation",
+    "coding tutorial",
+  ].join(", "),
 };
 
 export default function RootLayout({
