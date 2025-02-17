@@ -18,13 +18,16 @@ export const getNodeSize = (screenWidth: number, screenHeight: number) => {
 };
 
 // Calculate grid dimensions based on available screen size
-export const calculateGridDimensions = (nodeSize: number) => {
+export const calculateGridDimensions = (
+  nodeSize: number,
+  navWrapper: HTMLDivElement | null
+) => {
   const width = window.innerWidth;
-  const height = window.innerHeight;
+  const navHeight = navWrapper?.clientHeight || 0; // Get dynamic nav height
+  const availableHeight = window.innerHeight - navHeight;
 
-  // TODO: Make this dynamic by taking height of menu and calculate using that instead of fixed numbers
-  const cols = Math.floor(width / nodeSize) - 1; // -1 to account for potential overflow
-  const rows = Math.floor(height / nodeSize) - 3; // -3 to account for potential overflow
+  const cols = Math.floor(width / nodeSize) - 1; // -1 for horizontal overflow buffer
+  const rows = Math.floor(availableHeight / nodeSize);
 
   return { rows, cols };
 };

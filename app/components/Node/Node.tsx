@@ -1,4 +1,5 @@
 import React from "react";
+import "@/app/styles/specialNodes.css";
 import "./node.css";
 import { NodeDirection, SpecialNode } from "@/app/types/types";
 import { getNodeClasses } from "./helperFnList";

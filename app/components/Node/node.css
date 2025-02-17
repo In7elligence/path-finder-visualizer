@@ -4,29 +4,11 @@
   aspect-ratio: 1 / 1; /* Ensure the node remains square */
 }
 
-.node-finish {
-  background-image: url("/images/circle.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
-.node-start {
-  background-image: url("/images/arrow-right.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
 .node-robot {
   background-image: url("/images/robot.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-}
-
-.node-yellow-color {
-  background-color: rgb(255, 254, 106);;
 }
 
 .node-wall {
@@ -68,14 +50,6 @@
 
 .node-dragging-disabled {
   cursor: not-allowed;
-}
-
-.node-bomb {
-  background-image: url("/images/bomb.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 60%;
-  background-color: #ffffff;
 }
 
 .defused-bomb {

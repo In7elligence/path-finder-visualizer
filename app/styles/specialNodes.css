@@ -1,0 +1,48 @@
+.node-finish {
+  background-image: url("/images/circle.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.node-robot {
+  background-image: url("/images/robot.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.node-start {
+  background-image: url("/images/arrow-right.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.node-bomb {
+  background-image: url("/images/bomb.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  background-color: #ffffff;
+}
+
+.node-wall-no-animation {
+  border: 1px solid rgb(175, 216, 248);
+  background-color: rgb(12, 53, 71);
+}
+
+.node-visited-no-animation {
+  border: 1px solid rgb(175, 216, 248);
+  background-color: rgba(0, 190, 218, 0.75);
+}
+
+.visited-while-bomb-active-no-animation {
+  border: 1px solid rgb(175, 216, 248);
+  background-color: rgba(178, 67, 255, 0.75);
+}
+
+.node-shortest-path-no-animation {
+  border: 1px solid rgb(175, 216, 248);
+  background-color: rgb(255, 254, 106);
+}

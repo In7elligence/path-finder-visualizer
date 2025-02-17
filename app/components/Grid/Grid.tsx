@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useReducer, useEffect, useCallback, useState } from "react";
+import React, {
+  useReducer,
+  useEffect,
+  useCallback,
+  useState,
+  useRef,
+} from "react";
 import "./grid.css";
 import Node from "../Node/Node";
 import { initialGridState } from "./initialState";
@@ -29,17 +35,23 @@ import {
   removeBomb,
   visualizeAlgorithm,
 } from "./helperFnList";
+import InfoBar from "../InfoBar/InfoBar";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
   const [nodeSize, setNodeSize] = useState(NODE_SIZE);
 
+  const navWrapperRef = useRef<HTMLDivElement | null>(null);
+
   // Calculate grid dimensions based on available screen size
-  const calculateAndSetGridDimensions = useCallback((nodeSize: number) => {
-    const { rows, cols } = calculateGridDimensions(nodeSize);
-    dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
-    positionStartAndEndNodes(rows, cols, dispatch);
-  }, []);
+  const calculateAndSetGridDimensions = useCallback(
+    (nodeSize: number, navWrapper: HTMLDivElement | null) => {
+      const { rows, cols } = calculateGridDimensions(nodeSize, navWrapper);
+      dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
+      positionStartAndEndNodes(rows, cols, dispatch);
+    },
+    []
+  );
 
   const getInitialGrid = (rows: number, cols: number) => {
     const grid = [];
@@ -126,7 +138,7 @@ const Grid: React.FC = () => {
       dispatch({ type: "SET_GRID", payload: getInitialGrid(rows, cols) });
     }
 
-    calculateAndSetGridDimensions(nodeSize);
+    calculateAndSetGridDimensions(nodeSize, navWrapperRef.current);
   };
 
   const handleClearWalls = () => clearWalls(state, dispatch);
@@ -140,7 +152,7 @@ const Grid: React.FC = () => {
     const initNodeSize = getNodeSize(width, height); // Calculate node size on the client
 
     setNodeSize(initNodeSize);
-    calculateAndSetGridDimensions(initNodeSize);
+    calculateAndSetGridDimensions(initNodeSize, navWrapperRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -162,7 +174,7 @@ const Grid: React.FC = () => {
 
       const newNodeSize = getNodeSize(width, height); // Recalculate node size on resize
       setNodeSize(newNodeSize);
-      calculateAndSetGridDimensions(newNodeSize);
+      calculateAndSetGridDimensions(newNodeSize, navWrapperRef.current);
     };
 
     window.addEventListener("resize", handleResize);
@@ -185,102 +197,109 @@ const Grid: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Nav
-        menuItems={[
-          {
-            type: "button",
-            name: "Visualize!",
-            onClick: handleVisualizeAlgorithm,
-          },
-          {
-            type: "dropdown",
-            name: "Algorithm",
-            value: selectedAlgorithm,
-            children: [
-              {
-                type: "option",
-                name: "Dijkstra's Algorithm",
-                value: "dijkstras",
-              },
-              {
-                type: "option",
-                name: "A* Search",
-                value: "astar",
-              },
-              {
-                type: "option",
-                name: "Greedy Best-First Search",
-                value: "greedyBFS",
-              },
-              {
-                type: "option",
-                name: "Breadth-First Search",
-                value: "bfs",
-              },
-              {
-                type: "option",
-                name: "Depth-First Search",
-                value: "dfs",
-              },
-            ],
-            onClick: () => {},
-          },
-          {
-            type: "dropdown",
-            name: "Mazes",
-            value: "",
-            children: [
-              {
-                type: "option",
-                name: "Recursive Division",
-                value: "recursiveDivision",
-              },
-              {
-                type: "option",
-                name: "Recursive Division (vertical skew)",
-                value: "recursiveDivisionVerticalSkew",
-              },
-              {
-                type: "option",
-                name: "Recursive Division (horizontal skew)",
-                value: "recursiveDivisionHorizontalSkew",
-              },
-              {
-                type: "option",
-                name: "Random Basic Maze",
-                value: "randomBasicMaze",
-              },
-            ],
-            onClick: (value) => handleMazeGeneration(value as AvailableMazes),
-          },
-          {
-            type: "simpleButton",
-            name: bombExist ? "Remove Bomb" : "Place Bomb",
-            onClick: () =>
-              bombExist
-                ? removeBomb(state, dispatch)
-                : placeRandomBomb(state, dispatch),
-          },
-          {
-            type: "simpleButton",
-            name: "Reset Grid",
-            onClick: handleResetGrid,
-          },
-          {
-            type: "simpleButton",
-            name: "Clear Walls",
-            onClick: handleClearWalls,
-          },
-          {
-            type: "simpleButton",
-            name: "Clear Path",
-            onClick: handleClearPath,
-          },
-          // TODO: Add a "animation speed" select option?
-        ]}
-        isAlgoRunning={isAlgoRunning}
-        onAlgorithmChange={handleAlgorithmChange}
-      />
+      <div id="nav-wrapper" ref={navWrapperRef}>
+        <Nav
+          menuItems={[
+            {
+              type: "button",
+              name: "Visualize!",
+              onClick: handleVisualizeAlgorithm,
+            },
+            {
+              type: "dropdown",
+              name: "Algorithm",
+              value: selectedAlgorithm,
+              children: [
+                {
+                  type: "option",
+                  name: "Dijkstra's Algorithm",
+                  value: "dijkstras",
+                },
+                {
+                  type: "option",
+                  name: "A* Search",
+                  value: "astar",
+                },
+                {
+                  type: "option",
+                  name: "Greedy Best-First Search",
+                  value: "greedyBFS",
+                },
+                {
+                  type: "option",
+                  name: "Breadth-First Search",
+                  value: "bfs",
+                },
+                {
+                  type: "option",
+                  name: "Depth-First Search",
+                  value: "dfs",
+                },
+              ],
+              onClick: () => {},
+            },
+            {
+              type: "dropdown",
+              name: "Mazes",
+              value: "",
+              children: [
+                {
+                  type: "option",
+                  name: "Recursive Division",
+                  value: "recursiveDivision",
+                },
+                {
+                  type: "option",
+                  name: "Recursive Division (vertical skew)",
+                  value: "recursiveDivisionVerticalSkew",
+                },
+                {
+                  type: "option",
+                  name: "Recursive Division (horizontal skew)",
+                  value: "recursiveDivisionHorizontalSkew",
+                },
+                {
+                  type: "option",
+                  name: "Random Basic Maze",
+                  value: "randomBasicMaze",
+                },
+              ],
+              onClick: (value) => handleMazeGeneration(value as AvailableMazes),
+            },
+            {
+              type: "simpleButton",
+              name: bombExist ? "Remove Bomb" : "Place Bomb",
+              onClick: () =>
+                bombExist
+                  ? removeBomb(state, dispatch)
+                  : placeRandomBomb(state, dispatch),
+            },
+            {
+              type: "simpleButton",
+              name: "Reset Grid",
+              onClick: handleResetGrid,
+            },
+            {
+              type: "simpleButton",
+              name: "Clear Walls",
+              onClick: handleClearWalls,
+            },
+            {
+              type: "simpleButton",
+              name: "Clear Path",
+              onClick: handleClearPath,
+            },
+            // TODO: Add a "animation speed" select option?
+          ]}
+          isAlgoRunning={isAlgoRunning}
+          onAlgorithmChange={handleAlgorithmChange}
+        />
+        <InfoBar
+          nodeSize={nodeSize}
+          selectedAlgorithm={selectedAlgorithm}
+          bombExist={bombExist}
+        />
+      </div>
       <div
         className="grid mx-auto mt-3 md:mt-auto"
         style={{

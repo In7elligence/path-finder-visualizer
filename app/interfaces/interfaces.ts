@@ -49,3 +49,13 @@ export interface IMenuItem {
   children?: IMenuItem[];
   onClick?: (value?: string) => void;
 }
+
+export interface IAlgoInfoMap {
+  [key: string]: {
+    info: string;
+    weight: "weighted" | "unweighted";
+    connect: "and";
+    guarantee: "guarantees" | "does not guarantee";
+    closing: "the shortest path!";
+  };
+}
