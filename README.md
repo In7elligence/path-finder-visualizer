@@ -10,7 +10,7 @@ You can access it here: [INSERT_LINK_TO_SITE]
 
 **Dijkstra's Algorithm (weighted)** – The *father* of pathfinding algorithms; guarantees the shortest path.
 
-**A\* Search** (weighted) - Arguably the best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm.
+**A\* Search (weighted)** - Arguably the best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm.
 
 **Greedy Best-First Search (weighted)** – A faster, more heuristic-heavy version of A*; does not guarantee the shortest path.
 
