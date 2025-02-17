@@ -143,7 +143,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
               key={option.value}
               className={`
                 p-2.5
-                cursor-pointe
+                cursor-pointer
                 hover:bg-teal-700
                 transition-colors
                 duration-200
