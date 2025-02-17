@@ -12,11 +12,11 @@ You can access it here: [INSERT_LINK_TO_SITE]
 
 **A\* Search** (weighted) - Arguably the best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm.
 
-**Greedy Best-First Search** (weighted) – A faster, more heuristic-heavy version of A*; does not guarantee the shortest path.
+**Greedy Best-First Search (weighted)** – A faster, more heuristic-heavy version of A*; does not guarantee the shortest path.
 
-**Breadth-First Search** (unweighted) - A great algorithm; guarantees the shortest path.
+**Breadth-First Search (unweighted)** - A great algorithm; guarantees the shortest path.
 
-**Depth-First Search** (unweighted) - A poor choice for pathfinding; does not guarantee the shortest path.
+**Depth-First Search (unweighted)** - A poor choice for pathfinding; does not guarantee the shortest path.
 
 On top of the pathfinding algorithms listed above, I also implemented a:
 
