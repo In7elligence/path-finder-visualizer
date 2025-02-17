@@ -2,7 +2,7 @@
 
 This application visualizes various pathfinding algorithms. I initially built it because I hadn't had many opportunities to experiment with pathfinding algorithms in the past. Instead of grinding through a dozen LeetCode-style problems focused on graphs, I thought, _"Why not build an actual application instead?"_ So I did exactly that. I hope you enjoy seeing the algorithms in action!
 
-You can access it here: [INSERT_LINK_TO_SITE]
+You can access it here: [martin-pathfinding-visualizer.vercel.app](https://martin-pathfinding-visualizer.vercel.app/)
 
 ## About The Algorithms
 
