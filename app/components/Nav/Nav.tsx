@@ -146,7 +146,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden  :flex space-x-4 gap-8 4k:gap-24">
+        <div className="hidden slt:flex space-x-4 gap-8 4k:gap-24">
           {menuItems.map(renderMenuItem)}
         </div>
       </div>
