@@ -137,11 +137,12 @@ export const greedyBFS = (
   // Fast grid initialization
   const finishRow = finishNode.row;
   const finishCol = finishNode.col;
+
   for (let row = 0; row < grid.length; row++) {
     const gridRow = grid[row];
     for (let col = 0; col < gridRow.length; col++) {
       const node = gridRow[col];
-      node.hCost = Math.abs(row - finishRow) + Math.abs(col - finishCol);
+      node.hCost = Math.abs(row - finishRow) + Math.abs(col - finishCol); // Manhattan Distance
       node.previousNode = null;
       if (isBombPhase) {
         node.isPurpleVisited = false;

@@ -27,6 +27,13 @@
   background-color: #ffffff;
 }
 
+.node-weight-no-animation {
+  background-image: url("/images/weight.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
 .node-wall-no-animation {
   border: 1px solid rgb(175, 216, 248);
   background-color: rgb(12, 53, 71);
@@ -45,4 +52,9 @@
 .node-shortest-path-no-animation {
   border: 1px solid rgb(175, 216, 248);
   background-color: rgb(255, 254, 106);
+}
+
+.crossed-line {
+  text-decoration: line-through;
+  color: red;
 }

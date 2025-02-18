@@ -1,35 +1,5 @@
 import { INode } from "@/app/interfaces/interfaces";
 
-export const buildGuaranteedPath = (
-  grid: INode[][],
-  start: INode,
-  finish: INode
-) => {
-  let current = start;
-  const path = [];
-
-  // Create direct path
-  while (current.row !== finish.row || current.col !== finish.col) {
-    const nextRow =
-      current.row < finish.row ? current.row + 1 : current.row - 1;
-    const nextCol =
-      current.col < finish.col ? current.col + 1 : current.col - 1;
-
-    if (Math.random() > 0.5 && current.row !== finish.row) {
-      current = grid[nextRow][current.col];
-    } else {
-      current = grid[current.row][nextCol];
-    }
-
-    path.push(current);
-  }
-
-  // Mark path nodes to protect them
-  path.forEach((node) => {
-    node.isPath = true;
-  });
-};
-
 export const recursiveDivision = (
   grid: INode[][],
   startRow: number,

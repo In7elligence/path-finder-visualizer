@@ -68,7 +68,8 @@ class PriorityQueue<T> {
         const rightChild = this.heap[rightChildIndex];
         if (
           (swapIndex === null && rightChild.priority < element.priority) ||
-          (swapIndex !== null && rightChild.priority < this.heap[leftChildIndex].priority)
+          (swapIndex !== null &&
+            rightChild.priority < this.heap[leftChildIndex].priority)
         ) {
           swapIndex = rightChildIndex;
         }
@@ -101,12 +102,14 @@ export const dijkstra = (
   finishNode: INode
 ): INode[] => {
   // Reset nodes
-  grid.forEach(row => row.forEach(node => {
-    node.distance = Infinity;
-    node.previousNode = null;
-    node.isBlueVisited = false;
-    node.isPurpleVisited = false;
-  }));
+  grid.forEach((row) =>
+    row.forEach((node) => {
+      node.distance = Infinity;
+      node.previousNode = null;
+      node.isBlueVisited = false;
+      node.isPurpleVisited = false;
+    })
+  );
 
   startNode.distance = 0;
   const visitedNodesInOrder: INode[] = [];
@@ -136,7 +139,7 @@ export const dijkstra = (
     for (const neighbor of neighbors) {
       if (neighbor.isWall) continue;
 
-      const tentativeDistance = currentNode.distance + 1;
+      const tentativeDistance = currentNode.distance + neighbor.weight;
       if (tentativeDistance < neighbor.distance) {
         neighbor.distance = tentativeDistance;
         neighbor.previousNode = currentNode;

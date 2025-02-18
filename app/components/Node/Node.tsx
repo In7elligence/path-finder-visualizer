@@ -22,6 +22,7 @@ export interface INodeProps {
   row: number;
   direction: NodeDirection;
   nodeSize: number;
+  weight: number;
   isMousePressed: boolean;
   isBombDefused?: boolean;
 }
@@ -46,6 +47,7 @@ const Node: React.FC<INodeProps> = ({
   row,
   direction,
   nodeSize,
+  weight,
   isMousePressed,
 }) => {
   const extraClassName = getNodeClasses({
@@ -53,6 +55,7 @@ const Node: React.FC<INodeProps> = ({
     isShortestPath,
     bombExist,
     direction,
+    weight,
     isStart,
     isBomb,
     isBombDefused,

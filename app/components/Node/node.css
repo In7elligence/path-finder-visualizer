@@ -25,6 +25,20 @@
   animation-play-state: running;
 }
 
+.node-weight {
+  background-image: url("/images/weight.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  animation-name: weightAnimation;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
 .node-visited {
   animation-name: visitedBlueAnimation;
   animation-duration: 1.5s;
@@ -207,5 +221,19 @@
   100% {
     transform: scale(1);
     background-color: rgb(12, 53, 71);
+  }
+}
+
+@keyframes weightAnimation {
+  0% {
+    transform: scale(0.3);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }

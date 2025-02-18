@@ -1,7 +1,7 @@
 import { GridAction } from "@/app/components/Grid/gridReducer";
 import { IGridState } from "@/app/interfaces/interfaces";
 import { recursiveDivisionMaze } from "../utils/recursiveDivision";
-import { removeWallsFromGrid } from "../../utils/utils";
+import { removeWallsAndWeightsFromGrid } from "../../utils/utils";
 import { RecursiveDivisions } from "@/app/types/types";
 
 export const visualizeRecursiveDivision = (
@@ -21,7 +21,7 @@ export const visualizeRecursiveDivision = (
 
   if (isAlgoRunning) return;
 
-  const newGrid = removeWallsFromGrid(grid);
+  const newGrid = removeWallsAndWeightsFromGrid(grid);
 
   let bombNode = undefined;
 

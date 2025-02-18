@@ -9,6 +9,7 @@ export type AvailableAlgorithms =
   | "dfs";
 export type AvailableMazes =
   | "randomBasicMaze"
+  | "basicWeightMaze"
   | "recursiveDivision"
   | "recursiveDivisionVerticalSkew"
   | "recursiveDivisionHorizontalSkew";

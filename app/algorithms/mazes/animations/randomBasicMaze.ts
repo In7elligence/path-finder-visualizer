@@ -1,7 +1,7 @@
 import { GridAction } from "@/app/components/Grid/gridReducer";
 import { IGridState, INode } from "@/app/interfaces/interfaces";
 import { ensureSolvability } from "../utils/utils";
-import { removeWallsFromGrid } from "../../utils/utils";
+import { removeWallsAndWeightsFromGrid } from "../../utils/utils";
 
 const animateRandomBasicMaze = (
   initialGrid: INode[][],
@@ -44,7 +44,7 @@ export const visualizeRandomBasicMaze = (
 
   if (isAlgoRunning) return;
 
-  const newGrid = removeWallsFromGrid(grid);
+  const newGrid = removeWallsAndWeightsFromGrid(grid);
 
   dispatch({ type: "SET_GRID", payload: newGrid });
   dispatch({ type: "SET_NODES_IN_SHORTEST_PATH", payload: [] });
@@ -85,3 +85,4 @@ export const visualizeRandomBasicMaze = (
     dispatch
   );
 };
+

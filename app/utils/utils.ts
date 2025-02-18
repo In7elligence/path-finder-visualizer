@@ -41,6 +41,7 @@ export const getNewGridWithWallToggled = (
   const node = newGrid[row][col];
   const newNode = {
     ...node,
+    weight: 1,
     isMazeWall: false,
     isWall: !node.isWall,
   };
@@ -95,6 +96,10 @@ export const getNodesInShortestPathOrder = (finishNode: INode | null) => {
 
 export const doesBombExistInGrid = (grid: INode[][]) => {
   return grid.some((row) => row.some((node) => node.isBomb));
+};
+
+export const doesGridHaveWeights = (grid: INode[][]) => {
+  return grid.some((row) => row.some((node) => node.weight > 1));
 };
 
 export const animateBombPhase = (

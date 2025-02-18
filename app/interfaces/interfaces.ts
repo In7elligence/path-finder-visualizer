@@ -16,6 +16,7 @@ export interface INode {
   isWall: boolean;
   isMazeWall: boolean;
   previousNode: INode | null;
+  weight: number; // 1 by default
   isBomb: boolean;
   isPath?: boolean; // Marks nodes in the guaranteed path
   direction?: NodeDirection;
@@ -46,7 +47,7 @@ export interface IGridState {
 export interface IMenuItem {
   type: NavItemType;
   name: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;  
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   value?: string;
   onChange?: (value: string) => void;
   children?: Array<{
@@ -55,7 +56,9 @@ export interface IMenuItem {
     type?: "option";
   }>;
   href?: string;
-  formatDisplayText?: (selectedOption: { name: string; value: string } | undefined) => string;
+  formatDisplayText?: (
+    selectedOption: { name: string; value: string } | undefined
+  ) => string;
 }
 
 export interface IAlgoInfoMap {

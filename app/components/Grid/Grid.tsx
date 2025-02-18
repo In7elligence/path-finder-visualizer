@@ -14,6 +14,7 @@ import { gridReducer } from "./gridReducer";
 import {
   calculateGridDimensions,
   doesBombExistInGrid,
+  doesGridHaveWeights,
   getNewGridWithWallToggled,
   getNodeSize,
 } from "@/app/utils/utils";
@@ -27,7 +28,7 @@ import { NODE_SIZE } from "@/app/constants/constants";
 import Nav from "../Nav/Nav";
 import {
   clearPath,
-  clearWalls,
+  clearWallsAndWeights,
   createNode,
   dropSpecialNode,
   generateMaze,
@@ -126,7 +127,8 @@ const Grid: React.FC = () => {
   );
 
   const handleMazeGeneration = useCallback(
-    (maze: AvailableMazes) => generateMaze(state, maze, dispatch),
+    (maze: AvailableMazes) =>
+      generateMaze(state, maze, dispatch, navWrapperRef.current, nodeSize),
     [state]
   );
 
@@ -144,7 +146,8 @@ const Grid: React.FC = () => {
     calculateAndSetGridDimensions(nodeSize, navWrapperRef.current);
   };
 
-  const handleClearWalls = () => clearWalls(state, dispatch);
+  const handleClearWallsAndWeights = () =>
+    clearWallsAndWeights(state, dispatch);
 
   const handleClearPath = () => clearPath(dispatch);
 
@@ -216,6 +219,7 @@ const Grid: React.FC = () => {
   } = state;
 
   const bombExist = doesBombExistInGrid(grid);
+  const weightsExist = doesGridHaveWeights(grid);
 
   return (
     <React.Fragment>
@@ -286,6 +290,11 @@ const Grid: React.FC = () => {
                   name: "Random Basic Maze",
                   value: "randomBasicMaze",
                 },
+                {
+                  type: "option",
+                  name: "Basic Weight Maze",
+                  value: "basicWeightMaze",
+                },
               ],
               onChange: (value) => {
                 handleMazeGeneration(value as AvailableMazes);
@@ -306,8 +315,8 @@ const Grid: React.FC = () => {
             },
             {
               type: "simpleButton",
-              name: "Clear Walls",
-              onClick: handleClearWalls,
+              name: "Clear Walls & Weights",
+              onClick: handleClearWallsAndWeights,
             },
             {
               type: "simpleButton",
@@ -336,6 +345,7 @@ const Grid: React.FC = () => {
           nodeSize={nodeSize}
           selectedAlgorithm={selectedAlgorithm}
           bombExist={bombExist}
+          weightExist={weightsExist}
         />
       </div>
       <div
@@ -358,6 +368,7 @@ const Grid: React.FC = () => {
                   isWall,
                   isMazeWall,
                   direction,
+                  weight,
                 } = node;
                 const isShortestPath = nodesInShortestPath.includes(node);
                 const isPurpleVisited = visitedPurpleNodes.includes(node);
@@ -384,6 +395,7 @@ const Grid: React.FC = () => {
                     onDropNode={handleDropNode}
                     row={row}
                     direction={direction}
+                    weight={weight}
                     nodeSize={nodeSize}
                     isMousePressed={isMousePressed}
                   />

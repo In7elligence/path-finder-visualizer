@@ -20,7 +20,7 @@ export const resetGridForAlgorithm = (grid: INode[][]): INode[][] => {
   );
 };
 
-export const removeWallsFromGrid = (grid: INode[][]) => {
+export const removeWallsAndWeightsFromGrid = (grid: INode[][]) => {
   const newGrid = grid.map((row) =>
     row.map((node) => ({
       ...node,
@@ -29,6 +29,7 @@ export const removeWallsFromGrid = (grid: INode[][]) => {
       isVisited: false,
       distance: Infinity,
       previousNode: null,
+      weight: 1,
       gCost: Infinity, // Reset for A*
       hCost: Infinity, // Reset for A*
       fCost: Infinity, // Reset for A*

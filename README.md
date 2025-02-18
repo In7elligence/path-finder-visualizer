@@ -12,7 +12,7 @@ You can access it here: [martin-pathfinding-visualizer.vercel.app](https://marti
 
 **A\* Search (weighted)** - Arguably the best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm.
 
-**Greedy Best-First Search (weighted)** – A faster, more heuristic-heavy version of A\*; does not guarantee the shortest path.
+**Greedy Best-First Search (unweighted)** – A faster, more heuristic-heavy version of A\*; does not guarantee the shortest path.
 
 **Breadth-First Search (unweighted)** - A great algorithm; guarantees the shortest path.
 
@@ -24,6 +24,8 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 
 - **Simple Maze Generation** algorithm.
 
+- **Weighted Maze Generation** algorithm.
+
 - **Random Bomb Placement** algorithm that accounts for existing nodes on the grid, ensures solvability, and considers distances from the start and finish nodes.
 
 ## Guide
@@ -32,6 +34,7 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 - You can select which algorithm to visualize, by clicking the algorithms drop-down menu.
 - You can generate mazes by choosing a maze from the mazes drop-down menu.
   - In addition, you can left-click, or hold left-click, and draw walls on the grid manually. Clicking on an existing wall node, or trying draw over it will remove the wall.
+  - The weighted maze is a great way to illustrate weighted algorithms. It can represent scenarios like traffic conditions or other real-life factors that affect the speed of traveling from point A to point B.
 - You can place a bomb on a random location on the Grid by clicking the "Place Bomb" button in the menu.
   - You can subsequently remove the bomb again by clicking the "Remove Bomb" button in the menu.
 - You can reset the Grid to its initial state by clicking the "Reset Grid" button in the menu.

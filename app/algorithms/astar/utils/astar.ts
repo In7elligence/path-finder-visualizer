@@ -85,7 +85,7 @@ export const astar = (
         continue;
       }
 
-      const tentativeGCost = currentNode.gCost! + 1;
+      const tentativeGCost = currentNode.gCost! + neighbor.weight;
 
       if (tentativeGCost < neighbor.gCost!) {
         neighbor.previousNode = currentNode;

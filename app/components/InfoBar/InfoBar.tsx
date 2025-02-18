@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React  from "react";
 import "@/app/styles/specialNodes.css";
 import { algoInfoMap } from "./utils/utils";
 import { AvailableAlgorithms } from "@/app/types/types";
@@ -8,15 +8,18 @@ import { AvailableAlgorithms } from "@/app/types/types";
 interface IInfoBarProps {
   nodeSize: number;
   bombExist: boolean;
+  weightExist: boolean;
   selectedAlgorithm: AvailableAlgorithms;
 }
 
 const InfoBar: React.FC<IInfoBarProps> = ({
   nodeSize,
   bombExist,
+  weightExist,
   selectedAlgorithm,
 }) => {
   const algoInfo = algoInfoMap[selectedAlgorithm];
+  const isWeightedAlgo = !algoInfo.weight.includes("unweighted");
 
   return (
     <div className="relative hidden w-full md:block text-black 4k:text-4xl py-5">
@@ -46,6 +49,16 @@ const InfoBar: React.FC<IInfoBarProps> = ({
             className="node-bomb inline-block mr-2"
           ></div>
           <span>Bomb Node</span>
+        </div>
+        <div className="flex items-center">
+          <div
+            style={{
+              width: `${nodeSize}px`,
+              height: `${nodeSize}px`,
+            }}
+            className="node-weight-no-animation inline-block mr-2"
+          ></div>
+          <span className={`${(weightExist && !isWeightedAlgo) ? "crossed-line" : ""}`}>Weight Node</span>
         </div>
         <div className="flex items-center">
           <div

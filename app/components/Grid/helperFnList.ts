@@ -5,23 +5,28 @@ import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar"
 import { visualizeGreedyBFS } from "@/app/algorithms/greedyBFS/animation/visualizeGreedyBFS";
 import { visualizeBFS } from "@/app/algorithms/bfs/animation/visualizeBFS";
 import { visualizeDFS } from "@/app/algorithms/dfs/animation/visualizeDFS";
-import { IAnimationSpeedMap, IGridState, INode } from "@/app/interfaces/interfaces";
-import { removeWallsFromGrid } from "@/app/algorithms/utils/utils";
+import {
+  IAnimationSpeedMap,
+  IGridState,
+  INode,
+} from "@/app/interfaces/interfaces";
+import { removeWallsAndWeightsFromGrid } from "@/app/algorithms/utils/utils";
 import { AvailableMazes } from "@/app/types/types";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
+import { visualizeBasicWeightMaze } from "@/app/algorithms/mazes/animations/basicWeightMaze";
 
 export const visitedNodeAnimationSpeedMap: IAnimationSpeedMap = {
   fast: 10,
   average: 25,
-  slow: 50
-}
+  slow: 50,
+};
 
 export const pathAnimationSpeedMap: IAnimationSpeedMap = {
   fast: 50,
   average: 75,
-  slow: 100
-}
+  slow: 100,
+};
 
 export const createNode = (
   state: IGridState,
@@ -41,6 +46,7 @@ export const createNode = (
     isWall: false,
     isMazeWall: false,
     previousNode: null,
+    weight: 1,
   };
 };
 
@@ -113,6 +119,7 @@ export const placeRandomBomb = (
         !node.isWall &&
         !node.isStart &&
         !node.isFinish &&
+        node.weight <= 1 &&
         Math.abs(node.row - startNode.row) +
           Math.abs(node.col - startNode.col) >
           5 &&
@@ -145,14 +152,17 @@ export const dropSpecialNode = (
     case "start":
       if (row === finishNode.row && col === finishNode.col) return;
       if (row === bombNode.row && col === bombNode.col) return;
+      if (grid[row][col].weight > 1) return; // preserve weighted nodes
       break;
     case "finish":
       if (row === startNode.row && col === startNode.col) return;
       if (row === bombNode.row && col === bombNode.col) return;
+      if (grid[row][col].weight > 1) return; // preserve weighted nodes
       break;
     case "bomb":
       if (row === startNode.row && col === startNode.col) return;
       if (row === finishNode.row && col === finishNode.col) return;
+      if (grid[row][col].weight > 1) return; // preserve weighted nodes
       break;
   }
 
@@ -218,11 +228,16 @@ export const visualizeAlgorithm = (
 export const generateMaze = (
   state: IGridState,
   maze: AvailableMazes,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
+  navWrapper: HTMLDivElement | null, // needed for dynamic calculation of node weights
+  nodeSize: number // needed for dynamic calculation of node weights
 ) => {
   switch (maze) {
     case "randomBasicMaze":
       visualizeRandomBasicMaze(state, dispatch);
+      break;
+    case "basicWeightMaze":
+      visualizeBasicWeightMaze(state, dispatch, navWrapper, nodeSize);
       break;
     case "recursiveDivision":
       visualizeRecursiveDivision(state, dispatch);
@@ -256,13 +271,13 @@ export const removeBomb = (
   dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: undefined });
 };
 
-export const clearWalls = (
+export const clearWallsAndWeights = (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>
 ) => {
   const { grid } = state;
 
-  const newGrid = removeWallsFromGrid(grid);
+  const newGrid = removeWallsAndWeightsFromGrid(grid);
 
   dispatch({ type: "SET_GRID", payload: newGrid });
 };

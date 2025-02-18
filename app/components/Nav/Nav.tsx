@@ -99,7 +99,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
   };
 
   return (
-    <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative">
+    <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative md:text-sm">
       <div className="container mx-auto flex justify-between md:justify-start items-center gap-12 4k:gap-40">
         {/* Logo */}
         <div className="text-white text-lg 4k:text-4xl font-semibold">

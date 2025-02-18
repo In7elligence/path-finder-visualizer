@@ -17,7 +17,7 @@ export const algoInfoMap: IAlgoInfoMap = {
   },
   greedyBFS: {
     info: "Greedy Best-First Search is",
-    weight: "weighted",
+    weight: "unweighted",
     connect: "and",
     guarantee: "does not guarantee",
     closing: "the shortest path!",

@@ -6,6 +6,7 @@ type NodeState = Pick<
   | "isShortestPath"
   | "bombExist"
   | "direction"
+  | "weight"
   | "isStart"
   | "isBomb"
   | "isBombDefused"
@@ -107,6 +108,22 @@ export const getNodeClasses = (state: NodeState): string => {
     {
       test: ({ isBomb } = state) => isBomb,
       classes: "node-bomb",
+    },
+    {
+      test: ({ weight, isShortestPath } = state) => weight > 1 && isShortestPath,
+      classes: "node-weight node-shortest-path",
+    },
+    {
+      test: ({ weight, isBlueVisited } = state) => weight > 1 && isBlueVisited,
+      classes: "node-weight node-visited",
+    },
+    {
+      test: ({ weight, isPurpleVisited } = state) => weight > 1 && isPurpleVisited,
+      classes: "node-weight visited-while-bomb-active",
+    },
+    {
+      test: ({ weight } = state) => weight > 1,
+      classes: "node-weight",
     },
     {
       test: ({ isWall, isMazeWall } = state) => isWall && isMazeWall,

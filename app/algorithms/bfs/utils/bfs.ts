@@ -12,7 +12,7 @@ class EfficientQueue<T> {
     if (this.isEmpty()) return undefined;
     const element = this.elements[this.head];
     this.head++;
-    
+
     // Compact array when 50% space is wasted
     if (this.head > this.elements.length / 2) {
       this.elements = this.elements.slice(this.head);
@@ -36,7 +36,7 @@ const getNeighbors = (
 
   // Pre-allocate array size for neighbors
   const possibleNeighbors: (INode | null)[] = new Array(4);
-  
+
   possibleNeighbors[0] = row > 0 ? grid[row - 1][col] : null;
   possibleNeighbors[1] = row < grid.length - 1 ? grid[row + 1][col] : null;
   possibleNeighbors[2] = col > 0 ? grid[row][col - 1] : null;
@@ -44,11 +44,11 @@ const getNeighbors = (
 
   for (const neighbor of possibleNeighbors) {
     if (!neighbor) continue;
-    
-    const isUnvisited = isBombPhase 
-      ? !neighbor.isPurpleVisited 
+
+    const isUnvisited = isBombPhase
+      ? !neighbor.isPurpleVisited
       : !neighbor.isBlueVisited;
-      
+
     if (!neighbor.isWall && isUnvisited) {
       neighbors.push(neighbor);
     }
@@ -85,7 +85,7 @@ export const bfs = (
   } else {
     startNode.isBlueVisited = true;
   }
-  
+
   queue.enqueue(startNode);
   visitedNodesInOrder.push(startNode);
 
@@ -103,7 +103,7 @@ export const bfs = (
       } else {
         neighbor.isBlueVisited = true;
       }
-      
+
       neighbor.previousNode = currentNode;
       visitedNodesInOrder.push(neighbor);
       queue.enqueue(neighbor);
