@@ -16,6 +16,7 @@ import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/rand
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
 import { visualizeBasicWeightMaze } from "@/app/algorithms/mazes/animations/basicWeightMaze";
 import { visualizebellmanFords } from "@/app/algorithms/bellmanford/animation/visualizeBellmanFord";
+import { visualizeSwarmBidirectional } from "@/app/algorithms/swarm/animation/visualizeSwarmBidirectional";
 
 export const visitedNodeAnimationSpeedMap: IAnimationSpeedMap = {
   fast: 10,
@@ -112,7 +113,11 @@ export const placeRandomBomb = (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>
 ) => {
-  const { grid, startNode, finishNode } = state;
+  const { grid, startNode, finishNode, selectedAlgorithm } = state;
+
+  // We cannot place a bomb during Bidirectional Swarm Algorithm
+  if (selectedAlgorithm === "swarmBidirectional") return;
+
   const validNodes = grid
     .flat()
     .filter(
@@ -143,7 +148,7 @@ export const dropSpecialNode = (
   nodeType: "start" | "finish" | "bomb",
   dispatch: React.Dispatch<GridAction>
 ) => {
-  const { grid, startNode, finishNode, bombNode } = state;
+  const { grid, startNode, finishNode, bombNode, selectedAlgorithm } = state;
 
   // Prevent placement on walls
   if (grid[row][col].isWall) return;
@@ -193,6 +198,9 @@ export const dropSpecialNode = (
       dispatch({ type: "SET_FINISH_NODE", payload: { row, col } });
       break;
     case "bomb":
+      // No bomb during Bidrectional Swarm Algorithm
+      if (selectedAlgorithm === "swarmBidirectional") return;
+
       dispatch({ type: "SET_BOMB_NODE", payload: { row, col } });
       dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: false });
       break;
@@ -211,11 +219,15 @@ export const visualizeAlgorithm = (
       break;
     case "astar":
       visualizeAstar(state, dispatch);
+      break;
     case "bellmanford":
       visualizebellmanFords(state, dispatch);
       break;
     case "greedyBFS":
       visualizeGreedyBFS(state, dispatch);
+      break;
+    case "swarmBidirectional":
+      visualizeSwarmBidirectional(state, dispatch);
       break;
     case "bfs":
       visualizeBFS(state, dispatch);

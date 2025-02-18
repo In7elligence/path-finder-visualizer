@@ -94,6 +94,26 @@ export const getNodesInShortestPathOrder = (finishNode: INode | null) => {
   return nodesInShortestPathOrder;
 };
 
+export const getNodesInShortestPathOrderReverse = (
+  meetingNode: INode,
+  finish: INode
+): INode[] => {
+  const nodes: INode[] = [];
+  let currentNode: INode | null = finish;
+  
+  // Trace backward from finish to meeting node
+  while (currentNode && currentNode !== meetingNode) {
+    nodes.push(currentNode);
+    currentNode = currentNode.previousNode;
+  }
+  
+  if (currentNode === meetingNode) {
+    nodes.push(meetingNode);
+  }
+  
+  return nodes.reverse();
+};
+
 export const doesBombExistInGrid = (grid: INode[][]) => {
   return grid.some((row) => row.some((node) => node.isBomb));
 };

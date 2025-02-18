@@ -1,5 +1,5 @@
 import { IMenuItem } from "@/app/interfaces/interfaces";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import SimpleButton from "../generic/SimpleButton/SimpleButton";
 import CustomSelect from "../generic/CustomSelect/CustomSelect";
 
@@ -61,6 +61,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
           <SimpleButton
             key={item.name}
             text={item.name}
+            isDisabled={item.isDisabled}
             onClick={item.onClick}
             isAlgoRunning={isAlgoRunning}
           />
@@ -97,6 +98,10 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
         return null;
     }
   };
+
+  useEffect(() => {
+    if (isAlgoRunning) setIsMenuOpen(false);
+  }, [isAlgoRunning])
 
   return (
     <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative slt:text-sm">

@@ -6,6 +6,7 @@ export type AvailableAlgorithms =
   | "astar"
   | "bellmanford"
   | "greedyBFS"
+  | "swarmBidirectional"
   | "bfs"
   | "dfs";
 export type AvailableMazes =

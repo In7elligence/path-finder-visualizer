@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
   useState,
-  useRef,
+  useRef
 } from "react";
 import "./grid.css";
 import Node from "../Node/Node";
@@ -118,6 +118,9 @@ const Grid: React.FC = () => {
   );
 
   const handleAlgorithmChange = (value: AvailableAlgorithms) => {
+    // We cannot run Bidirectional Swarm Algorithm with a bomb
+    if (value === "swarmBidirectional") removeBomb(state, dispatch);
+
     dispatch({ type: "SET_SELECTED_ALGORITHM", payload: value });
   };
 
@@ -129,7 +132,7 @@ const Grid: React.FC = () => {
   const handleMazeGeneration = useCallback(
     (maze: AvailableMazes) =>
       generateMaze(state, maze, dispatch, navWrapperRef.current, nodeSize),
-    [state]
+    [nodeSize, state]
   );
 
   const handleResetGrid = () => {
@@ -258,6 +261,11 @@ const Grid: React.FC = () => {
                 },
                 {
                   type: "option",
+                  name: "Bidirectional Swarm Algorithm",
+                  value: "swarmBidirectional",
+                },
+                {
+                  type: "option",
                   name: "Breadth-First Search",
                   value: "bfs",
                 },
@@ -308,6 +316,7 @@ const Grid: React.FC = () => {
             {
               type: "simpleButton",
               name: bombExist ? "Remove Bomb" : "Place Bomb",
+              isDisabled: selectedAlgorithm === "swarmBidirectional",
               onClick: () =>
                 bombExist
                   ? removeBomb(state, dispatch)

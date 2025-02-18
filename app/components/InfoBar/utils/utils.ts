@@ -29,6 +29,13 @@ export const algoInfoMap: IAlgoInfoMap = {
     guarantee: "does not guarantee",
     closing: "the shortest path!",
   },
+  swarmBidirectional: {
+    info: "Bidirectional Swarm Algorithm",
+    weight: "weighted",
+    connect: "and",
+    guarantee: "guarantees",
+    closing: "the shortest path!",
+  },
   bfs: {
     info: "Breadth-First Search is",
     weight: "unweighted",

@@ -21,7 +21,7 @@ const inter = localFont({
 export const metadata: Metadata = {
   title: "Pathfinding Visualizer",
   description: `Visualize popular pathfinding algorithms including Dijkstra's,
-    A* Search, Bellman-Ford, Greedy BFS, BFS, and DFS in an interactive web app.
+    A* Search, Bellman-Ford, Greedy BFS, BFS, Bidirectional Swarm Algorithm and DFS in an interactive web app.
     Built with Next.js by Martin Beck Andersen to demonstrate algorithmic concepts.`.trim(),
   keywords: [
     "pathfinding visualizer",
@@ -29,6 +29,8 @@ export const metadata: Metadata = {
     "A* Search",
     "Bellman-Ford",
     "Greedy Best-First Search",
+    "Swarm Algorithm",
+    "Bidirectional Swarm Algorithm",
     "Breadth-First Search",
     "Depth-First Search",
     "algorithm visualization",

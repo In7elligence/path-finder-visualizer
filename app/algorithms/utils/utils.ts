@@ -13,6 +13,7 @@ export const resetGridForAlgorithm = (grid: INode[][]): INode[][] => {
       fCost: Infinity,
       direction: undefined,
       previousNode: null,
+      weight: node.weight,
       isStart: node.isStart,
       isFinish: node.isFinish,
       isBomb: node.isBomb,

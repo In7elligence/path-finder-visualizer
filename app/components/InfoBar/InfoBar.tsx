@@ -40,7 +40,7 @@ const InfoBar: React.FC<IInfoBarProps> = ({
           ></div>
           <span>Target Node</span>
         </div>
-        <div className="flex items-center">
+        <div className={`flex items-center ${selectedAlgorithm === "swarmBidirectional" ? "crossed-line" : ""}`}>
           <div
             style={{
               width: `${nodeSize + 10}px`,

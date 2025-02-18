@@ -53,8 +53,3 @@
   border: 1px solid rgb(175, 216, 248);
   background-color: rgb(255, 254, 106);
 }
-
-.crossed-line {
-  text-decoration: line-through;
-  color: red;
-}
