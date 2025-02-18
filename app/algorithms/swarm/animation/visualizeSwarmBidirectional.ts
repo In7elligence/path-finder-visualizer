@@ -16,10 +16,8 @@ export const visualizeSwarmBidirectional = async (
     visitedNodeAnimationDuration,
     pathAnimationDuration,
     isAlgoRunning,
-    bombNode
+    bombNode,
   } = state;
-
-  console.log("bombNode: ", bombNode);
 
   // No bombs allowed during Bidirectional Swarm Algorithm
   if (bombNode.row !== -1 && bombNode.col !== -1) return;

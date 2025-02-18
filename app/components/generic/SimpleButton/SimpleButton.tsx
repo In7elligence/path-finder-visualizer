@@ -30,18 +30,6 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
   const btnClasses = useMemo(() => {
     const scheme = colorSchemes[btnColorScheme];
 
-    console.log({
-      text,
-      isAlgoRunning,
-      isDisabled,
-    });
-
-    if (isAlgoRunning && isDisabled) {
-      console.log("CLASS SHOULD BE: ", "crossed-line pointer-events-none");
-    } else {
-      console.log("CLASS SHOULD BE NOTHING");
-    }
-
     return `
     4k:text-3xl
     bg-transparent
@@ -50,7 +38,7 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
     text-center
     slt:text-start
     ${scheme.hover}
-    ${!isAlgoRunning && isDisabled ? "crossed-line pointer-events-none" : ""}
+    ${isDisabled ? "crossed-line pointer-events-none" : ""}
     `;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnColorScheme, isDisabled]);
