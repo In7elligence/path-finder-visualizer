@@ -14,6 +14,7 @@ export default {
       },
       screens: {
         '4k': '3840px', // Custom breakpoint for 4K screens
+        'slt': '1281px', // Custom breakpoint for small laptop screens
       },
     },
   },

@@ -41,7 +41,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
       ${scheme.focusRing}
       font-medium
       mt-4
-      md:mt-auto
+      slt:mt-auto
       rounded-lg 
       4k:rounded-2xl
       px-5
@@ -99,15 +99,15 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
   };
 
   return (
-    <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative md:text-sm">
-      <div className="container mx-auto flex justify-between md:justify-start items-center gap-12 4k:gap-40">
+    <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative slt:text-sm">
+      <div className="container mx-auto flex justify-between slt:justify-start items-center gap-12 4k:gap-40">
         {/* Logo */}
         <div className="text-white text-lg 4k:text-4xl font-semibold">
           Pathfinding Visualizer
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden">
+        <div className="slt:hidden">
           <button
             onClick={toggleMenu}
             className="text-white focus:outline-none"
@@ -146,14 +146,14 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-4 gap-8 4k:gap-24">
+        <div className="hidden  :flex space-x-4 gap-8 4k:gap-24">
           {menuItems.map(renderMenuItem)}
         </div>
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden ${
+        className={`slt:hidden ${
           isMenuOpen ? "block" : "hidden"
         } bg-gray-800 absolute left-0 w-full z-10`}
       >

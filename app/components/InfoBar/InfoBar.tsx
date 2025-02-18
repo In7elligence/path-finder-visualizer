@@ -22,7 +22,7 @@ const InfoBar: React.FC<IInfoBarProps> = ({
   const isWeightedAlgo = !algoInfo.weight.includes("unweighted");
 
   return (
-    <div className="relative hidden w-full md:block text-black 4k:text-4xl py-5">
+    <div className="relative hidden w-full md:block text-sm slt:text-base text-black 4k:text-4xl py-5">
       <div className="container flex justify-center mx-auto gap-8 4k:gap-24">
         <div className="flex items-center">
           <div
@@ -95,7 +95,7 @@ const InfoBar: React.FC<IInfoBarProps> = ({
       </div>
       <div className="container flex justify-center mx-auto 4k:mt-6">
         <div className="flex items-center my-8">
-          <div className="text-lg 4k:text-5xl">
+          <div className="slt:text-lg 4k:text-5xl">
             {algoInfo.info}{" "}
             <b>
               <i>{algoInfo.weight}</i>

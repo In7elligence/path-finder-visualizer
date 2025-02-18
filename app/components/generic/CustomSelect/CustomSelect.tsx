@@ -57,7 +57,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       w-full
       p-2.5
       text-center
-      md:text-left
+      slt:text-start
       ${scheme.cursor}
       ${scheme.hover}
       transition-colors
@@ -147,6 +147,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
                 hover:bg-teal-700
                 transition-colors
                 duration-200
+                text-center
+                slt:text-start
                 ${value === option.value ? "bg-teal-700" : ""}
               `}
               onClick={() => !disabled && handleSelect(option.value)}

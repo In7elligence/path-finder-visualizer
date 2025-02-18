@@ -33,6 +33,8 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
     bg-transparent
     border-transparent
     text-white
+    text-center
+    slt:text-start
     ${scheme.hover}
     `;
     // eslint-disable-next-line react-hooks/exhaustive-deps
