@@ -15,6 +15,13 @@ export const algoInfoMap: IAlgoInfoMap = {
     guarantee: "guarantees",
     closing: "the shortest path!",
   },
+  bellmanFord: {
+    info: "Bellman-Ford Algorithm is",
+    weight: "weighted",
+    connect: "and",
+    guarantee: "guarantees",
+    closing: "the shortest path!",
+  },
   greedyBFS: {
     info: "Greedy Best-First Search is",
     weight: "unweighted",

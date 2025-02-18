@@ -15,6 +15,7 @@ import { AvailableMazes } from "@/app/types/types";
 import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
 import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
 import { visualizeBasicWeightMaze } from "@/app/algorithms/mazes/animations/basicWeightMaze";
+import { visualizebellmanFords } from "@/app/algorithms/bellmanford/animation/visualizeBellmanFord";
 
 export const visitedNodeAnimationSpeedMap: IAnimationSpeedMap = {
   fast: 10,
@@ -210,6 +211,8 @@ export const visualizeAlgorithm = (
       break;
     case "astar":
       visualizeAstar(state, dispatch);
+    case "bellmanford":
+      visualizebellmanFords(state, dispatch);
       break;
     case "greedyBFS":
       visualizeGreedyBFS(state, dispatch);

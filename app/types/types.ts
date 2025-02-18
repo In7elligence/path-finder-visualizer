@@ -4,6 +4,7 @@ export type NavItemType = "button" | "simpleButton" | "dropdown" | "option";
 export type AvailableAlgorithms =
   | "dijkstras"
   | "astar"
+  | "bellmanford"
   | "greedyBFS"
   | "bfs"
   | "dfs";

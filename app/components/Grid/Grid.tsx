@@ -248,6 +248,11 @@ const Grid: React.FC = () => {
                 },
                 {
                   type: "option",
+                  name: "Bellman-Ford Algorithm",
+                  value: "bellmanFord",
+                },
+                {
+                  type: "option",
                   name: "Greedy Best-First Search",
                   value: "greedyBFS",
                 },

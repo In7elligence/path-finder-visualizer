@@ -12,6 +12,8 @@ You can access it here: [martin-pathfinding-visualizer.vercel.app](https://marti
 
 **A\* Search (weighted)** - Arguably the best pathfinding algorithm; uses heuristics to guarantee the shortest path much faster than Dijkstra's Algorithm.
 
+**Bellman-Ford Algorithm (weighted)** – A robust pathfinder. Slower than Dijkstra's Algorithm, yet valuable for understanding edge-based optimization; guarantees shortest path.
+
 **Greedy Best-First Search (unweighted)** – A faster, more heuristic-heavy version of A\*; does not guarantee the shortest path.
 
 **Breadth-First Search (unweighted)** - A great algorithm; guarantees the shortest path.
