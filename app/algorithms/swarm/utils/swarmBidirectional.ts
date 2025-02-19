@@ -202,7 +202,6 @@ export const swarmBidirectional = (
     }
   }
 
-  // Reconstruct path using existing properties
   let path: INode[] = [];
   if (meetingNode) {
     // Build forward path
