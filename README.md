@@ -37,7 +37,7 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 - Clicking the "Visualize!" button will initiate a visualization of the selected algorithm (Dijkstra's Algorithm by default).
 - You can select which algorithm to visualize, by clicking the algorithms drop-down menu.
 - You can generate mazes by choosing a maze from the mazes drop-down menu.
-  - In addition, you can left-click, or hold left-click, and draw walls on the grid manually. Clicking on an existing wall node, or trying draw over it will remove the wall.
+  - In addition, you can left-click, or hold left-click, and draw walls on the Grid manually. Clicking on an existing wall node, or trying draw over it will remove the wall.
   - The weighted maze is a great way to illustrate weighted algorithms. It can represent scenarios like traffic conditions or other real-life factors that affect the speed of traveling from point A to point B.
 - You can place a bomb on a random location on the Grid by clicking the "Place Bomb" button in the menu.
   - When a bomb is placed on the Grid, it'll change the course of the algorithm, as it must first "defuse" the bomb before proceeding to the finish node.
