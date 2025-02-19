@@ -55,7 +55,7 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 The Bidirectional Swarm Algorithm is an idea of combining some of the best elements from the already very well-known pathfinding algorithms. It's a bidirectional hybrid of: 
 - A* Search and uses its Heuristic-driven prioritization.
 - Dijkstra's Algorithm for weight accumulation.
-- Bidirectional BFS for Simultaneous forward/backward search.
+- Bidirectional BFS for simultaneous forward/backward search.
 
 I got the idea after having played around with a lot of algorithms for the project and stumbled upon bidirectional algorithms in graph theory, which intrigued me. There are other bidirectional algorithms out there (including ones that are "swarm based"), but I still thought I'd give it a shot at creating my own, combining the elements of my favorite weighted algorithms and a popular, yet simple, bidirectional algorithm.
 
