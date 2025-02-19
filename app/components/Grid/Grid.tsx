@@ -261,7 +261,7 @@ const Grid: React.FC = () => {
                 },
                 {
                   type: "option",
-                  name: "Bidirectional Swarm Algorithm",
+                  name: "Bidirectional Swarm",
                   value: "swarmBidirectional",
                 },
                 {

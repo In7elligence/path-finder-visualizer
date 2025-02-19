@@ -30,7 +30,7 @@ export const algoInfoMap: IAlgoInfoMap = {
     closing: "the shortest path!",
   },
   swarmBidirectional: {
-    info: "Bidirectional Swarm Algorithm",
+    info: "Bidirectional Swarm is",
     weight: "weighted",
     connect: "and",
     guarantee: "guarantees",
