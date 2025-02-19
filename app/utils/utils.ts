@@ -369,41 +369,35 @@ export const animateMaze = async (
   duration: number,
   dispatch: React.Dispatch<GridAction>
 ) => {
-  const animatedWalls = [...walls];
   const workingGrid = grid.map((row) => row.map((node) => ({ ...node })));
+  const startTime = performance.now();
+  const totalWalls = walls.length;
+  let lastRenderedIndex = 0;
 
-  // Calculate batch parameters
-  const TARGET_FRAME_DURATION = 16; // ~60 FPS
-  const totalFrames = Math.max(1, Math.floor(duration / TARGET_FRAME_DURATION));
-  const wallsPerFrame = Math.ceil(animatedWalls.length / totalFrames);
+  const animateFrame = (currentTime: number) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const currentIndex = Math.floor(progress * totalWalls);
 
-  let currentIndex = 0;
+    // Update walls from lastRenderedIndex to currentIndex
+    if (currentIndex > lastRenderedIndex) {
+      for (let i = lastRenderedIndex; i < currentIndex; i++) {
+        const wall = walls[i];
+        workingGrid[wall.row][wall.col].isWall = true;
+        workingGrid[wall.row][wall.col].isMazeWall = true;
+      }
+      lastRenderedIndex = currentIndex;
 
-  const animateBatch = async () => {
-    if (currentIndex >= animatedWalls.length) return;
-
-    // Update walls for this batch
-    const batchEnd = Math.min(
-      currentIndex + wallsPerFrame,
-      animatedWalls.length
-    );
-    for (let i = currentIndex; i < batchEnd; i++) {
-      const wall = animatedWalls[i];
-      workingGrid[wall.row][wall.col].isWall = true;
-      workingGrid[wall.row][wall.col].isMazeWall = true;
+      dispatch({
+        type: "SET_GRID",
+        payload: workingGrid.map((row) => row.map((node) => ({ ...node }))),
+      });
     }
-    currentIndex = batchEnd;
 
-    // Dispatch grid update
-    dispatch({
-      type: "SET_GRID",
-      payload: workingGrid.map((row) => row.map((node) => ({ ...node }))),
-    });
-
-    // Schedule next batch
-    await new Promise((resolve) => setTimeout(resolve, TARGET_FRAME_DURATION));
-    await animateBatch();
+    if (progress < 1) {
+      requestAnimationFrame(animateFrame);
+    }
   };
 
-  await animateBatch();
+  requestAnimationFrame(animateFrame);
 };

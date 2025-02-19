@@ -20,6 +20,7 @@ export const visualizeRecursiveDivision = async (
     isAlgoRunning,
     mazeAnimationDuration,
   } = state;
+
   const { rows, cols } = gridDimensions;
 
   if (isAlgoRunning) return;
@@ -113,12 +114,7 @@ export const visualizeRecursiveDivision = async (
     }
   });
 
-  await animateMaze(
-    newGrid,
-    walls,
-    mazeAnimationDuration,
-    dispatch
-  )
+  await animateMaze(newGrid, walls, mazeAnimationDuration, dispatch);
 
   dispatch({ type: "TOGGLE_ALGO", payload: false });
 };
