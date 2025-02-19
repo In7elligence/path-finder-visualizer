@@ -1,34 +1,6 @@
 import React from "react";
 import { GridAction } from "./gridReducer";
-import { visualizeDijkstras } from "@/app/algorithms/dijkstras/animation/visualizeDijkstras";
-import { visualizeAstar } from "@/app/algorithms/astar/animation/visualizeAstar";
-import { visualizeGreedyBFS } from "@/app/algorithms/greedyBFS/animation/visualizeGreedyBFS";
-import { visualizeBFS } from "@/app/algorithms/bfs/animation/visualizeBFS";
-import { visualizeDFS } from "@/app/algorithms/dfs/animation/visualizeDFS";
-import {
-  IAnimationSpeedMap,
-  IGridState,
-  INode,
-} from "@/app/interfaces/interfaces";
-import { removeWallsAndWeightsFromGrid } from "@/app/algorithms/utils/utils";
-import { AvailableMazes } from "@/app/types/types";
-import { visualizeRandomBasicMaze } from "@/app/algorithms/mazes/animations/randomBasicMaze";
-import { visualizeRecursiveDivision } from "@/app/algorithms/mazes/animations/recursiveDivisionMaze";
-import { visualizeBasicWeightMaze } from "@/app/algorithms/mazes/animations/basicWeightMaze";
-import { visualizebellmanFords } from "@/app/algorithms/bellmanford/animation/visualizeBellmanFord";
-import { visualizeSwarmBidirectional } from "@/app/algorithms/swarm/animation/visualizeSwarmBidirectional";
-
-export const visitedNodeAnimationSpeedMap: IAnimationSpeedMap = {
-  fast: 10,
-  average: 25,
-  slow: 50,
-};
-
-export const pathAnimationSpeedMap: IAnimationSpeedMap = {
-  fast: 50,
-  average: 75,
-  slow: 100,
-};
+import { IGridState, INode } from "@/app/interfaces/interfaces";
 
 export const createNode = (
   state: IGridState,
@@ -109,38 +81,6 @@ export const placeBombNode = (
   }
 };
 
-export const placeRandomBomb = (
-  state: IGridState,
-  dispatch: React.Dispatch<GridAction>
-) => {
-  const { grid, startNode, finishNode, selectedAlgorithm } = state;
-
-  // We cannot place a bomb during Bidirectional Swarm Algorithm
-  if (selectedAlgorithm === "swarmBidirectional") return;
-
-  const validNodes = grid
-    .flat()
-    .filter(
-      (node) =>
-        !node.isWall &&
-        !node.isStart &&
-        !node.isFinish &&
-        node.weight <= 1 &&
-        Math.abs(node.row - startNode.row) +
-          Math.abs(node.col - startNode.col) >
-          5 &&
-        Math.abs(node.row - finishNode.row) +
-          Math.abs(node.col - finishNode.col) >
-          5
-    );
-
-  if (validNodes.length > 0) {
-    const randomNode =
-      validNodes[Math.floor(Math.random() * validNodes.length)];
-    dropSpecialNode(state, randomNode.row, randomNode.col, "bomb", dispatch);
-  }
-};
-
 export const dropSpecialNode = (
   state: IGridState,
   row: number,
@@ -205,100 +145,4 @@ export const dropSpecialNode = (
       dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: false });
       break;
   }
-};
-
-export const visualizeAlgorithm = (
-  state: IGridState,
-  dispatch: React.Dispatch<GridAction>
-) => {
-  const { selectedAlgorithm } = state;
-
-  switch (selectedAlgorithm) {
-    case "dijkstras":
-      visualizeDijkstras(state, dispatch);
-      break;
-    case "astar":
-      visualizeAstar(state, dispatch);
-      break;
-    case "bellmanford":
-      visualizebellmanFords(state, dispatch);
-      break;
-    case "greedyBFS":
-      visualizeGreedyBFS(state, dispatch);
-      break;
-    case "swarmBidirectional":
-      visualizeSwarmBidirectional(state, dispatch);
-      break;
-    case "bfs":
-      visualizeBFS(state, dispatch);
-      break;
-    case "dfs":
-      visualizeDFS(state, dispatch);
-      break;
-    default:
-      visualizeDijkstras(state, dispatch);
-  }
-};
-
-export const generateMaze = (
-  state: IGridState,
-  maze: AvailableMazes,
-  dispatch: React.Dispatch<GridAction>,
-  navWrapper: HTMLDivElement | null, // needed for dynamic calculation of node weights
-  nodeSize: number // needed for dynamic calculation of node weights
-) => {
-  switch (maze) {
-    case "randomBasicMaze":
-      visualizeRandomBasicMaze(state, dispatch);
-      break;
-    case "basicWeightMaze":
-      visualizeBasicWeightMaze(state, dispatch, navWrapper, nodeSize);
-      break;
-    case "recursiveDivision":
-      visualizeRecursiveDivision(state, dispatch);
-      break;
-    case "recursiveDivisionVerticalSkew":
-      visualizeRecursiveDivision(state, dispatch, "vertical");
-      break;
-    case "recursiveDivisionHorizontalSkew":
-      visualizeRecursiveDivision(state, dispatch, "horizontal");
-      break;
-    default:
-      visualizeRecursiveDivision(state, dispatch);
-  }
-};
-
-export const removeBomb = (
-  state: IGridState,
-  dispatch: React.Dispatch<GridAction>
-) => {
-  const { grid } = state;
-
-  const newGrid = grid.map((row) =>
-    row.map((node) => ({
-      ...node,
-      isBomb: false,
-    }))
-  );
-
-  dispatch({ type: "SET_GRID", payload: newGrid });
-  dispatch({ type: "SET_BOMB_NODE", payload: { row: -1, col: -1 } });
-  dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: undefined });
-};
-
-export const clearWallsAndWeights = (
-  state: IGridState,
-  dispatch: React.Dispatch<GridAction>
-) => {
-  const { grid } = state;
-
-  const newGrid = removeWallsAndWeightsFromGrid(grid);
-
-  dispatch({ type: "SET_GRID", payload: newGrid });
-};
-
-export const clearPath = (dispatch: React.Dispatch<GridAction>) => {
-  dispatch({ type: "SET_NODES_IN_SHORTEST_PATH", payload: [] });
-  dispatch({ type: "SET_VISITED_PURPLE_NODES", payload: [] });
-  dispatch({ type: "SET_VISITED_BLUE_NODES", payload: [] });
 };
