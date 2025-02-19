@@ -15,4 +15,5 @@ export const initialGridState: IGridState = {
   animationSpeed: "fast", // Text indication of the animation speed in general (fast by default)
   visitedNodeAnimationDuration: 10, // Animation/setTimeout duration for visited nodes
   pathAnimationDuration: 50, // Animation/setTimeout duration for final path
+  mazeAnimationDuration: 4000 // Animation duration (in miliseconds) for generating recursive division mazes
 };

@@ -21,6 +21,7 @@ import {
   visualizeAlgorithm,
 } from "@/app/utils/utils";
 import {
+  mazeGenerationSpeedMap,
   pathAnimationSpeedMap,
   visitedNodeAnimationSpeedMap,
 } from "@/app/utils/lookupMaps";
@@ -90,6 +91,7 @@ const NavContainer: React.FC<INavContainerProps> = ({
   const handleSetAnimationSpeed = (speed: AnimationSpeed) => {
     const visitedAnimationSpeed = visitedNodeAnimationSpeedMap[speed];
     const pathAnimationSpeed = pathAnimationSpeedMap[speed];
+    const mazeAnimationSpeed = mazeGenerationSpeedMap[speed];
 
     dispatch({
       type: "SET_ANIMATION_SPEED",
@@ -102,6 +104,10 @@ const NavContainer: React.FC<INavContainerProps> = ({
     dispatch({
       type: "SET_PATH_NODE_ANIMATION_SPEED",
       payload: pathAnimationSpeed,
+    });
+    dispatch({
+      type: "SET_MAZE_ANIMATION_SPEED",
+      payload: mazeAnimationSpeed,
     });
   };
 

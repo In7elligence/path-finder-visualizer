@@ -113,17 +113,17 @@ export const getNodesInShortestPathOrderReverse = (
 ): INode[] => {
   const nodes: INode[] = [];
   let currentNode: INode | null = finish;
-  
+
   // Trace backward from finish to meeting node
   while (currentNode && currentNode !== meetingNode) {
     nodes.push(currentNode);
     currentNode = currentNode.previousNode;
   }
-  
+
   if (currentNode === meetingNode) {
     nodes.push(meetingNode);
   }
-  
+
   return nodes.reverse();
 };
 
@@ -361,4 +361,49 @@ export const animatePath = (
     const pathFinalTimeout = window.setTimeout(() => resolve(), totalTime);
     animationManager.addTimeout(pathFinalTimeout);
   });
+};
+
+export const animateMaze = async (
+  grid: INode[][],
+  walls: INode[],
+  duration: number,
+  dispatch: React.Dispatch<GridAction>
+) => {
+  const animatedWalls = [...walls];
+  const workingGrid = grid.map((row) => row.map((node) => ({ ...node })));
+
+  // Calculate batch parameters
+  const TARGET_FRAME_DURATION = 16; // ~60 FPS
+  const totalFrames = Math.max(1, Math.floor(duration / TARGET_FRAME_DURATION));
+  const wallsPerFrame = Math.ceil(animatedWalls.length / totalFrames);
+
+  let currentIndex = 0;
+
+  const animateBatch = async () => {
+    if (currentIndex >= animatedWalls.length) return;
+
+    // Update walls for this batch
+    const batchEnd = Math.min(
+      currentIndex + wallsPerFrame,
+      animatedWalls.length
+    );
+    for (let i = currentIndex; i < batchEnd; i++) {
+      const wall = animatedWalls[i];
+      workingGrid[wall.row][wall.col].isWall = true;
+      workingGrid[wall.row][wall.col].isMazeWall = true;
+    }
+    currentIndex = batchEnd;
+
+    // Dispatch grid update
+    dispatch({
+      type: "SET_GRID",
+      payload: workingGrid.map((row) => row.map((node) => ({ ...node }))),
+    });
+
+    // Schedule next batch
+    await new Promise((resolve) => setTimeout(resolve, TARGET_FRAME_DURATION));
+    await animateBatch();
+  };
+
+  await animateBatch();
 };

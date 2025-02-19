@@ -41,6 +41,7 @@ export interface IGridState {
   animationSpeed: AnimationSpeed; // Text indication of the animation speed in general (fast by default)
   visitedNodeAnimationDuration: number;
   pathAnimationDuration: number;
+  mazeAnimationDuration: number;
   bombDefused?: boolean;
 }
 

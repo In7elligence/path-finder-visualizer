@@ -3,8 +3,10 @@ import { IGridState } from "@/app/interfaces/interfaces";
 import { recursiveDivisionMaze } from "../utils/recursiveDivision";
 import { removeWallsAndWeightsFromGrid } from "../../utils/utils";
 import { RecursiveDivisions } from "@/app/types/types";
+import { animationManager } from "../../AnimationManager/AnimationManager";
+import { animateMaze } from "@/app/utils/utils";
 
-export const visualizeRecursiveDivision = (
+export const visualizeRecursiveDivision = async (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>,
   orientation?: RecursiveDivisions
@@ -16,10 +18,13 @@ export const visualizeRecursiveDivision = (
     bombNode: initBombNode,
     gridDimensions,
     isAlgoRunning,
+    mazeAnimationDuration,
   } = state;
   const { rows, cols } = gridDimensions;
 
   if (isAlgoRunning) return;
+
+  animationManager.clearAllTimeouts();
 
   const newGrid = removeWallsAndWeightsFromGrid(grid);
 
@@ -108,28 +113,12 @@ export const visualizeRecursiveDivision = (
     }
   });
 
-  const BATCH_SIZE = Math.max(1, Math.floor(walls.length / 50));
-  let currentBatch = 0;
+  await animateMaze(
+    newGrid,
+    walls,
+    mazeAnimationDuration,
+    dispatch
+  )
 
-  const animate = () => {
-    if (currentBatch >= walls.length) {
-      dispatch({ type: "TOGGLE_ALGO", payload: false });
-      return;
-    }
-
-    const batch = walls.slice(currentBatch, currentBatch + BATCH_SIZE);
-    const updatedGrid = newGrid.map((row) => [...row]);
-
-    batch.forEach((wall) => {
-      updatedGrid[wall.row][wall.col].isWall = true;
-      updatedGrid[wall.row][wall.col].isMazeWall = true;
-    });
-
-    dispatch({ type: "SET_GRID", payload: updatedGrid });
-    currentBatch += BATCH_SIZE;
-    requestAnimationFrame(animate);
-  };
-
-  dispatch({ type: "TOGGLE_ALGO", payload: true });
-  animate();
+  dispatch({ type: "TOGGLE_ALGO", payload: false });
 };

@@ -11,3 +11,9 @@ export const visitedNodeAnimationSpeedMap: IAnimationSpeedMap = {
   average: 25,
   slow: 50,
 };
+
+export const mazeGenerationSpeedMap: IAnimationSpeedMap = {
+  fast: 4000,
+  average: 10000,
+  slow: 15000,
+};
