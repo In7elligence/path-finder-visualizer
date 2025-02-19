@@ -16,7 +16,7 @@ You can access it here: [martin-pathfinding-visualizer.vercel.app](https://marti
 
 **Greedy Best-First Search (unweighted)** – A faster, more heuristic-heavy version of A\*; does not guarantee the shortest path.
 
-**Bidirectional Swarm Algorithm (weighted)** – A bidirectional algorithm that's a mix of Dijkstra's, A* and bidirectional BFS; guarantees shortest path.
+**Bidirectional Swarm Algorithm (weighted)** – A bidirectional algorithm that's a mix of Dijkstra's, A\* and bidirectional BFS; guarantees shortest path.
 
 **Breadth-First Search (unweighted)** - A great algorithm; guarantees the shortest path.
 
@@ -40,6 +40,7 @@ On top of the pathfinding algorithms listed above, I also implemented a:
   - In addition, you can left-click, or hold left-click, and draw walls on the grid manually. Clicking on an existing wall node, or trying draw over it will remove the wall.
   - The weighted maze is a great way to illustrate weighted algorithms. It can represent scenarios like traffic conditions or other real-life factors that affect the speed of traveling from point A to point B.
 - You can place a bomb on a random location on the Grid by clicking the "Place Bomb" button in the menu.
+  - When a bomb is placed on the Grid, it'll change the course of the algorithm, as it must first "defuse" the bomb before proceeding to the finish node.
   - You can subsequently remove the bomb again by clicking the "Remove Bomb" button in the menu.
   - The bomb feature is not available for the Bidirectional Swarm Algorithm.
 - You can reset the Grid to its initial state by clicking the "Reset Grid" button in the menu.
@@ -52,8 +53,9 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 
 ## Bidirectional Swarm Algorithm
 
-The Bidirectional Swarm Algorithm is an idea of combining some of the best elements from the already very well-known pathfinding algorithms. It's a bidirectional hybrid of: 
-- A* Search and uses its Heuristic-driven prioritization.
+The Bidirectional Swarm Algorithm is an idea of combining some of the best elements from the already very well-known pathfinding algorithms. It's a bidirectional hybrid of:
+
+- A\* Search and uses its Heuristic-driven prioritization.
 - Dijkstra's Algorithm for weight accumulation.
 - Bidirectional BFS for simultaneous forward/backward search.
 
