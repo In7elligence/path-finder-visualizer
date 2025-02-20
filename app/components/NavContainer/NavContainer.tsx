@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useCallback } from "react";
 import { IGridState, INode } from "@/app/interfaces/interfaces";
 import {
@@ -243,7 +241,14 @@ const NavContainer: React.FC<INavContainerProps> = ({
           {
             type: "helpButton",
             name: "?",
+            extraClassName: "hidden slt:block",
             onClick: toggleHelpModal
+          },
+          {
+            type: "githubButton",
+            name: "GitHub",
+            extraClassName: "hidden slt:block",
+            onClick: () => {}
           },
         ]}
         isAlgoRunning={isAlgoRunning}

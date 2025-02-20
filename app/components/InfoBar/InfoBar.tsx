@@ -1,5 +1,3 @@
-"use client";
-
 import React  from "react";
 import "@/app/styles/specialNodes.css";
 import { algoInfoMap } from "./utils/utils";
@@ -22,8 +20,8 @@ const InfoBar: React.FC<IInfoBarProps> = ({
   const isWeightedAlgo = !algoInfo.weight.includes("unweighted");
 
   return (
-    <div className="relative hidden w-full md:block text-sm slt:text-base text-black 4k:text-4xl py-5">
-      <div className="container flex justify-center mx-auto gap-8 4k:gap-24">
+    <div className="relative hidden w-full slt:block text-sm llt:text-base text-black 4k:text-4xl py-4 llt:py-5">
+      <div className="container flex justify-center mx-auto gap-4 llt:gap-8 4k:gap-24">
         <div className="flex items-center">
           <div
             style={{ width: `${nodeSize}px`, height: `${nodeSize}px` }}
@@ -94,8 +92,8 @@ const InfoBar: React.FC<IInfoBarProps> = ({
         </div>
       </div>
       <div className="container flex justify-center mx-auto 4k:mt-6">
-        <div className="flex items-center my-8">
-          <div className="slt:text-lg 4k:text-5xl">
+        <div className="flex items-center my-6 llt:my-8">
+          <div className="text-base llt:text-lg 4k:text-5xl">
             {algoInfo.info}{" "}
             <b>
               <i>{algoInfo.weight}</i>

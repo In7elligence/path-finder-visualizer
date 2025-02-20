@@ -1,5 +1,5 @@
-import { helpBtnColorScheme } from "@/app/theme/colorSchemes";
 import React, { useMemo } from "react";
+import { helpBtnColorScheme } from "@/app/theme/colorSchemes";
 
 interface IHelpButtonProbs {
   text: string;
@@ -25,8 +25,8 @@ const HelpButton: React.FC<IHelpButtonProbs> = ({
       border
       rounded-full
       border-white
-      w-[25px]
-      h-[25px]
+      w-[24px]
+      h-[24px]
       p-0
       pt-0.5
       flex
@@ -45,7 +45,7 @@ const HelpButton: React.FC<IHelpButtonProbs> = ({
   return (
     <>
       <button
-        className={`${btnClasses} ${className}`}
+        className={`${btnClasses} ${className ? className : " "}`}
         onClick={onClick}
         disabled={isAlgoRunning}
       >

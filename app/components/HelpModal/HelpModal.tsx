@@ -29,7 +29,7 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
         >
           X
         </button>
-        <div className="bg-white p-2 rounded border border-teal-600 max-h-[750px] overflow-y-scroll">
+        <div className="bg-white p-2 rounded border border-teal-600 max-h-[600px] llt:max-h-[750px] overflow-y-scroll">
           <div className="bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-4 text-center">
             <h1 className="text-xl font-bold">Guide</h1>
           </div>

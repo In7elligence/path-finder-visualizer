@@ -1,5 +1,5 @@
-import { simpleBtnColorSchemes } from "@/app/theme/colorSchemes";
 import React, { useMemo } from "react";
+import { simpleBtnColorSchemes } from "@/app/theme/colorSchemes";
 
 interface ISimpleButtonProbs {
   text: string;
@@ -31,6 +31,8 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
     text-white
     text-center
     slt:text-start
+    my-4
+    slt:my-0
     ${scheme.hover}
     ${isDisabled ? "crossed-line pointer-events-none" : ""}
     `;
@@ -39,7 +41,7 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
   return (
     <>
       <button
-        className={`${btnClasses} ${className}`}
+        className={`${btnClasses} ${className ? className : ""}`}
         onClick={onClick}
         disabled={isAlgoRunning}
       >

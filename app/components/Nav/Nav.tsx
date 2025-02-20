@@ -4,6 +4,7 @@ import SimpleButton from "../generic/SimpleButton/SimpleButton";
 import CustomSelect from "../generic/CustomSelect/CustomSelect";
 import HelpButton from "../generic/HelpButton/HelpButton";
 import { regularBtnColorScheme } from "@/app/theme/colorSchemes";
+import GitHubButton from "../generic/GitHubButton/GitHubButton";
 
 interface INavProps {
   menuItems: IMenuItem[];
@@ -97,6 +98,13 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
             formatDisplayText={item.formatDisplayText}
           />
         );
+      case "githubButton":
+        return (
+          <GitHubButton
+            key={item.name}
+            className={item.extraClassName}
+          />
+        );
       default:
         return null;
     }
@@ -108,7 +116,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
 
   return (
     <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative slt:text-sm">
-      <div className="container mx-auto flex justify-between slt:justify-start items-center gap-12 4k:gap-40">
+      <div className="container mx-auto flex justify-between slt:justify-start items-center gap-12 slt:gap-5 llt:gap-12 4k:gap-40">
         {/* Logo */}
         <div className="text-white text-lg 4k:text-4xl font-semibold">
           Pathfinding Visualizer
@@ -154,7 +162,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden slt:flex slt:items-center slt:justify-center space-x-4 gap-8 4k:gap-24">
+        <div className="hidden slt:flex slt:items-center slt:justify-center space-x-4 sm:gap-0 llt:gap-4 4k:gap-24 text-xs llt:text-base">
           {menuItems.map(renderMenuItem)}
         </div>
       </div>
@@ -165,7 +173,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
           isMenuOpen ? "block" : "hidden"
         } bg-gray-800 absolute left-0 w-full z-10`}
       >
-        <div className="flex flex-col-reverse space-y-2 p-4">
+        <div className="flex flex-col-reverse p-4">
           {menuItems.map(renderMenuItem)}
         </div>
       </div>

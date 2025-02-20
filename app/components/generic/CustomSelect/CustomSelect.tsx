@@ -1,5 +1,5 @@
-import { customSelectColorSchemes } from "@/app/theme/colorSchemes";
 import React, { useState, useRef, useEffect, useMemo } from "react";
+import { customSelectColorSchemes } from "@/app/theme/colorSchemes";
 
 interface DropdownOption {
   name: string;
@@ -52,6 +52,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       ${scheme.hover}
       transition-colors
       duration-200
+      my-1
+      slt:my-0
     `;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnColorScheme, disabled]);
@@ -83,7 +85,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative 4k:text-3xl 4k:flex" ref={dropdownRef}>
       <button
         type="button"
-        className={`${btnClasses} ${className}`}
+        className={`${btnClasses} ${className ? className : ""}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
       >
