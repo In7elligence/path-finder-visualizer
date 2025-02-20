@@ -5,6 +5,7 @@ interface ISimpleButtonProbs {
   onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
   isAlgoRunning?: boolean;
   isDisabled?: boolean;
+  className?: string;
 }
 
 const SimpleButton: React.FC<ISimpleButtonProbs> = ({
@@ -12,6 +13,7 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
   onClick,
   isAlgoRunning,
   isDisabled,
+  className
 }) => {
   const btnColorScheme = useMemo(
     () => (isAlgoRunning ? "disabled" : "normal"),
@@ -45,7 +47,7 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
 
   return (
     <>
-      <button className={btnClasses} onClick={onClick} disabled={isAlgoRunning}>
+      <button className={`${btnClasses} ${className}`} onClick={onClick} disabled={isAlgoRunning}>
         {text}
       </button>
     </>

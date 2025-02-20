@@ -58,6 +58,7 @@ export interface IMenuItem {
   }>;
   href?: string;
   isDisabled?: boolean;
+  extraClassName?: string;
   formatDisplayText?: (
     selectedOption: { name: string; value: string } | undefined
   ) => string;

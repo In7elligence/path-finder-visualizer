@@ -29,6 +29,7 @@ import {
 interface INavContainerProps {
   navWrapperRef: HTMLDivElement | null;
   nodeSize: number;
+  toggleHelpModal: () => void;
   state: IGridState;
   dispatch: React.Dispatch<GridAction>;
   getInitialGrid: (rows: number, cols: number) => INode[][];
@@ -41,6 +42,7 @@ interface INavContainerProps {
 const NavContainer: React.FC<INavContainerProps> = ({
   navWrapperRef,
   nodeSize,
+  toggleHelpModal,
   state,
   dispatch,
   getInitialGrid,
@@ -238,6 +240,12 @@ const NavContainer: React.FC<INavContainerProps> = ({
             formatDisplayText: (selected) =>
               selected ? `Speed: ${selected.name}` : "Animation Speed",
           },
+          {
+            type: "simpleButton",
+            name: "Guide",
+            onClick: toggleHelpModal,
+            extraClassName: "hidden slt:block"
+          }
         ]}
         isAlgoRunning={isAlgoRunning}
       />

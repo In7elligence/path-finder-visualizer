@@ -48,7 +48,7 @@ export const calculateGridDimensions = (
 export const getNewGridWithWallToggled = (
   grid: INode[][],
   row: number,
-  col: number
+  col: number,
 ): INode[][] => {
   const newGrid = grid.slice();
   const node = newGrid[row][col];
@@ -58,8 +58,33 @@ export const getNewGridWithWallToggled = (
     isMazeWall: false,
     isWall: !node.isWall,
   };
+  // Case to prevent start, finish and bomb nodes becoming walls
+  if (newGrid[row][col].isStart || newGrid[row][col].isFinish || newGrid[row][col].isBomb) {
+    return newGrid;
+  }
+
+  newGrid[row][col] = newNode;
+
+  return newGrid;
+};
+
+export const getNewGridWithWeightToggled = (
+  grid: INode[][],
+  row: number,
+  col: number,
+  weight: number
+): INode[][] => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isMazeWall: false,
+    isWall: false,
+    weight: weight
+  };
+
   // Case to prevent start and finish nodes becoming walls
-  if (newGrid[row][col].isStart || newGrid[row][col].isFinish) {
+  if (newGrid[row][col].isStart || newGrid[row][col].isFinish || newGrid[row][col].isBomb) {
     return newGrid;
   }
 

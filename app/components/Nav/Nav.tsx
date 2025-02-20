@@ -64,6 +64,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
             isDisabled={item.isDisabled}
             onClick={item.onClick}
             isAlgoRunning={isAlgoRunning}
+            className={item.extraClassName}
           />
         );
 

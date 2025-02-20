@@ -1,6 +1,5 @@
 import { INode } from "@/app/interfaces/interfaces";
-
-export type Orientation = "horizontal" | "vertical";
+import { RecursiveDivisions } from "@/app/types/types";
 
 export interface MazeParams {
   grid: INode[][];
@@ -10,7 +9,7 @@ export interface MazeParams {
   rowEnd: number;
   colStart: number;
   colEnd: number;
-  orientation: Orientation;
+  orientation: RecursiveDivisions;
   surroundingWalls: boolean;
   bombNode?: INode;
   walls?: INode[];

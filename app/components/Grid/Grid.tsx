@@ -25,9 +25,11 @@ import {
   positionStartAndEndNodes,
 } from "./helperFnList";
 import NavContainer from "../NavContainer/NavContainer";
+import HelpModal from "../generic/HelpModal/HelpModal";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [nodeSize, setNodeSize] = useState(NODE_SIZE);
 
   const navWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -102,6 +104,10 @@ const Grid: React.FC = () => {
     [state]
   );
 
+  const handleToggleHelpModal = useCallback(() => {
+    setIsHelpOpen(!isHelpOpen);
+  }, [isHelpOpen])
+
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
     const width = window.innerWidth;
@@ -161,6 +167,7 @@ const Grid: React.FC = () => {
           dispatch={dispatch}
           getInitialGrid={getInitialGrid}
           calculateAndSetGridDimensions={calculateAndSetGridDimensions}
+          toggleHelpModal={handleToggleHelpModal}
         />
       </div>
       <div
@@ -220,6 +227,9 @@ const Grid: React.FC = () => {
           );
         })}
       </div>
+      {isHelpOpen && (
+        <HelpModal toggleModal={handleToggleHelpModal} />
+      )}
     </React.Fragment>
   );
 };
