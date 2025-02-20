@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: "Pathfinding Visualizer",
   description: `Visualize popular pathfinding algorithms including Dijkstra's,
     A* Search, Bellman-Ford, Greedy BFS, BFS, Bidirectional Swarm Algorithm and DFS in an interactive web app.
-    Built with Next.js by Martin Beck Andersen to demonstrate algorithmic concepts.`.trim(),
+    Built with Next.js 15 by Martin Beck Andersen to demonstrate algorithmic concepts.`.trim(),
   keywords: [
     "pathfinding visualizer",
     "Dijkstra's Algorithm",
