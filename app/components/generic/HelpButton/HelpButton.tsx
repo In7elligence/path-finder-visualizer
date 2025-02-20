@@ -36,6 +36,9 @@ const HelpButton: React.FC<IHelpButtonProbs> = ({
       font-bold
       hover:text-white
       text-sm
+      4k:w-[45px]
+      4k:h-[45px]
+      4k:text-lg
       ${scheme.focusRing}
       ${scheme.hover}
       ${scheme.cursor}

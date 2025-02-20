@@ -17,24 +17,37 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
         backdrop-blur-sm
         flex
         justify-center
+        items-center
         `}
     >
       <div
-        className="max-w-[960px] flex flex-col mt-12"
+        className="max-w-[960px] 4k:max-w-[1080px] flex flex-col mt-12"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={toggleModal}
-          className="text-teal-600 text-xl place-self-end"
+          className="text-teal-600 text-xl 4k:text-2xl place-self-end"
         >
           X
         </button>
-        <div className="bg-white p-2 rounded border border-teal-600 max-h-[440px] llt:max-h-[750px] overflow-y-scroll">
+        <div className={`
+          bg-white
+          p-2
+          rounded
+          border
+        border-teal-600
+          max-h-[440px]
+          overflow-y-scroll
+          llt:max-h-[750px]
+          4k:p-4
+          4k:max-h-[1520px]
+          4k:text-lg
+        `}>
           <div className="bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-4 text-center">
-            <h1 className="text-xl font-bold">Guide</h1>
+            <h1 className="text-xl 4k:text-2xl font-bold">Guide</h1>
           </div>
           <div className="text-slate-700 mt-6">
-            <h2 className="text-lg font-bold">
+            <h2 className="text-xl font-bold">
               The application supports the following algorithms:
             </h2>
             <ul className="list-disc mb-6 pl-4 pr-4">
@@ -89,7 +102,7 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
                 </p>
               </li>
             </ul>
-            <h2 className="text-lg font-bold">Instructions:</h2>
+            <h2 className="text-xl font-bold">Instructions:</h2>
             <ul className="list-disc mb-6 pl-4 pr-4 list-outside [&_ul]:list-[revert] pt-4">
               <li className="mb-2">
                 Clicking the &ldquo;Visualize!&ldquo; button will initiate a

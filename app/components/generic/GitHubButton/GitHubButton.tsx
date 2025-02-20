@@ -20,6 +20,9 @@ const GitHubButton: React.FC<IGitHubButtonProbs> = ({
       h-[24px]
       hover:text-white
       text-sm
+      4k:w-[45px]
+      4k:h-[45px]
+      4k:text-base
       ${scheme.focusRing}
       ${scheme.hover}
       ${scheme.cursor}
@@ -35,8 +38,7 @@ const GitHubButton: React.FC<IGitHubButtonProbs> = ({
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          className="w-[24px] h-[24px] 4k:w-[45px] 4k:h-[45px]"
           viewBox="0 0 24 24"
           fill="currentColor"
         >

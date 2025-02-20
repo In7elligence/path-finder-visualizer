@@ -4,7 +4,7 @@ import Grid from "./components/Grid/Grid";
 const styleObj: React.CSSProperties = {
   width: "100vw",
   height: "100vh",
-  position: "relative",
+  position: "relative"
 };
 
 export default function Home() {
