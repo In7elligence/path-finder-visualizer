@@ -112,9 +112,11 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
                 </li>
                 <li className="mb-2">
                   The weighted maze is a great way to illustrate weighted
-                  algorithms. It can represent scenarios like traffic conditions
-                  or other real-life factors that affect the speed of traveling
-                  from point A to point B.
+                  algorithms. It can represent scenarios like traffic
+                  conditions, or other real-life factors that affect the speed
+                  of traveling from point A to point B. The weighted nodes have
+                  a weight from 2-10, or 2-15, which is dynamically set
+                  depending on your viewport.
                 </li>
               </ul>
               <li className="mb-2">
@@ -153,11 +155,12 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
                 The Start, Target and Bomb node are classified as special nodes.
                 You can drag and drop special nodes on the Grid, but you
                 can&lsquo;t drop a special node on top of another special node,
-                or on top of a wall node.
+                wall node, or on top of a weight node.
               </li>
               <li className="mb-2">
-                You can select the animation speed of which the visited nodes
-                and shortest path will be animated: Fast, Average or Slow.
+                You can select the animation speed of which the visited nodes,
+                shortest path nodes and recursive division mazes will be
+                animated: Fast, Average or Slow.
               </li>
               <li className="mb-2">
                 All functionality mentioned above will be disabled during the

@@ -25,7 +25,7 @@ import {
   positionStartAndEndNodes,
 } from "./helperFnList";
 import NavContainer from "../NavContainer/NavContainer";
-import HelpModal from "../generic/HelpModal/HelpModal";
+import HelpModal from "../HelpModal/HelpModal";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);

@@ -241,11 +241,10 @@ const NavContainer: React.FC<INavContainerProps> = ({
               selected ? `Speed: ${selected.name}` : "Animation Speed",
           },
           {
-            type: "simpleButton",
-            name: "Guide",
-            onClick: toggleHelpModal,
-            extraClassName: "hidden slt:block"
-          }
+            type: "helpButton",
+            name: "?",
+            onClick: toggleHelpModal
+          },
         ]}
         isAlgoRunning={isAlgoRunning}
       />

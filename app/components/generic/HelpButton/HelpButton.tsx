@@ -1,19 +1,17 @@
-import { simpleBtnColorSchemes } from "@/app/theme/colorSchemes";
+import { helpBtnColorScheme } from "@/app/theme/colorSchemes";
 import React, { useMemo } from "react";
 
-interface ISimpleButtonProbs {
+interface IHelpButtonProbs {
   text: string;
   onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
   isAlgoRunning?: boolean;
-  isDisabled?: boolean;
   className?: string;
 }
 
-const SimpleButton: React.FC<ISimpleButtonProbs> = ({
+const HelpButton: React.FC<IHelpButtonProbs> = ({
   text,
   onClick,
   isAlgoRunning,
-  isDisabled,
   className,
 }) => {
   const btnColorScheme = useMemo(
@@ -22,19 +20,27 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
   );
 
   const btnClasses = useMemo(() => {
-    const scheme = simpleBtnColorSchemes[btnColorScheme];
-
+    const scheme = helpBtnColorScheme[btnColorScheme];
     return `
-    4k:text-3xl
-    bg-transparent
-    border-transparent
-    text-white
-    text-center
-    slt:text-start
-    ${scheme.hover}
-    ${isDisabled ? "crossed-line pointer-events-none" : ""}
+      border
+      rounded-full
+      border-white
+      w-[25px]
+      h-[25px]
+      p-0
+      pt-0.5
+      flex
+      justify-center
+      align-center
+      slt:text-center
+      font-bold
+      hover:text-white
+      text-sm
+      ${scheme.focusRing}
+      ${scheme.hover}
+      ${scheme.cursor}
     `;
-  }, [btnColorScheme, isDisabled]);
+  }, [btnColorScheme])
 
   return (
     <>
@@ -49,4 +55,4 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
   );
 };
 
-export default SimpleButton;
+export default HelpButton;

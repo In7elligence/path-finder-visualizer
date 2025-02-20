@@ -2,6 +2,8 @@ import { IMenuItem } from "@/app/interfaces/interfaces";
 import React, { useEffect, useMemo, useState } from "react";
 import SimpleButton from "../generic/SimpleButton/SimpleButton";
 import CustomSelect from "../generic/CustomSelect/CustomSelect";
+import HelpButton from "../generic/HelpButton/HelpButton";
+import { regularBtnColorScheme } from "@/app/theme/colorSchemes";
 
 interface INavProps {
   menuItems: IMenuItem[];
@@ -14,23 +16,12 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const btnColorScheme = useMemo(
-    () => (isAlgoRunning ? "red" : "teal"),
+    () => (isAlgoRunning ? "disabled" : "normal"),
     [isAlgoRunning]
   );
 
-  const colorSchemes = {
-    teal: {
-      gradient: "from-teal-400 via-teal-500 to-teal-600",
-      focusRing: "focus:ring-teal-300 dark:focus:ring-teal-800",
-    },
-    red: {
-      gradient: "from-red-400 via-red-500 to-red-600",
-      focusRing: "focus:ring-red-300 dark:focus:ring-red-800",
-    },
-  };
-
-  const btnClasses = useMemo(() => {
-    const scheme = colorSchemes[btnColorScheme];
+  const regularBtnClasses = useMemo(() => {
+    const scheme = regularBtnColorScheme[btnColorScheme];
     return `
       text-white
       bg-gradient-to-r
@@ -51,7 +42,6 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
       text-center
       4k:text-3xl
     `;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [btnColorScheme]);
 
   const renderMenuItem = (item: IMenuItem) => {
@@ -73,21 +63,33 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
           <button
             key={item.name}
             onClick={item.onClick}
-            className={btnClasses}
+            className={`${regularBtnClasses} ${item.extraClassName}`}
             disabled={isAlgoRunning}
           >
             {item.name}
           </button>
         );
-
+      case "helpButton":
+        return (
+          <HelpButton
+            key={item.name}
+            text={item.name}
+            onClick={item.onClick}
+            isAlgoRunning={isAlgoRunning}
+            className={item.extraClassName}
+          />
+        );
       case "dropdown":
         return (
           <CustomSelect
             key={item.name}
-            options={item.children?.map((child) => ({
-              name: child.name,
-              value: child.value,
-            })) || []}
+            className={item.extraClassName}
+            options={
+              item.children?.map((child) => ({
+                name: child.name,
+                value: child.value,
+              })) || []
+            }
             value={item.value}
             placeholder={item.name}
             onChange={item.onChange}
@@ -102,7 +104,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
 
   useEffect(() => {
     if (isAlgoRunning) setIsMenuOpen(false);
-  }, [isAlgoRunning])
+  }, [isAlgoRunning]);
 
   return (
     <nav className="bg-gray-800 p-4 4k:p-12 4k:pl-56 relative slt:text-sm">
@@ -152,7 +154,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden slt:flex space-x-4 gap-8 4k:gap-24">
+        <div className="hidden slt:flex slt:items-center slt:justify-center space-x-4 gap-8 4k:gap-24">
           {menuItems.map(renderMenuItem)}
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { customSelectColorSchemes } from "@/app/theme/colorSchemes";
 import React, { useState, useRef, useEffect, useMemo } from "react";
 
 interface DropdownOption {
@@ -12,6 +13,7 @@ interface CustomSelectProps {
   onChange?: (value: string) => void;
   disabled?: boolean;
   formatDisplayText?: (selectedOption: DropdownOption | undefined) => string;
+  className?: string
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -21,24 +23,12 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   onChange,
   disabled = false,
   formatDisplayText,
+  className
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find((option) => option.value === value);
-
-  const colorSchemes = {
-    normal: {
-      focusRing: "focus:ring-teal-500",
-      hover: "hover:bg-teal-600",
-      cursor: "cursor-pointer",
-    },
-    disabled: {
-      focusRing: "focus:ring-red-500",
-      hover: "hover:bg-red-600",
-      cursor: "cursor-default",
-    },
-  };
 
   const btnColorScheme = useMemo(
     () => (disabled ? "disabled" : "normal"),
@@ -46,7 +36,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   );
 
   const btnClasses = useMemo(() => {
-    const scheme = colorSchemes[btnColorScheme];
+    const scheme = customSelectColorSchemes[btnColorScheme];
     return `
       bg-gray-800
       rounded-lg
@@ -93,7 +83,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative 4k:text-3xl 4k:flex" ref={dropdownRef}>
       <button
         type="button"
-        className={btnClasses}
+        className={`${btnClasses} ${className}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
       >
