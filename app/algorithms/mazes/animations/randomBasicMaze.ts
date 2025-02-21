@@ -7,19 +7,19 @@ const animateRandomBasicMaze = (
   initialGrid: INode[][],
   walls: INode[],
   animationDuration: number,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
 ) => {
   const gridWithWalls = initialGrid.map((row) =>
     row.map((node) => {
       const isWall = walls.some(
-        (w) => w.row === node.row && w.col === node.col
+        (w) => w.row === node.row && w.col === node.col,
       );
       return {
         ...node,
         isWall: isWall || node.isWall,
         isMazeWall: isWall || node.isMazeWall,
       };
-    })
+    }),
   );
 
   dispatch({ type: "SET_GRID", payload: gridWithWalls });
@@ -31,7 +31,7 @@ const animateRandomBasicMaze = (
 
 export const visualizeRandomBasicMaze = (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
 ) => {
   const {
     grid,
@@ -82,7 +82,6 @@ export const visualizeRandomBasicMaze = (
     newGrid,
     walls,
     visitedNodeAnimationDuration,
-    dispatch
+    dispatch,
   );
 };
-

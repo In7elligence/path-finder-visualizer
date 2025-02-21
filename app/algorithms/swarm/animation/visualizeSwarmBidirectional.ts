@@ -7,7 +7,7 @@ import { swarmBidirectional } from "../utils/swarmBidirectional";
 
 export const visualizeSwarmBidirectional = async (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
 ) => {
   const {
     grid,
@@ -40,7 +40,7 @@ export const visualizeSwarmBidirectional = async (
   await animateNeutralPhase(
     visitedNodes,
     visitedNodeAnimationDuration,
-    dispatch
+    dispatch,
   );
   await animatePath(path, pathAnimationDuration, dispatch);
 

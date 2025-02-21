@@ -93,17 +93,17 @@ const setPathDirections = (path: INode[]) => {
       next.row < current.row
         ? "up"
         : next.row > current.row
-        ? "down"
-        : next.col < current.col
-        ? "left"
-        : "right";
+          ? "down"
+          : next.col < current.col
+            ? "left"
+            : "right";
   }
 };
 
 export const swarmBidirectional = (
   grid: INode[][],
   start: INode,
-  finish: INode
+  finish: INode,
 ): { visitedNodes: INode[]; path: INode[] } => {
   // Reset nodes using existing properties
   grid.forEach((row) =>
@@ -115,7 +115,7 @@ export const swarmBidirectional = (
       node.isPurpleVisited = false;
       node.isPath = false;
       node.previousNode = null;
-    })
+    }),
   );
 
   const forwardQueue = new PriorityQueue();

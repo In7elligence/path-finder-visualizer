@@ -18,7 +18,7 @@ const SimpleButton: React.FC<ISimpleButtonProbs> = ({
 }) => {
   const btnColorScheme = useMemo(
     () => (isAlgoRunning ? "disabled" : "normal"),
-    [isAlgoRunning]
+    [isAlgoRunning],
   );
 
   const btnClasses = useMemo(() => {

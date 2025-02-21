@@ -28,7 +28,13 @@ type NodeState = Pick<
 export const getNodeClasses = (state: NodeState): string => {
   const conditions = [
     {
-      test: ({ isFinish, isShortestPath, bombExist, isBombDefused, direction } = state) =>
+      test: ({
+        isFinish,
+        isShortestPath,
+        bombExist,
+        isBombDefused,
+        direction,
+      } = state) =>
         isFinish && isShortestPath && bombExist && isBombDefused && direction,
       classes: "node-robot node-shortest-path",
     },
@@ -85,9 +91,9 @@ export const getNodeClasses = (state: NodeState): string => {
       classes: "node-start node-shortest-path",
     },
     {
-        test: ({ isStart, isBlueVisited } = state) => isStart && isBlueVisited,
-        classes: "node-start node-visited",
-      },
+      test: ({ isStart, isBlueVisited } = state) => isStart && isBlueVisited,
+      classes: "node-start node-visited",
+    },
     {
       test: ({ isStart } = state) => isStart,
       classes: "node-start",
@@ -110,7 +116,8 @@ export const getNodeClasses = (state: NodeState): string => {
       classes: "node-bomb",
     },
     {
-      test: ({ weight, isShortestPath } = state) => weight > 1 && isShortestPath,
+      test: ({ weight, isShortestPath } = state) =>
+        weight > 1 && isShortestPath,
       classes: "node-weight node-shortest-path",
     },
     {
@@ -118,7 +125,8 @@ export const getNodeClasses = (state: NodeState): string => {
       classes: "node-weight node-visited",
     },
     {
-      test: ({ weight, isPurpleVisited } = state) => weight > 1 && isPurpleVisited,
+      test: ({ weight, isPurpleVisited } = state) =>
+        weight > 1 && isPurpleVisited,
       classes: "node-weight visited-while-bomb-active",
     },
     {
@@ -157,7 +165,7 @@ export const getNodeClasses = (state: NodeState): string => {
   ];
 
   const matchedCondition = conditions.find((condition) =>
-    condition.test(state)
+    condition.test(state),
   );
 
   if (!matchedCondition) return "";

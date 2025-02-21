@@ -61,7 +61,7 @@ class PriorityQueue {
         if (
           this.comparator(
             this.heap[rightChildIndex],
-            swapIndex === -1 ? node : this.heap[leftChildIndex]
+            swapIndex === -1 ? node : this.heap[leftChildIndex],
           ) < 0
         ) {
           swapIndex = rightChildIndex;
@@ -79,7 +79,7 @@ class PriorityQueue {
 const getOptimizedNeighbors = (
   node: INode,
   grid: INode[][],
-  isBombPhase: boolean
+  isBombPhase: boolean,
 ): INode[] => {
   const neighbors: INode[] = [];
   const { row, col } = node;
@@ -128,7 +128,7 @@ const getOptimizedNeighbors = (
 export const greedyBFS = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ): INode[] => {
   const isBombPhase = finishNode.isBomb;
   const visitedNodesInOrder: INode[] = [];

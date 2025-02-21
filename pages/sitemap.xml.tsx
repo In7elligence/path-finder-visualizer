@@ -5,7 +5,7 @@ const generateSitemap = async (): Promise<string> => {
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
       <loc>https://martin-pathfinding-visualizer.vercel.app/</loc>
-      <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <changefreq>yearly</changefreq>
       <priority>1.0</priority>
     </url>

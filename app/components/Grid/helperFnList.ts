@@ -5,7 +5,7 @@ import { IGridState, INode } from "@/app/interfaces/interfaces";
 export const createNode = (
   state: IGridState,
   col: number,
-  row: number
+  row: number,
 ): INode => {
   const { startNode, finishNode } = state;
   return {
@@ -28,7 +28,7 @@ export const createNode = (
 export const positionStartAndEndNodes = (
   rows: number,
   cols: number,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
 ) => {
   const startRow = Math.floor(rows / 2); // Center row
   const startCol = 2; // 2 columns from the left
@@ -47,7 +47,7 @@ export const positionStartAndEndNodes = (
 
 export const placeBombNode = (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
 ) => {
   const { grid, startNode, finishNode } = state;
   const validNodes: { row: number; col: number }[] = [];
@@ -86,7 +86,7 @@ export const dropSpecialNode = (
   row: number,
   col: number,
   nodeType: "start" | "finish" | "bomb",
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
 ) => {
   const { grid, startNode, finishNode, bombNode, selectedAlgorithm } = state;
 
@@ -124,7 +124,7 @@ export const dropSpecialNode = (
           : node.isFinish,
       isBomb:
         nodeType === "bomb" ? rowIdx === row && colIdx === col : node.isBomb,
-    }))
+    })),
   );
 
   dispatch({ type: "SET_GRID", payload: newGrid });

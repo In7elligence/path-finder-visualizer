@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import "@/app/styles/specialNodes.css";
 import { algoInfoMap } from "./utils/utils";
 import { AvailableAlgorithms } from "@/app/types/types";
@@ -38,7 +38,9 @@ const InfoBar: React.FC<IInfoBarProps> = ({
           ></div>
           <span>Target Node</span>
         </div>
-        <div className={`flex items-center ${selectedAlgorithm === "swarmBidirectional" ? "crossed-line" : ""}`}>
+        <div
+          className={`flex items-center ${selectedAlgorithm === "swarmBidirectional" ? "crossed-line" : ""}`}
+        >
           <div
             style={{
               width: `${nodeSize + 10}px`,
@@ -56,7 +58,11 @@ const InfoBar: React.FC<IInfoBarProps> = ({
             }}
             className="node-weight-no-animation inline-block mr-2"
           ></div>
-          <span className={`${(weightExist && !isWeightedAlgo) ? "crossed-line" : ""}`}>Weight Node</span>
+          <span
+            className={`${weightExist && !isWeightedAlgo ? "crossed-line" : ""}`}
+          >
+            Weight Node
+          </span>
         </div>
         <div className="flex items-center">
           <div

@@ -18,7 +18,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
 
   const btnColorScheme = useMemo(
     () => (isAlgoRunning ? "disabled" : "normal"),
-    [isAlgoRunning]
+    [isAlgoRunning],
   );
 
   const regularBtnClasses = useMemo(() => {
@@ -99,12 +99,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
           />
         );
       case "githubButton":
-        return (
-          <GitHubButton
-            key={item.name}
-            className={item.extraClassName}
-          />
-        );
+        return <GitHubButton key={item.name} className={item.extraClassName} />;
       default:
         return null;
     }

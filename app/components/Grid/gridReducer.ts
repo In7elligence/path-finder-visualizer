@@ -21,7 +21,7 @@ export type GridAction =
 
 export const gridReducer = (
   state: IGridState,
-  action: GridAction
+  action: GridAction,
 ): IGridState => {
   switch (action.type) {
     case "SET_GRID":
@@ -54,8 +54,8 @@ export const gridReducer = (
       return { ...state, visitedNodeAnimationDuration: action.payload };
     case "SET_PATH_NODE_ANIMATION_SPEED":
       return { ...state, pathAnimationDuration: action.payload };
-      case "SET_MAZE_ANIMATION_SPEED":
-        return { ...state, mazeAnimationDuration: action.payload };
+    case "SET_MAZE_ANIMATION_SPEED":
+      return { ...state, mazeAnimationDuration: action.payload };
     default:
       return state;
   }

@@ -9,7 +9,7 @@ import { animateMaze } from "@/app/utils/utils";
 export const visualizeRecursiveDivision = async (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>,
-  orientation?: RecursiveDivisions
+  orientation?: RecursiveDivisions,
 ) => {
   const {
     grid,
@@ -94,7 +94,7 @@ export const visualizeRecursiveDivision = async (
   // Check start, finish and bomb nodes
   [startNode, finishNode, bombNode].forEach((node) => {
     const corner = corners.find(
-      (c) => c.position.row === node?.row && c.position.col === node.col
+      (c) => c.position.row === node?.row && c.position.col === node.col,
     );
 
     if (corner) {
@@ -102,7 +102,7 @@ export const visualizeRecursiveDivision = async (
         if (pos.row >= 0 && pos.row < rows && pos.col >= 0 && pos.col < cols) {
           // Remove from walls array
           const wallIndex = walls.findIndex(
-            (w) => w.row === pos.row && w.col === pos.col
+            (w) => w.row === pos.row && w.col === pos.col,
           );
           if (wallIndex > -1) walls.splice(wallIndex, 1);
 

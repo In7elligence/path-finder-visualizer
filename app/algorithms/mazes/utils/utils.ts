@@ -8,14 +8,14 @@ export const recursiveDivision = (
   endCol: number,
   orientation: "horizontal" | "vertical",
   walls: INode[],
-  horizontalBias: number = 0.5
+  horizontalBias: number = 0.5,
 ): void => {
   // Base case: stop when region too small
   if (endRow - startRow < 1 || endCol - startCol < 1) return;
 
   const isHorizontal = orientation === "horizontal";
   const wallPosition = Math.floor(
-    startRow + (endRow - startRow) * horizontalBias
+    startRow + (endRow - startRow) * horizontalBias,
   );
   const passagePosition =
     startCol + Math.floor(Math.random() * (endCol - startCol + 1));
@@ -62,7 +62,7 @@ export const recursiveDivision = (
       endCol,
       newOrientation,
       walls,
-      0.5
+      0.5,
     );
     recursiveDivision(
       grid,
@@ -72,7 +72,7 @@ export const recursiveDivision = (
       endCol,
       newOrientation,
       walls,
-      0.5
+      0.5,
     );
   } else {
     recursiveDivision(
@@ -83,7 +83,7 @@ export const recursiveDivision = (
       wallPosition - 1,
       newOrientation,
       walls,
-      0.5
+      0.5,
     );
     recursiveDivision(
       grid,
@@ -93,7 +93,7 @@ export const recursiveDivision = (
       endCol,
       newOrientation,
       walls,
-      0.5
+      0.5,
     );
   }
 };
@@ -105,13 +105,13 @@ export const ensureSolvability = (
   _finish: INode,
   walls: INode[],
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  bomb?: INode
+  bomb?: INode,
 ): INode[] => {
   return walls.filter((wall) => !grid[wall.row][wall.col].isPath);
 };
 
 export const getGridCorners = (
-  grid: INode[][]
+  grid: INode[][],
 ): { row: number; col: number }[] => {
   const lastRow = grid.length - 1;
   const lastCol = grid[0].length - 1;
@@ -127,11 +127,13 @@ export const getGridCorners = (
 export const protectCornerNodes = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ) => {
   const corners = getGridCorners(grid);
   const protectedNodes = [startNode, finishNode].filter((node) =>
-    corners.some((corner) => corner.row === node.row && corner.col === node.col)
+    corners.some(
+      (corner) => corner.row === node.row && corner.col === node.col,
+    ),
   );
 
   protectedNodes.forEach(({ row, col }) => {
@@ -159,7 +161,7 @@ export const recursiveDivisionMaze = (
   walls: INode[],
   surroundingWalls: boolean,
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ): void => {
   if (endRow < startRow || endCol < startCol) return;
 
@@ -224,7 +226,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     } else {
       recursiveDivisionMaze(
@@ -237,7 +239,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     }
 
@@ -252,7 +254,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     } else {
       recursiveDivisionMaze(
@@ -265,7 +267,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     }
   } else {
@@ -307,7 +309,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     } else {
       recursiveDivisionMaze(
@@ -320,7 +322,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     }
 
@@ -335,7 +337,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     } else {
       recursiveDivisionMaze(
@@ -348,7 +350,7 @@ export const recursiveDivisionMaze = (
         walls,
         surroundingWalls,
         startNode,
-        finishNode
+        finishNode,
       );
     }
   }
@@ -356,6 +358,6 @@ export const recursiveDivisionMaze = (
 
 const isSpecialNode = (node: INode, ...specialNodes: INode[]) => {
   return specialNodes.some(
-    (special) => special.row === node.row && special.col === node.col
+    (special) => special.row === node.row && special.col === node.col,
   );
 };

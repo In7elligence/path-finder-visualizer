@@ -13,9 +13,9 @@ export default {
         foreground: "var(--foreground)",
       },
       screens: {
-        '4k': '3840px', // Custom breakpoint for 4K screens
-        'slt': '1279px', // Custom breakpoint for small laptop screens
-        'llt': '1540px', // Custom breakpoint for large laptop screens
+        "4k": "3840px", // Custom breakpoint for 4K screens
+        slt: "1279px", // Custom breakpoint for small laptop screens
+        llt: "1540px", // Custom breakpoint for large laptop screens
       },
     },
   },

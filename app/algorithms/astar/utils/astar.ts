@@ -46,7 +46,7 @@ const getUnvisitedNeighbors = (node: INode, grid: INode[][]) => {
 export const astar = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ): INode[] => {
   const openSet = new PriorityQueue();
   const closedSet = new Set<string>();
@@ -59,7 +59,7 @@ export const astar = (
       node.hCost = Infinity;
       node.fCost = Infinity;
       node.previousNode = null;
-    })
+    }),
   );
 
   startNode.gCost = 0;

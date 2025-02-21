@@ -15,7 +15,7 @@ const getNeighbors = (node: INode, grid: INode[][]): INode[] => {
 export const bellmanFord = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ): INode[] => {
   // Initialize grid
   grid.forEach((row) =>
@@ -24,7 +24,7 @@ export const bellmanFord = (
       node.previousNode = null;
       node.isBlueVisited = false;
       node.isPurpleVisited = false;
-    })
+    }),
   );
 
   startNode.distance = 0;

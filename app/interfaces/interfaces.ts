@@ -60,7 +60,7 @@ export interface IMenuItem {
   isDisabled?: boolean;
   extraClassName?: string;
   formatDisplayText?: (
-    selectedOption: { name: string; value: string } | undefined
+    selectedOption: { name: string; value: string } | undefined,
   ) => string;
 }
 

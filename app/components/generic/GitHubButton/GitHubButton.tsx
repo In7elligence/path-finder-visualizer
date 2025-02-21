@@ -6,9 +6,7 @@ interface IGitHubButtonProbs {
   className?: string;
 }
 
-const GitHubButton: React.FC<IGitHubButtonProbs> = ({
-  className,
-}) => {
+const GitHubButton: React.FC<IGitHubButtonProbs> = ({ className }) => {
   const btnClasses = () => {
     const scheme = gitHubBtnColorScheme;
 
@@ -32,7 +30,7 @@ const GitHubButton: React.FC<IGitHubButtonProbs> = ({
   return (
     <>
       <Link
-        className={`${(btnClasses())} ${className ? className : " "}`}
+        className={`${btnClasses()} ${className ? className : " "}`}
         href="https://github.com/In7elligence/path-finder-visualizer"
         target="_blank"
       >

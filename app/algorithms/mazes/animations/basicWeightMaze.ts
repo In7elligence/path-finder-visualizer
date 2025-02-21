@@ -8,7 +8,7 @@ const animateBasicWeightMaze = (
   animationDuration: number,
   dispatch: React.Dispatch<GridAction>,
   navWrapper: HTMLDivElement | null,
-  nodeSize: number
+  nodeSize: number,
 ) => {
   /*!
    * Using dynamic maxWeight to ensure algorithmic
@@ -33,7 +33,7 @@ const animateBasicWeightMaze = (
   const gridWithWeights = initialGrid.map((row) =>
     row.map((node) => {
       const isWeighted = nodes.some(
-        (w) => w.row === node.row && w.col === node.col
+        (w) => w.row === node.row && w.col === node.col,
       );
       return {
         ...node,
@@ -41,7 +41,7 @@ const animateBasicWeightMaze = (
           ? node.weight
           : Math.floor(Math.random() * maxWeight) + 1,
       };
-    })
+    }),
   );
 
   dispatch({ type: "SET_GRID", payload: gridWithWeights });
@@ -55,7 +55,7 @@ export const visualizeBasicWeightMaze = (
   state: IGridState,
   dispatch: React.Dispatch<GridAction>,
   navWrapper: HTMLDivElement | null,
-  nodeSize: number
+  nodeSize: number,
 ) => {
   const { grid: initGrid, visitedNodeAnimationDuration, isAlgoRunning } = state;
 
@@ -93,6 +93,6 @@ export const visualizeBasicWeightMaze = (
     visitedNodeAnimationDuration,
     dispatch,
     navWrapper,
-    nodeSize
+    nodeSize,
   );
 };

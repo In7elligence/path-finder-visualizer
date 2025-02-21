@@ -33,7 +33,7 @@ interface INavContainerProps {
   getInitialGrid: (rows: number, cols: number) => INode[][];
   calculateAndSetGridDimensions: (
     nodeSize: number,
-    navWrapper: HTMLDivElement | null
+    navWrapper: HTMLDivElement | null,
   ) => void;
 }
 
@@ -53,7 +53,7 @@ const NavContainer: React.FC<INavContainerProps> = ({
 
   const handleVisualizeAlgorithm = useCallback(
     () => visualizeAlgorithm(state, dispatch),
-    [dispatch, state]
+    [dispatch, state],
   );
 
   const handleAlgorithmChange = (value: AvailableAlgorithms) => {
@@ -66,7 +66,7 @@ const NavContainer: React.FC<INavContainerProps> = ({
   const handleMazeGeneration = useCallback(
     (maze: AvailableMazes) =>
       generateMaze(state, maze, dispatch, navWrapperRef, nodeSize),
-    [dispatch, navWrapperRef, nodeSize, state]
+    [dispatch, navWrapperRef, nodeSize, state],
   );
 
   const handleResetGrid = () => {
@@ -242,13 +242,13 @@ const NavContainer: React.FC<INavContainerProps> = ({
             type: "helpButton",
             name: "?",
             extraClassName: "hidden slt:block",
-            onClick: toggleHelpModal
+            onClick: toggleHelpModal,
           },
           {
             type: "githubButton",
             name: "GitHub",
             extraClassName: "hidden slt:block",
-            onClick: () => {}
+            onClick: () => {},
           },
         ]}
         isAlgoRunning={isAlgoRunning}

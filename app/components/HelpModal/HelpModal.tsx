@@ -30,7 +30,8 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
         >
           X
         </button>
-        <div className={`
+        <div
+          className={`
           bg-white
           p-2
           rounded
@@ -42,7 +43,8 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
           4k:p-4
           4k:max-h-[1520px]
           4k:text-lg
-        `}>
+        `}
+        >
           <div className="bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-4 text-center">
             <h1 className="text-xl 4k:text-2xl font-bold">Guide</h1>
           </div>

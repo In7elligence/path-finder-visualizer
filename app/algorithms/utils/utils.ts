@@ -17,7 +17,7 @@ export const resetGridForAlgorithm = (grid: INode[][]): INode[][] => {
       isStart: node.isStart,
       isFinish: node.isFinish,
       isBomb: node.isBomb,
-    }))
+    })),
   );
 };
 
@@ -34,7 +34,7 @@ export const removeWallsAndWeightsFromGrid = (grid: INode[][]) => {
       gCost: Infinity, // Reset for A*
       hCost: Infinity, // Reset for A*
       fCost: Infinity, // Reset for A*
-    }))
+    })),
   );
   return newGrid;
 };

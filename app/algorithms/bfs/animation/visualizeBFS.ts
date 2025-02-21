@@ -12,7 +12,7 @@ import { animationManager } from "../../AnimationManager/AnimationManager";
 
 export const visualizeBFS = async (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>
+  dispatch: React.Dispatch<GridAction>,
 ) => {
   const {
     grid,
@@ -51,7 +51,7 @@ export const visualizeBFS = async (
     await animateBombPhase(
       purpleVisitedNodes,
       visitedNodeAnimationDuration,
-      dispatch
+      dispatch,
     );
 
     const shortestPathToBomb = getNodesInShortestPathOrder(bombNode);
@@ -61,7 +61,7 @@ export const visualizeBFS = async (
     await animateNeutralPhase(
       blueVisitedNodes,
       visitedNodeAnimationDuration,
-      dispatch
+      dispatch,
     );
 
     const shortestPathFromBombTofinish = getNodesInShortestPathOrder(finish);
@@ -75,7 +75,7 @@ export const visualizeBFS = async (
     await animateNeutralPhase(
       visitedNodes,
       visitedNodeAnimationDuration,
-      dispatch
+      dispatch,
     );
     await animatePath(path, pathAnimationDuration, dispatch);
   }

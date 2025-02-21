@@ -13,7 +13,7 @@ interface CustomSelectProps {
   onChange?: (value: string) => void;
   disabled?: boolean;
   formatDisplayText?: (selectedOption: DropdownOption | undefined) => string;
-  className?: string
+  className?: string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -23,7 +23,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   onChange,
   disabled = false,
   formatDisplayText,
-  className
+  className,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 
   const btnColorScheme = useMemo(
     () => (disabled ? "disabled" : "normal"),
-    [disabled]
+    [disabled],
   );
 
   const btnClasses = useMemo(() => {
@@ -92,8 +92,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         {formatDisplayText
           ? formatDisplayText(selectedOption)
           : selectedOption
-          ? selectedOption.name
-          : placeholder}
+            ? selectedOption.name
+            : placeholder}
         <svg
           className="w-4 h-4 ml-1 4k:w-12 4k:h-12 inline-block"
           fill="none"

@@ -3,7 +3,7 @@ import { INode } from "@/app/interfaces/interfaces";
 const getDFSneighbors = (
   node: INode,
   grid: INode[][],
-  isBombPhase: boolean
+  isBombPhase: boolean,
 ): INode[] => {
   const neighbors: INode[] = [];
   const { row, col } = node;
@@ -17,14 +17,14 @@ const getDFSneighbors = (
   return neighbors.filter(
     (neighbor) =>
       !neighbor.isWall &&
-      (isBombPhase ? !neighbor.isPurpleVisited : !neighbor.isBlueVisited)
+      (isBombPhase ? !neighbor.isPurpleVisited : !neighbor.isBlueVisited),
   );
 };
 
 export const dfs = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ): INode[] => {
   const isBombPhase = finishNode.isBomb;
   const visitedNodesInOrder: INode[] = [];

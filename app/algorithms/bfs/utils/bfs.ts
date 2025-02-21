@@ -29,7 +29,7 @@ class EfficientQueue<T> {
 const getNeighbors = (
   node: INode,
   grid: INode[][],
-  isBombPhase: boolean
+  isBombPhase: boolean,
 ): INode[] => {
   const neighbors: INode[] = [];
   const { row, col } = node;
@@ -60,7 +60,7 @@ const getNeighbors = (
 export const bfs = (
   grid: INode[][],
   startNode: INode,
-  finishNode: INode
+  finishNode: INode,
 ): INode[] => {
   const isBombPhase = finishNode.isBomb;
   const visitedNodesInOrder: INode[] = [];

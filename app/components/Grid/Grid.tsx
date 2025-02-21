@@ -41,7 +41,7 @@ const Grid: React.FC = () => {
       dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
       positionStartAndEndNodes(rows, cols, dispatch);
     },
-    []
+    [],
   );
 
   const getInitialGrid = (rows: number, cols: number) => {
@@ -78,7 +78,7 @@ const Grid: React.FC = () => {
       dispatch({ type: "TOGGLE_MOUSE_PRESSED", payload: true });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.grid]
+    [state.grid],
   );
 
   const handleMouseEnter = useCallback(
@@ -91,7 +91,7 @@ const Grid: React.FC = () => {
       dispatch({ type: "SET_GRID", payload: newGrid });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.isMousePressed, state.grid]
+    [state.isMousePressed, state.grid],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -101,12 +101,12 @@ const Grid: React.FC = () => {
   const handleDropNode = useCallback(
     (row: number, col: number, nodeType: SpecialNode) =>
       dropSpecialNode(state, row, col, nodeType, dispatch),
-    [state]
+    [state],
   );
 
   const handleToggleHelpModal = useCallback(() => {
     setIsHelpOpen(!isHelpOpen);
-  }, [isHelpOpen])
+  }, [isHelpOpen]);
 
   // Initialize grid dimensions and nodes on mount
   useEffect(() => {
@@ -227,9 +227,7 @@ const Grid: React.FC = () => {
           );
         })}
       </div>
-      {isHelpOpen && (
-        <HelpModal toggleModal={handleToggleHelpModal} />
-      )}
+      {isHelpOpen && <HelpModal toggleModal={handleToggleHelpModal} />}
     </React.Fragment>
   );
 };
