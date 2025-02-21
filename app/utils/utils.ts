@@ -72,35 +72,6 @@ export const getNewGridWithWallToggled = (
   return newGrid;
 };
 
-export const getNewGridWithWeightToggled = (
-  grid: INode[][],
-  row: number,
-  col: number,
-  weight: number,
-): INode[][] => {
-  const newGrid = grid.slice();
-  const node = newGrid[row][col];
-  const newNode = {
-    ...node,
-    isMazeWall: false,
-    isWall: false,
-    weight: weight,
-  };
-
-  // Case to prevent start and finish nodes becoming walls
-  if (
-    newGrid[row][col].isStart ||
-    newGrid[row][col].isFinish ||
-    newGrid[row][col].isBomb
-  ) {
-    return newGrid;
-  }
-
-  newGrid[row][col] = newNode;
-
-  return newGrid;
-};
-
 /*!
  * Backtracks from the finishNode to find the shortest path.
  * Only works when called *after* the algorithmic methods method.
