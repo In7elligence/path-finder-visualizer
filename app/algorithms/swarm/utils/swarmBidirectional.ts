@@ -105,7 +105,6 @@ export const swarmBidirectional = (
   start: INode,
   finish: INode,
 ): { visitedNodes: INode[]; path: INode[] } => {
-  // Reset nodes using existing properties
   grid.forEach((row) =>
     row.forEach((node) => {
       node.distance = Infinity;
@@ -130,7 +129,7 @@ export const swarmBidirectional = (
 
   let meetingNode: INode | null = null;
   let safetyCounter = 0;
-  const MAX_ITERATIONS = 5000; // Adjust based on grid size
+  const MAX_ITERATIONS = 5000;
 
   // Initialize queues
   start.gCost = 0;
