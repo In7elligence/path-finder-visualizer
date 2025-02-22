@@ -38,7 +38,8 @@ On top of the pathfinding algorithms listed above, I also implemented a:
 - You can select which algorithm to visualize, by clicking the algorithms drop-down menu.
 - You can generate mazes by choosing a maze from the mazes drop-down menu.
   - In addition, you can left-click, or hold left-click, and draw walls on the Grid manually. Clicking on an existing wall node, or trying draw over it will remove the wall.
-  - The weighted maze is a great way to illustrate weighted algorithms. It can represent scenarios like traffic conditions, or other real-life factors that affect the speed of traveling from point A to point B. The weighted nodes have a weight from 2-10, or 2-15, which is dynamically set depending on your viewport.
+  - The weighted maze is a great way to illustrate weighted algorithms. It can represent scenarios like traffic conditions, or other real-life factors that affect the speed of traveling from point A to point B. The weighted nodes have a weight of either 10 or 15, which is dynamically set depending on your viewport.
+  - In addition, you can hold down left-click and the W key on your keyboad and draw weights in a desired location.
 - You can place a bomb on a random location on the Grid by clicking the "Place Bomb" button in the menu.
   - When a bomb is placed on the Grid, it'll change the course of the algorithm, as it must first "defuse" the bomb before proceeding to the finish node.
   - You can subsequently remove the bomb again by clicking the "Remove Bomb" button in the menu.

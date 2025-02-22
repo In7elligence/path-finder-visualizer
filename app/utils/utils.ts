@@ -33,7 +33,7 @@ export const getNodeSize = (screenWidth: number, screenHeight: number) => {
 // Calculate grid dimensions based on available screen size
 export const calculateGridDimensions = (
   nodeSize: number,
-  navWrapper: HTMLDivElement | null,
+  navWrapper: HTMLDivElement | null
 ) => {
   const width = window.innerWidth;
   const navHeight = navWrapper?.clientHeight || 0; // Get dynamic nav height
@@ -48,7 +48,7 @@ export const calculateGridDimensions = (
 export const getNewGridWithWallToggled = (
   grid: INode[][],
   row: number,
-  col: number,
+  col: number
 ): INode[][] => {
   const newGrid = grid.slice();
   const node = newGrid[row][col];
@@ -58,6 +58,57 @@ export const getNewGridWithWallToggled = (
     isMazeWall: false,
     isWall: !node.isWall,
   };
+
+  // Case to prevent start, finish and bomb nodes becoming walls
+  if (
+    newGrid[row][col].isStart ||
+    newGrid[row][col].isFinish ||
+    newGrid[row][col].isBomb
+  ) {
+    return newGrid;
+  }
+
+  newGrid[row][col] = newNode;
+
+  return newGrid;
+};
+
+export const getNewGridWithWeightToggled = (
+  grid: INode[][],
+  row: number,
+  col: number,
+  nodeSize: number,
+  navWrapper: HTMLDivElement | null
+) => {
+  /*!
+   * Using dynamic maxWeight to ensure algorithmic
+   * consistency across all screen dimensions
+  !*/
+
+  const width = window.innerWidth;
+  const navHeight = navWrapper?.clientHeight || 0; // Get dynamic nav height
+  const availableHeight = window.innerHeight - navHeight;
+
+  const cols = Math.floor(width / nodeSize) - 1; // -1 for horizontal overflow buffer
+  const rows = Math.floor(availableHeight / nodeSize);
+
+  // Max weight for smaller screens
+  let maxWeight = 10;
+
+  // Max weight for larger screens
+  if (cols >= 60 && rows >= 60) {
+    maxWeight = 15;
+  }
+
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isMazeWall: false,
+    isWall: false,
+    weight: maxWeight,
+  };
+
   // Case to prevent start, finish and bomb nodes becoming walls
   if (
     newGrid[row][col].isStart ||
@@ -113,7 +164,7 @@ export const getNodesInShortestPathOrder = (finishNode: INode | null) => {
 
 export const getNodesInShortestPathOrderReverse = (
   meetingNode: INode,
-  finish: INode,
+  finish: INode
 ): INode[] => {
   const nodes: INode[] = [];
   let currentNode: INode | null = finish;
@@ -142,7 +193,7 @@ export const doesGridHaveWeights = (grid: INode[][]) => {
 export const animateBombPhase = (
   visitedNodesInOrder: INode[],
   duration: number,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ): Promise<void> => {
   animationManager.clearAllTimeouts();
 
@@ -160,7 +211,7 @@ export const animateBombPhase = (
     const totalTime = visitedNodesInOrder.length * duration;
     const bombAnimationFinalTimeout = window.setTimeout(
       () => resolve(),
-      totalTime,
+      totalTime
     );
     animationManager.addTimeout(bombAnimationFinalTimeout);
   });
@@ -174,7 +225,7 @@ export const clearPath = (dispatch: React.Dispatch<GridAction>) => {
 
 export const clearWallsAndWeights = (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ) => {
   const { grid } = state;
 
@@ -188,7 +239,7 @@ export const generateMaze = (
   maze: AvailableMazes,
   dispatch: React.Dispatch<GridAction>,
   navWrapper: HTMLDivElement | null, // needed for dynamic calculation of node weights
-  nodeSize: number, // needed for dynamic calculation of node weights
+  nodeSize: number // needed for dynamic calculation of node weights
 ) => {
   switch (maze) {
     case "randomBasicMaze":
@@ -213,7 +264,7 @@ export const generateMaze = (
 
 export const placeRandomBomb = (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ) => {
   const { grid, startNode, finishNode, selectedAlgorithm } = state;
 
@@ -233,7 +284,7 @@ export const placeRandomBomb = (
           5 &&
         Math.abs(node.row - finishNode.row) +
           Math.abs(node.col - finishNode.col) >
-          5,
+          5
     );
 
   if (validNodes.length > 0) {
@@ -245,7 +296,7 @@ export const placeRandomBomb = (
 
 export const removeBomb = (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ) => {
   const { grid } = state;
 
@@ -253,7 +304,7 @@ export const removeBomb = (
     row.map((node) => ({
       ...node,
       isBomb: false,
-    })),
+    }))
   );
 
   dispatch({ type: "SET_GRID", payload: newGrid });
@@ -263,7 +314,7 @@ export const removeBomb = (
 
 export const visualizeAlgorithm = (
   state: IGridState,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ) => {
   const { selectedAlgorithm } = state;
 
@@ -297,7 +348,7 @@ export const visualizeAlgorithm = (
 export const animateNeutralPhase = (
   visitedNodesInOrder: INode[],
   duration: number,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ): Promise<void> => {
   animationManager.clearAllTimeouts();
 
@@ -315,7 +366,7 @@ export const animateNeutralPhase = (
     const totalTime = visitedNodesInOrder.length * duration;
     const neutralAnimationFinalTimeout = window.setTimeout(
       () => resolve(),
-      totalTime,
+      totalTime
     );
     animationManager.addTimeout(neutralAnimationFinalTimeout);
   });
@@ -324,42 +375,39 @@ export const animateNeutralPhase = (
 export const animatePath = (
   PathNodesInOrder: INode[],
   duration: number,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ): Promise<void> => {
   animationManager.clearAllTimeouts();
 
   return new Promise((resolve) => {
     PathNodesInOrder.forEach((_, i) => {
-      const timeoutId = window.setTimeout(
-        () => {
-          const currentNode = PathNodesInOrder[i];
-          const previousNode = PathNodesInOrder[i - 1];
-          const latestDirection = previousNode?.direction;
+      const timeoutId = window.setTimeout(() => {
+        const currentNode = PathNodesInOrder[i];
+        const previousNode = PathNodesInOrder[i - 1];
+        const latestDirection = previousNode?.direction;
 
-          if (previousNode && i < PathNodesInOrder.length) {
-            previousNode.direction = undefined;
-          }
+        if (previousNode && i < PathNodesInOrder.length) {
+          previousNode.direction = undefined;
+        }
 
-          if (currentNode.direction === undefined) {
-            currentNode.direction = currentNode.cachedDirection;
-          }
+        if (currentNode.direction === undefined) {
+          currentNode.direction = currentNode.cachedDirection;
+        }
 
-          if (currentNode.isFinish) {
-            currentNode.direction = latestDirection;
-          }
+        if (currentNode.isFinish) {
+          currentNode.direction = latestDirection;
+        }
 
-          if (currentNode.isBomb) {
-            // Mark bomb as defused
-            dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: true });
-          }
+        if (currentNode.isBomb) {
+          // Mark bomb as defused
+          dispatch({ type: "SET_BOMB_DEFUSE_STATE", payload: true });
+        }
 
-          dispatch({
-            type: "SET_NODES_IN_SHORTEST_PATH",
-            payload: PathNodesInOrder.slice(0, i + 1),
-          });
-        },
-        PathNodesInOrder.length + i * duration,
-      );
+        dispatch({
+          type: "SET_NODES_IN_SHORTEST_PATH",
+          payload: PathNodesInOrder.slice(0, i + 1),
+        });
+      }, PathNodesInOrder.length + i * duration);
       animationManager.addTimeout(timeoutId);
     });
 
@@ -374,7 +422,7 @@ export const animateMaze = async (
   grid: INode[][],
   walls: INode[],
   duration: number,
-  dispatch: React.Dispatch<GridAction>,
+  dispatch: React.Dispatch<GridAction>
 ) => {
   const workingGrid = grid.map((row) => row.map((node) => ({ ...node })));
   const startTime = performance.now();

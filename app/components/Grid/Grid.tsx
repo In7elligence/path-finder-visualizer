@@ -15,6 +15,7 @@ import {
   calculateGridDimensions,
   doesBombExistInGrid,
   getNewGridWithWallToggled,
+  getNewGridWithWeightToggled,
   getNodeSize,
 } from "@/app/utils/utils";
 import { SpecialNode } from "@/app/types/types";
@@ -29,6 +30,7 @@ import HelpModal from "../HelpModal/HelpModal";
 
 const Grid: React.FC = () => {
   const [state, dispatch] = useReducer(gridReducer, initialGridState);
+  const [isWpressed, setIsWpressed] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [nodeSize, setNodeSize] = useState(NODE_SIZE);
 
@@ -41,7 +43,7 @@ const Grid: React.FC = () => {
       dispatch({ type: "SET_GRID_DIMENSIONS", payload: { rows, cols } });
       positionStartAndEndNodes(rows, cols, dispatch);
     },
-    [],
+    []
   );
 
   const getInitialGrid = (rows: number, cols: number) => {
@@ -73,12 +75,25 @@ const Grid: React.FC = () => {
       }
 
       const { grid } = state;
-      const newGrid = getNewGridWithWallToggled(grid, row, col);
+      let newGrid = grid;
+
+      if (isWpressed) {
+        newGrid = getNewGridWithWeightToggled(
+          grid,
+          row,
+          col,
+          nodeSize,
+          navWrapperRef.current
+        );
+      } else {
+        newGrid = getNewGridWithWallToggled(grid, row, col);
+      }
       dispatch({ type: "SET_GRID", payload: newGrid });
       dispatch({ type: "TOGGLE_MOUSE_PRESSED", payload: true });
     },
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.grid],
+    [isWpressed, nodeSize, state.grid]
   );
 
   const handleMouseEnter = useCallback(
@@ -87,11 +102,22 @@ const Grid: React.FC = () => {
 
       if (!isMousePressed) return;
 
-      const newGrid = getNewGridWithWallToggled(grid, row, col);
-      dispatch({ type: "SET_GRID", payload: newGrid });
+      if (isWpressed) {
+        const newGrid = getNewGridWithWeightToggled(
+          grid,
+          row,
+          col,
+          nodeSize,
+          navWrapperRef.current
+        );
+        dispatch({ type: "SET_GRID", payload: newGrid });
+      } else {
+        const newGrid = getNewGridWithWallToggled(grid, row, col);
+        dispatch({ type: "SET_GRID", payload: newGrid });
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.isMousePressed, state.grid],
+    [state.isMousePressed, state.grid, isWpressed, nodeSize]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -101,7 +127,7 @@ const Grid: React.FC = () => {
   const handleDropNode = useCallback(
     (row: number, col: number, nodeType: SpecialNode) =>
       dropSpecialNode(state, row, col, nodeType, dispatch),
-    [state],
+    [state]
   );
 
   const handleToggleHelpModal = useCallback(() => {
@@ -143,6 +169,28 @@ const Grid: React.FC = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [calculateAndSetGridDimensions]);
+
+  useEffect(() => {
+    const handleWkeyPress = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "w") {
+        setIsWpressed(true);
+      }
+    };
+
+    const handleWkeyRelease = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "w") {
+        setIsWpressed(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleWkeyPress);
+    window.addEventListener("keyup", handleWkeyRelease);
+
+    return () => {
+      window.removeEventListener("keydown", handleWkeyPress);
+      window.removeEventListener("keyup", handleWkeyRelease);
+    };
+  }, []);
 
   const {
     grid,
@@ -220,6 +268,7 @@ const Grid: React.FC = () => {
                     weight={weight}
                     nodeSize={nodeSize}
                     isMousePressed={isMousePressed}
+                    isWpressed={isWpressed}
                   />
                 );
               })}

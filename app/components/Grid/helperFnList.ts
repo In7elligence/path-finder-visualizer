@@ -98,17 +98,17 @@ export const dropSpecialNode = (
     case "start":
       if (row === finishNode.row && col === finishNode.col) return;
       if (row === bombNode.row && col === bombNode.col) return;
-      if (grid[row][col].weight > 1) return; // preserve weighted nodes
+      if (grid[row][col].weight > 1) return;
       break;
     case "finish":
       if (row === startNode.row && col === startNode.col) return;
       if (row === bombNode.row && col === bombNode.col) return;
-      if (grid[row][col].weight > 1) return; // preserve weighted nodes
+      if (grid[row][col].weight > 1) return;
       break;
     case "bomb":
       if (row === startNode.row && col === startNode.col) return;
       if (row === finishNode.row && col === finishNode.col) return;
-      if (grid[row][col].weight > 1) return; // preserve weighted nodes
+      if (grid[row][col].weight > 1) return;
       break;
   }
 

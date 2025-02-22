@@ -15,6 +15,7 @@ type NodeState = Pick<
   | "isBlueVisited"
   | "isPurpleVisited"
   | "isMousePressed"
+  | "isWpressed"
 >;
 
 /*! 
@@ -158,14 +159,14 @@ export const getNodeClasses = (state: NodeState): string => {
       classes: "visited-while-bomb-active",
     },
     {
-      test: ({ isStart, isFinish, isMousePressed } = state) =>
-        (isStart || isFinish) && isMousePressed,
+      test: ({ isStart, isFinish, isMousePressed, isWpressed } = state) =>
+        (isStart || isFinish) && (isMousePressed || isWpressed),
       classes: "node-dragging-disabled",
     },
   ];
 
   const matchedCondition = conditions.find((condition) =>
-    condition.test(state),
+    condition.test(state)
   );
 
   if (!matchedCondition) return "";

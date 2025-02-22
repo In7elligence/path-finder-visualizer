@@ -24,6 +24,7 @@ export interface INodeProps {
   nodeSize: number;
   weight: number;
   isMousePressed: boolean;
+  isWpressed: boolean;
   isBombDefused?: boolean;
 }
 
@@ -49,6 +50,7 @@ const Node: React.FC<INodeProps> = ({
   nodeSize,
   weight,
   isMousePressed,
+  isWpressed
 }) => {
   const extraClassName = getNodeClasses({
     isFinish,
@@ -64,10 +66,11 @@ const Node: React.FC<INodeProps> = ({
     isBlueVisited,
     isPurpleVisited,
     isMousePressed,
+    isWpressed
   });
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    if (isAlgoRunning || isMousePressed) {
+    if (isAlgoRunning || isMousePressed || isWpressed) {
       e.preventDefault();
       return;
     }

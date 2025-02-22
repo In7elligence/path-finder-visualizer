@@ -130,8 +130,12 @@ const HelpModal: React.FC<HelpModalProps> = ({ toggleModal }) => {
                   algorithms. It can represent scenarios like traffic
                   conditions, or other real-life factors that affect the speed
                   of traveling from point A to point B. The weighted nodes have
-                  a weight from 2-10, or 2-15, which is dynamically set
+                  a weight of either 10 or 15, which is dynamically set
                   depending on your viewport.
+                </li>
+                <li className="mb-2">
+                  In addition, you can hold down left-click and the W key on
+                  your keyboad and draw weights in a desired location.
                 </li>
               </ul>
               <li className="mb-2">
