@@ -157,7 +157,7 @@ const Nav: React.FC<INavProps> = ({ menuItems, isAlgoRunning }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden slt:flex slt:items-center slt:justify-center space-x-4 sm:gap-0 llt:gap-4 4k:gap-24 text-xs llt:text-base">
+        <div className="hidden slt:flex slt:items-center slt:justify-center space-x-4 sm:gap-0 llt:gap-4 4k:gap-24 text-xs llt:text-[0.99rem] desktop:text-base">
           {menuItems.map(renderMenuItem)}
         </div>
       </div>
