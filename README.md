@@ -65,7 +65,7 @@ I got the idea after having played around with a lot of algorithms for the proje
 
 ## Why Next.js with React and TypeScript?
 
-The project would be more performent if it was written in pure JavaScript and simple HTML and CSS. The reason why I chose Next.js with React and TypeScript was simply due to the popular demand of React and TypeScript in the current industry. I thought it would be a good showcasing of how to handle simple project structures, components and state management. As for Next.js, I was really just looking to utilize the Vercel platform and the benefits that come with it.
+The project would be more performant if it was written in pure JavaScript and simple HTML and CSS. The reason why I chose Next.js with React and TypeScript was simply due to the popular demand of React and TypeScript in the current industry. I thought it would be a good showcasing of how to handle simple project structures, components and state management. As for Next.js, I was really just looking to utilize the Vercel platform and the benefits that come with it.
 
 ## About Me!
 
