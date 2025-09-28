@@ -11,9 +11,7 @@ const GitHubButton: React.FC<IGitHubButtonProbs> = ({ className }) => {
     const scheme = gitHubBtnColorScheme;
 
     return `
-      border
       rounded-full
-      border-white
       w-[24px]
       h-[24px]
       hover:text-white
