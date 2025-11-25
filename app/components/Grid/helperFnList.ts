@@ -1,6 +1,7 @@
 import React from "react";
 import { GridAction } from "./gridReducer";
 import { IGridState, INode } from "@/app/interfaces/interfaces";
+import { SpecialNode } from "@/app/types/types";
 
 export const createNode = (
   state: IGridState,
@@ -85,7 +86,7 @@ export const dropSpecialNode = (
   state: IGridState,
   row: number,
   col: number,
-  nodeType: "start" | "finish" | "bomb",
+  nodeType: SpecialNode,
   dispatch: React.Dispatch<GridAction>,
 ) => {
   const { grid, startNode, finishNode, bombNode, selectedAlgorithm } = state;
