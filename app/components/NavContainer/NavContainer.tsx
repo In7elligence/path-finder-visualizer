@@ -138,7 +138,7 @@ const NavContainer: React.FC<INavContainerProps> = ({
               {
                 type: "option",
                 name: "Bellman-Ford Algorithm",
-                value: "bellmanFord",
+                value: "bellmanford",
               },
               {
                 type: "option",
