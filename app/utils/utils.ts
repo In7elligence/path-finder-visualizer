@@ -325,7 +325,7 @@ export const visualizeAlgorithm = (
     case "astar":
       visualizeAstar(state, dispatch);
       break;
-    case "bellmanFord":
+    case "bellmanford":
       visualizebellmanFords(state, dispatch);
       break;
     case "greedyBFS":
