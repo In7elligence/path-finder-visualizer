@@ -10,7 +10,7 @@ export type NavItemType =
 export type AvailableAlgorithms =
   | "dijkstras"
   | "astar"
-  | "bellmanford"
+  | "bellmanFord"
   | "greedyBFS"
   | "swarmBidirectional"
   | "bfs"

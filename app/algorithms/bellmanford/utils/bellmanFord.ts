@@ -52,13 +52,6 @@ export const bellmanFord = (
             neighbor.previousNode = currentNode;
             updatesMade = true;
 
-            // Mark visitation based on phase
-            if (finishNode.isBomb) {
-              neighbor.isPurpleVisited = true;
-            } else {
-              neighbor.isBlueVisited = true;
-            }
-
             if (!visitedNodesInOrder.includes(neighbor)) {
               visitedNodesInOrder.push(neighbor);
             }
@@ -67,8 +60,23 @@ export const bellmanFord = (
       }
     }
 
-    if (!updatesMade) break; // Early exit if no improvements
+    if (!updatesMade) break;
   }
 
-  return visitedNodesInOrder;
+  const targetIndex = visitedNodesInOrder.indexOf(finishNode);
+
+  const nodesToVisualize =
+    targetIndex !== -1
+      ? visitedNodesInOrder.slice(0, targetIndex + 1)
+      : visitedNodesInOrder;
+
+  nodesToVisualize.forEach((node) => {
+    if (finishNode.isBomb) {
+      node.isPurpleVisited = true;
+    } else {
+      node.isBlueVisited = true;
+    }
+  });
+
+  return nodesToVisualize;
 };
