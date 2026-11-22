@@ -43,10 +43,12 @@ export const bellmanFord = (
         if (currentNode.distance === Infinity || currentNode.isWall) continue;
 
         const neighbors = getNeighbors(currentNode, grid);
+
         for (const neighbor of neighbors) {
           if (neighbor.isWall) continue;
 
           const tentativeDistance = currentNode.distance + neighbor.weight;
+
           if (tentativeDistance < neighbor.distance) {
             neighbor.distance = tentativeDistance;
             neighbor.previousNode = currentNode;
@@ -63,13 +65,43 @@ export const bellmanFord = (
     if (!updatesMade) break;
   }
 
+  // If the target is unreachable, return all reachable visited nodes.
   const targetIndex = visitedNodesInOrder.indexOf(finishNode);
 
-  const nodesToVisualize =
-    targetIndex !== -1
-      ? visitedNodesInOrder.slice(0, targetIndex + 1)
-      : visitedNodesInOrder;
+  if (targetIndex === -1) {
+    visitedNodesInOrder.forEach((node) => {
+      if (finishNode.isBomb) {
+        node.isPurpleVisited = true;
+      } else {
+        node.isBlueVisited = true;
+      }
+    });
 
+    return visitedNodesInOrder;
+  }
+
+  // Reconstruct the final shortest path.
+  const shortestPath: INode[] = [];
+  let currentNode: INode | null = finishNode;
+
+  while (currentNode && currentNode !== startNode) {
+    shortestPath.unshift(currentNode);
+    currentNode = currentNode.previousNode;
+  }
+
+  // Keep the nodes discovered before the target, but avoid
+  // duplicating nodes that are already part of the shortest path.
+  const shortestPathSet = new Set(shortestPath);
+
+  const nodesBeforeTarget = visitedNodesInOrder
+    .slice(0, targetIndex)
+    .filter((node) => !shortestPathSet.has(node));
+
+  // All shortest-path nodes must be visually visited before
+  // the target, even if Bellman-Ford discovered them later.
+  const nodesToVisualize = [...nodesBeforeTarget, ...shortestPath];
+
+  // Mark visitation based on phase.
   nodesToVisualize.forEach((node) => {
     if (finishNode.isBomb) {
       node.isPurpleVisited = true;
